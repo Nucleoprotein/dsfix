@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="d3d9.cpp">
+      <Filter>DSfix</Filter>
+    </ClCompile>
+    <ClCompile Include="d3d9dev.cpp">
+      <Filter>DSfix</Filter>
+    </ClCompile>
+    <ClCompile Include="d3d9int.cpp">
+      <Filter>DSfix</Filter>
+    </ClCompile>
+    <ClCompile Include="d3dutil.cpp">
+      <Filter>DSfix</Filter>
+    </ClCompile>
+    <ClCompile Include="Detouring.cpp">
+      <Filter>DSfix</Filter>
+    </ClCompile>
+    <ClCompile Include="dinputWrapper.cpp">
+      <Filter>DSfix</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>DSfix</Filter>
+    </ClCompile>
+    <ClCompile Include="FPS.cpp">
+      <Filter>DSfix</Filter>
+    </ClCompile>
+    <ClCompile Include="FXAA.cpp">
+      <Filter>DSfix</Filter>
+    </ClCompile>
+    <ClCompile Include="GAUSS.cpp">
+      <Filter>DSfix</Filter>
+    </ClCompile>
+    <ClCompile Include="Hud.cpp">
+      <Filter>DSfix</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyActions.cpp">
+      <Filter>DSfix</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>DSfix</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderstateManager.cpp">
+      <Filter>DSfix</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveManager.cpp">
+      <Filter>DSfix</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings.cpp">
+      <Filter>DSfix</Filter>
+    </ClCompile>
+    <ClCompile Include="SMAA.cpp">
+      <Filter>DSfix</Filter>
+    </ClCompile>
+    <ClCompile Include="SSAO.cpp">
+      <Filter>DSfix</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowManager.cpp">
+      <Filter>DSfix</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>PCH</Filter>
+    </ClCompile>
+    <ClCompile Include="memory.cpp">
+      <Filter>DSfix</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AreaTex.h">
+      <Filter>DSfix</Filter>
+    </ClInclude>
+    <ClInclude Include="d3d9.h">
+      <Filter>DSfix</Filter>
+    </ClInclude>
+    <ClInclude Include="d3d9dev.h">
+      <Filter>DSfix</Filter>
+    </ClInclude>
+    <ClInclude Include="d3d9int.h">
+      <Filter>DSfix</Filter>
+    </ClInclude>
+    <ClInclude Include="d3dutil.h">
+      <Filter>DSfix</Filter>
+    </ClInclude>
+    <ClInclude Include="Detouring.h">
+      <Filter>DSfix</Filter>
+    </ClInclude>
+    <ClInclude Include="dinputWrapper.h">
+      <Filter>DSfix</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>DSfix</Filter>
+    </ClInclude>
+    <ClInclude Include="FPS.h">
+      <Filter>DSfix</Filter>
+    </ClInclude>
+    <ClInclude Include="FXAA.h">
+      <Filter>DSfix</Filter>
+    </ClInclude>
+    <ClInclude Include="GAUSS.h">
+      <Filter>DSfix</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash.h">
+      <Filter>DSfix</Filter>
+    </ClInclude>
+    <ClInclude Include="Hud.h">
+      <Filter>DSfix</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyActions.h">
+      <Filter>DSfix</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>DSfix</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderstateManager.h">
+      <Filter>DSfix</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveManager.h">
+      <Filter>DSfix</Filter>
+    </ClInclude>
+    <ClInclude Include="SearchTex.h">
+      <Filter>DSfix</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>DSfix</Filter>
+    </ClInclude>
+    <ClInclude Include="SMAA.h">
+      <Filter>DSfix</Filter>
+    </ClInclude>
+    <ClInclude Include="SSAO.h">
+      <Filter>DSfix</Filter>
+    </ClInclude>
+    <ClInclude Include="Textures.def">
+      <Filter>DSfix</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowManager.h">
+      <Filter>DSfix</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>PCH</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>PCH</Filter>
+    </ClInclude>
+    <ClInclude Include="memory.h">
+      <Filter>DSfix</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Actions.def">
+      <Filter>DSfix</Filter>
+    </None>
+    <None Include="dinput8.def">
+      <Filter>DSfix</Filter>
+    </None>
+    <None Include="Keys.def">
+      <Filter>DSfix</Filter>
+    </None>
+    <None Include="Settings.def">
+      <Filter>DSfix</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="DSfix">
+      <UniqueIdentifier>{77ae3173-5ec6-454e-81ea-0cc3203d346b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PCH">
+      <UniqueIdentifier>{4d38a0c8-e7ac-47d2-b044-7b68910d4cc1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
