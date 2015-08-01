@@ -60,7 +60,7 @@ HRESULT RSManager::redirectPresent(CONST RECT *pSourceRect, CONST RECT *pDestRec
 	if(captureNextFrame) {
 		capturing = true;
 		captureNextFrame = false;
-		SDLOG(0, "== CAPTURING FRAME ==\n")
+        SDLOG(0, "== CAPTURING FRAME ==\n");
 	}
 	if(timingIntroMode) {
 		skippedPresents++;

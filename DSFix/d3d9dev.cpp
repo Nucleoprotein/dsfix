@@ -418,7 +418,7 @@ HRESULT APIENTRY hkIDirect3DDevice9::GetStreamSourceFreq(UINT StreamNumber, UINT
     return m_pD3Ddev->GetStreamSourceFreq(StreamNumber, Divider);
 }
 
-// Dunno why, but when compiler generets jmp to original GetSwapChain then DarkSouls will crash
+// Dunno why, but when compiler generetes jmp to original GetSwapChain then DarkSouls will crash
 // by using volatile this function will call original GetSwapChain insted and will work fine
 // you cau also disable Global Optimisation using above below pragma
 //#pragma optimize( "g", off )
