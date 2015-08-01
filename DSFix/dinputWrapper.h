@@ -29,11 +29,11 @@ public:
             exit(hr);
         }
 
-        GetProcAddress("DirectInput8Create", &DirectInput8Create);
-        GetProcAddress("DllCanUnloadNow", &DllCanUnloadNow);
-        GetProcAddress("DllGetClassObject", &DllGetClassObject);
-        GetProcAddress("DllRegisterServer", &DllRegisterServer);
-        GetProcAddress("DllUnregisterServer", &DllUnregisterServer);
+        GetProcedureAddress("DirectInput8Create", &DirectInput8Create);
+        GetProcedureAddress("DllCanUnloadNow", &DllCanUnloadNow);
+        GetProcedureAddress("DllGetClassObject", &DllGetClassObject);
+        GetProcedureAddress("DllRegisterServer", &DllRegisterServer);
+        GetProcedureAddress("DllUnregisterServer", &DllUnregisterServer);
     }
 
     ~DirectInputModuleManager()
@@ -50,7 +50,7 @@ public:
 
 private:
     template<typename T>
-    inline void GetProcAddress(const char* funcname, T* ppfunc)
+    inline void GetProcedureAddress(const char* funcname, T* ppfunc)
     {
         *ppfunc = reinterpret_cast<T>(::GetProcAddress(m_module, funcname));
     }

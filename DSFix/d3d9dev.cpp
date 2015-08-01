@@ -14,15 +14,16 @@
 #include "KeyActions.h"
 #include "SaveManager.h"
 
+
 hkIDirect3DDevice9::hkIDirect3DDevice9(IDirect3DDevice9 **ppReturnedDeviceInterface, D3DPRESENT_PARAMETERS *pPresentParam, IDirect3D9 *pIDirect3D9)
 {
     SDLOG(0, "hkIDirect3DDevice9\n");
     m_pD3Ddev = *ppReturnedDeviceInterface;
-    *ppReturnedDeviceInterface = this;
-    m_PresentParam = *pPresentParam;
     m_pD3Dint = pIDirect3D9;
-    RSManager::get().setD3DDevice(m_pD3Ddev);
+    RSManager::get().setD3DDevice(*ppReturnedDeviceInterface);
     RSManager::get().initResources();
+
+    *ppReturnedDeviceInterface = this;
 }
 
 HRESULT APIENTRY hkIDirect3DDevice9::Present(CONST RECT *pSourceRect, CONST RECT *pDestRect, HWND hDestWindowOverride, CONST RGNDATA *pDirtyRegion)
@@ -36,38 +37,6 @@ HRESULT APIENTRY hkIDirect3DDevice9::Present(CONST RECT *pSourceRect, CONST RECT
 
 HRESULT APIENTRY hkIDirect3DDevice9::SetVertexShaderConstantF(UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount)
 {
-    //static float replacement[128*8];
-    //SDLOG(0, "SetVertexShaderConstantF: start: %u, count: %u\n", StartRegister, Vector4fCount);
-    //if(Settings::get().getLogLevel() > 13 || Vector4fCount == 8 || Vector4fCount == 4) {
-    //	for(size_t i=0; i<Vector4fCount; ++i) {
-    //		SDLOG(0, " - %16.10f %16.10f %16.10f %16.10f\n", pConstantData[i*4+0], pConstantData[i*4+1], pConstantData[i*4+2], pConstantData[i*4+3]);
-    //	}
-    //}
-    //if(StartRegister == 8 && Vector4fCount == 8) {
-    //	SDLOG(0, "!!8ball\n");
-    //	memcpy(replacement, pConstantData, sizeof(float)*4*Vector4fCount);
-    //	D3DXMATRIX projMatrix, viewMatrix, cameraMatrix, viewInv;
-    //	memcpy(&projMatrix, &(replacement[0]), sizeof(float)*16);
-    //	memcpy(&viewMatrix, &(replacement[16]), sizeof(float)*16);
-    //	if(viewMatrix._14 != 0.0 && viewMatrix._24 != 0.0 && viewMatrix._34 != 0.0 && viewMatrix._44 != 0.0) {
-    //		SDLOG(0, "!!8ball zero\n");
-    //		D3DXMatrixInverse(&viewInv, NULL, &viewMatrix);
-    //		projMatrix *= viewInv;
-    //		viewMatrix._11 *= 2.0;
-    //		viewMatrix._22 *= 2.0;
-    //		projMatrix *= viewMatrix;
-    //		memcpy(&(replacement[0]), &projMatrix, sizeof(float)*16);
-    //		memcpy(&(replacement[16]), &viewMatrix, sizeof(float)*16);
-    //		memset(replacement, 0, sizeof(float)*32);
-    //		for(size_t i=0; i<Vector4fCount; ++i) {
-    //			SDLOG(0, " + %16.10f %16.10f %16.10f %16.10f\n", replacement[i*4+0], replacement[i*4+1], replacement[i*4+2], replacement[i*4+3]);
-    //		}
-    //		return m_pD3Ddev->SetVertexShaderConstantF(StartRegister, replacement, Vector4fCount);
-    //	}
-    //} /*else if(StartRegister == 8 && Vector4fCount == 4) {
-    //	SDLOG(0, "!!4ball\n");
-    //	return m_pD3Ddev->SetVertexShaderConstantF(StartRegister, replacement, Vector4fCount);
-    //}*/ 
     return m_pD3Ddev->SetVertexShaderConstantF(StartRegister, pConstantData, Vector4fCount);
 }
 
@@ -90,13 +59,6 @@ HRESULT APIENTRY hkIDirect3DDevice9::SetViewport(CONST D3DVIEWPORT9 *pViewport)
     SDLOG(6, "SetViewport X / Y - W x H : %4lu / %4lu  -  %4lu x %4lu\n", pViewport->X, pViewport->Y, pViewport->Width, pViewport->Height);
     RSManager::get().setViewport(*pViewport);
     return m_pD3Ddev->SetViewport(pViewport);
-    //D3DVIEWPORT9 copy;
-    //memcpy(&copy, pViewport, sizeof(D3DVIEWPORT9));
-    //if(copy.Height == Settings::get().getRenderHeight() && copy.Width == Settings::get().getRenderWidth()) {
-    //	copy.Width /= 2;
-    //	copy.Height /= 2;
-    //}
-    //return m_pD3Ddev->SetViewport(&copy); 
 }
 
 HRESULT APIENTRY hkIDirect3DDevice9::DrawIndexedPrimitive(D3DPRIMITIVETYPE Type, INT BaseVertexIndex, UINT MinVertexIndex, UINT NumVertices, UINT startIndex, UINT primCount)
@@ -338,8 +300,6 @@ HRESULT APIENTRY hkIDirect3DDevice9::GetDirect3D(IDirect3D9 **ppD3D9)
 HRESULT APIENTRY hkIDirect3DDevice9::GetDisplayMode(UINT iSwapChain, D3DDISPLAYMODE* pMode)
 {
     SDLOG(15, "GetDisplayMode %u\n", iSwapChain);
-    //pMode = &displayMode;
-    //return S_OK;
     return m_pD3Ddev->GetDisplayMode(iSwapChain, pMode);
 }
 
@@ -355,7 +315,7 @@ HRESULT APIENTRY hkIDirect3DDevice9::GetFVF(DWORD* pFVF)
 
 void APIENTRY hkIDirect3DDevice9::GetGammaRamp(UINT iSwapChain, D3DGAMMARAMP* pRamp)
 {
-    m_pD3Ddev->GetGammaRamp(iSwapChain, pRamp);
+    return m_pD3Ddev->GetGammaRamp(iSwapChain, pRamp);
 }
 
 HRESULT APIENTRY hkIDirect3DDevice9::GetIndices(IDirect3DIndexBuffer9** ppIndexData)
@@ -458,11 +418,16 @@ HRESULT APIENTRY hkIDirect3DDevice9::GetStreamSourceFreq(UINT StreamNumber, UINT
     return m_pD3Ddev->GetStreamSourceFreq(StreamNumber, Divider);
 }
 
+// Dunno why, but when compiler generets jmp to original GetSwapChain then DarkSouls will crash
+// by using volatile this function will call original GetSwapChain insted and will work fine
+// you cau also disable Global Optimisation using above below pragma
+//#pragma optimize( "g", off )
 HRESULT APIENTRY hkIDirect3DDevice9::GetSwapChain(UINT iSwapChain, IDirect3DSwapChain9** pSwapChain)
 {
-    return m_pD3Ddev->GetSwapChain(iSwapChain, pSwapChain);
+    volatile HRESULT result = m_pD3Ddev->GetSwapChain(iSwapChain, pSwapChain);
+    return result;
 }
-
+//#pragma optimize( "", on )
 HRESULT APIENTRY hkIDirect3DDevice9::GetTexture(DWORD Stage, IDirect3DBaseTexture9 **ppTexture)
 {
     return m_pD3Ddev->GetTexture(Stage, ppTexture);
@@ -519,11 +484,6 @@ HRESULT APIENTRY hkIDirect3DDevice9::MultiplyTransform(D3DTRANSFORMSTATETYPE Sta
     return m_pD3Ddev->MultiplyTransform(State, pMatrix);
 }
 
-void APIENTRY WINAPI D3DPERF_SetOptions(DWORD options)
-{
-    //MessageBox(NULL, "D3DPERF_SetOptions", "D3D9Wrapper", MB_OK);
-}
-
 HRESULT APIENTRY hkIDirect3DDevice9::ProcessVertices(UINT SrcStartIndex, UINT DestIndex, UINT VertexCount, IDirect3DVertexBuffer9* pDestBuffer, IDirect3DVertexDeclaration9* pVertexDecl, DWORD Flags)
 {
     return m_pD3Ddev->ProcessVertices(SrcStartIndex, DestIndex, VertexCount, pDestBuffer, pVertexDecl, Flags);
@@ -531,17 +491,18 @@ HRESULT APIENTRY hkIDirect3DDevice9::ProcessVertices(UINT SrcStartIndex, UINT De
 
 ULONG APIENTRY hkIDirect3DDevice9::Release()
 {
-    return m_pD3Ddev->Release();
+    ULONG refs = m_pD3Ddev->Release();
+    if (!refs)
+        delete this;
+
+    m_pD3Ddev = nullptr;
+    return refs;
 }
 
 HRESULT APIENTRY hkIDirect3DDevice9::Reset(D3DPRESENT_PARAMETERS *pPresentationParameters)
 {
     RSManager::get().releaseResources();
     SDLOG(0, "Reset ------\n");
-    displayMode.Format = pPresentationParameters->BackBufferFormat;
-    displayMode.Width = pPresentationParameters->BackBufferWidth;
-    displayMode.Height = pPresentationParameters->BackBufferHeight;
-    displayMode.RefreshRate = 60;
 
     D3DPRESENT_PARAMETERS adjusted = RSManager::get().adjustPresentationParameters(pPresentationParameters);
 
@@ -550,7 +511,6 @@ HRESULT APIENTRY hkIDirect3DDevice9::Reset(D3DPRESENT_PARAMETERS *pPresentationP
     if (SUCCEEDED(hRet))
     {
         SDLOG(0, " - succeeded\n");
-        m_PresentParam = adjusted;
         RSManager::get().initResources();
     }
     else
@@ -590,7 +550,6 @@ HRESULT APIENTRY hkIDirect3DDevice9::SetCursorProperties(UINT XHotSpot, UINT YHo
 HRESULT APIENTRY hkIDirect3DDevice9::SetDepthStencilSurface(IDirect3DSurface9* pNewZStencil)
 {
     SDLOG(5, "SetDepthStencilSurface %p\n", pNewZStencil);
-    //return m_pD3Ddev->SetDepthStencilSurface(pNewZStencil);
     return RSManager::get().redirectSetDepthStencilSurface(pNewZStencil);
 }
 
@@ -766,7 +725,6 @@ BOOL APIENTRY hkIDirect3DDevice9::ShowCursor(BOOL bShow)
 HRESULT APIENTRY hkIDirect3DDevice9::StretchRect(IDirect3DSurface9* pSourceSurface, CONST RECT* pSourceRect, IDirect3DSurface9* pDestSurface, CONST RECT* pDestRect, D3DTEXTUREFILTERTYPE Filter)
 {
     SDLOG(5, "StretchRect src -> dest, sR -> dR : %p -> %p,  %s -> %s\n", pSourceSurface, pDestSurface, RectToString(pSourceRect), RectToString(pDestRect));
-    //return m_pD3Ddev->StretchRect(pSourceSurface,pSourceRect,pDestSurface,pDestRect,Filter);
     return RSManager::get().redirectStretchRect(pSourceSurface, pSourceRect, pDestSurface, pDestRect, Filter);
 }
 

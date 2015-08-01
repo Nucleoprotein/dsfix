@@ -37,7 +37,6 @@
 
 char *GetDirectoryFile(char *filename);
 bool fileExists(const char *filename);
-void errorExit(LPTSTR lpszFunction);
 
 extern bool timingIntroMode;
 

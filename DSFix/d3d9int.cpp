@@ -109,5 +109,8 @@ HRESULT APIENTRY hkIDirect3D9::RegisterSoftwareDevice(void *pInitializeFunction)
 }
 
 ULONG APIENTRY hkIDirect3D9::Release() {
-	return m_pD3Dint->Release();
+    ULONG refs = m_pD3Dint->Release();
+    if (!refs)
+        delete this;
+    return refs;
 }

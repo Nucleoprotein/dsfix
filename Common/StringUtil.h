@@ -67,7 +67,7 @@ inline void CharArrayFromFormat(wchar_t(&out)[Count], const wchar_t* format, ...
 inline std::string StringFromFormatV(const char* format, va_list args)
 {
 	int required = _vscprintf(format, args);
-	std::unique_ptr<char> buf(new char[required + 1]);
+	std::unique_ptr<char[]> buf(new char[required + 1]);
 	CharArrayFromFormatV(buf.get(), required + 1, format, args);
 
 	std::string temp = buf.get();
@@ -77,7 +77,7 @@ inline std::string StringFromFormatV(const char* format, va_list args)
 inline std::wstring StringFromFormatV(const wchar_t* format, va_list args)
 {
     int required = _vscwprintf(format, args);
-    std::unique_ptr<wchar_t> buf(new wchar_t[required + 1]);
+    std::unique_ptr<wchar_t[]> buf(new wchar_t[required + 1]);
     CharArrayFromFormatV(buf.get(), required + 1, format, args);
 
     std::wstring temp = buf.get();
