@@ -12,27 +12,31 @@
 #include "HUD.h"
 
 class RSManager {
+private:
 	static RSManager instance;
 
 	bool inited;
+    bool lowFPSmode;
+    bool doAA;
+    bool doSsao;
+    bool doDofGauss;
+    bool doHud;
+
+    bool hideHud;
+    bool paused;
+    bool onHudRT, pausedHudRT;
+    bool captureNextFrame, capturing, hudStarted, takeScreenshot;
+
 	D3DVIEWPORT9 viewport;
 	IDirect3DDevice9 *d3ddev;
 
 	double lastPresentTime;
-	bool lowFPSmode;
 
-	bool doAA;
-	SMAA* smaa;
-	FXAA* fxaa;
-	
-	bool doSsao;
-	SSAO* ssao;
-
-	bool doDofGauss;
-	GAUSS* gauss;
-	
-	bool doHud;
-	HUD* hud;
+    std::unique_ptr<SMAA> smaa;
+    std::unique_ptr<FXAA> fxaa;
+    std::unique_ptr<SSAO> ssao;
+    std::unique_ptr<GAUSS> gauss;
+    std::unique_ptr<HUD> hud;
 
 	CComPtr<IDirect3DTexture9> rgbaBuffer1Tex;
     CComPtr<IDirect3DSurface9> rgbaBuffer1Surf;
@@ -40,11 +44,6 @@ class RSManager {
 	
     CComPtr<IDirect3DSurface9> zSurf;
 
-	bool hideHud;
-	bool onHudRT, pausedHudRT;
-
-	bool paused;
-	
 	std::set<int> dumpedTextures;
 
 	unsigned texIndex, mainRenderTexIndex, mainRenderSurfIndex;
@@ -53,7 +52,6 @@ class RSManager {
 	typedef std::map<IDirect3DSurface9*, int> SurfIntMap;
 	SurfIntMap mainRenderSurfIndices;
 
-	bool captureNextFrame, capturing, hudStarted, takeScreenshot;
 	unsigned dumpCaptureIndex;
 
 	void dumpSurface(const char* name, IDirect3DSurface9* surface);
@@ -110,7 +108,7 @@ public:
 		return instance;
 	}
 
-	RSManager() : smaa(NULL), fxaa(NULL), ssao(NULL), gauss(NULL), rgbaBuffer1Surf(NULL), rgbaBuffer1Tex(NULL),
+    RSManager() : smaa(nullptr), fxaa(nullptr), ssao(nullptr), gauss(nullptr), rgbaBuffer1Surf(nullptr), rgbaBuffer1Tex(nullptr),
 			inited(false), doAA(true), doSsao(true), doDofGauss(true), doHud(true), captureNextFrame(false), capturing(false), hudStarted(false), takeScreenshot(false), hideHud(false),
 			mainRenderTexIndex(0), mainRenderSurfIndex(0), dumpCaptureIndex(0), numKnownTextures(0), foundKnownTextures(0), skippedPresents(0) {
 		#define TEXTURE(_name, _hash) ++numKnownTextures;

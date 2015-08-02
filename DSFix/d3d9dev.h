@@ -10,9 +10,9 @@ private:
     IDirect3DDevice9 *m_pD3Ddev;
     IDirect3D9 *m_pD3Dint;
 public:
-	hkIDirect3DDevice9(IDirect3DDevice9 **ppReturnedDeviceInterface, D3DPRESENT_PARAMETERS *pPresentParam, IDirect3D9 *pIDirect3D9);
-	
-	// original interface
+    hkIDirect3DDevice9(IDirect3DDevice9 **ppReturnedDeviceInterface, D3DPRESENT_PARAMETERS *pPresentParam, IDirect3D9 *pIDirect3D9);
+
+    // original interface
     /*** IUnknown methods ***/
     STDMETHOD(QueryInterface)(THIS_ REFIID riid, void** ppvObj) override;
     STDMETHOD_(ULONG, AddRef)(THIS) override;

@@ -9,13 +9,13 @@
 tDirect3DCreate9 oDirect3DCreate9;
 IDirect3D9 *APIENTRY hkDirect3DCreate9(UINT SDKVersion)
 {
-    SDLOG(0, "hkDirect3DCreate9\n");
+	SDLOG(0, "hkDirect3DCreate9");
 
-    IDirect3D9 *d3dint = NULL;
-    d3dint = oDirect3DCreate9(SDKVersion);
+	IDirect3D9 *d3dint = NULL;
+	d3dint = oDirect3DCreate9(SDKVersion);
 
-    if (d3dint) {       
-        new hkIDirect3D9(&d3dint);
-    }
-    return d3dint;
+	if (d3dint) {
+		new hkIDirect3D9(&d3dint);
+	}
+	return d3dint;
 }

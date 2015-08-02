@@ -4,8 +4,9 @@
 
 WindowManager WindowManager::instance;
 
-void WindowManager::applyCursorCapture() {
-	if(captureCursor) {
+void WindowManager::applyCursorCapture()
+{
+	if (captureCursor) {
 		RECT clientrect;
 		HWND hwnd = ::GetActiveWindow();
 		::GetClientRect(hwnd, &clientrect);
@@ -17,19 +18,22 @@ void WindowManager::applyCursorCapture() {
 	}
 }
 
-void WindowManager::toggleCursorCapture() {
+void WindowManager::toggleCursorCapture()
+{
 	captureCursor = !captureCursor;
 }
 
-void WindowManager::toggleCursorVisibility() {	
+void WindowManager::toggleCursorVisibility()
+{
 	cursorVisible = !cursorVisible;
 	::ShowCursor(cursorVisible);
 }
 
-void WindowManager::toggleBorderlessFullscreen() {
+void WindowManager::toggleBorderlessFullscreen()
+{
 	borderlessFullscreen = !borderlessFullscreen;
 	HWND hwnd = ::GetActiveWindow();
-	if(borderlessFullscreen) {
+	if (borderlessFullscreen) {
 		// store previous rect
 		::GetClientRect(hwnd, &prevWindowRect);
 		// set styles
@@ -60,7 +64,8 @@ void WindowManager::toggleBorderlessFullscreen() {
 	}
 }
 
-void WindowManager::resize(unsigned clientW, unsigned clientH) {
+void WindowManager::resize(unsigned clientW, unsigned clientH)
+{
 	HWND hwnd = ::GetActiveWindow();
 	// Store current window rect
 	::GetClientRect(hwnd, &prevWindowRect);
@@ -76,12 +81,12 @@ void WindowManager::resize(unsigned clientW, unsigned clientH) {
 	int widthDiff = monitorWidth - (clientW ? clientW : prevWindowRect.right);
 	int heightDiff = monitorHeight - (clientH ? clientH : prevWindowRect.bottom);
 
- 	RECT desiredRect;
+	RECT desiredRect;
 	desiredRect.left = widthDiff / 2;
 	desiredRect.top = heightDiff / 2;
 	desiredRect.right = monitorWidth - (widthDiff / 2);
 	desiredRect.bottom = monitorHeight - (heightDiff / 2);
- 	LONG lStyle = ::GetWindowLong(hwnd, GWL_STYLE);
- 	::AdjustWindowRect(&desiredRect, lStyle, false);
+	LONG lStyle = ::GetWindowLong(hwnd, GWL_STYLE);
+	::AdjustWindowRect(&desiredRect, lStyle, false);
 	::SetWindowPos(hwnd, NULL, desiredRect.left, desiredRect.top, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
 }

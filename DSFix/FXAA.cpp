@@ -11,19 +11,20 @@
 #include "Settings.h"
 #include "RenderstateManager.h"
 
-FXAA::FXAA(IDirect3DDevice9 *device, int width, int height, Quality quality) 
-	: Effect(device), width(width), height(height) {
-	
-	// Setup the defines for compiling the effect
-    std::vector<D3DXMACRO> defines;
-    std::stringstream s;
+FXAA::FXAA(IDirect3DDevice9 *device, int width, int height, Quality quality)
+	: Effect(device), width(width), height(height)
+{
 
-    // Setup pixel size macro
-    s << "float2(1.0 / " << width << ", 1.0 / " << height << ")";
-    std::string pixelSizeText = s.str();
-    D3DXMACRO pixelSizeMacro = { "PIXEL_SIZE", pixelSizeText.c_str() };
-    defines.push_back(pixelSizeMacro);
-	
+	// Setup the defines for compiling the effect
+	std::vector<D3DXMACRO> defines;
+	std::stringstream s;
+
+	// Setup pixel size macro
+	s << "float2(1.0 / " << width << ", 1.0 / " << height << ")";
+	std::string pixelSizeText = s.str();
+	D3DXMACRO pixelSizeMacro = { "PIXEL_SIZE", pixelSizeText.c_str() };
+	defines.push_back(pixelSizeMacro);
+
 	D3DXMACRO qualityMacros[] = {
 		{ "FXAA_QUALITY__PRESET", "10" },
 		{ "FXAA_QUALITY__PRESET", "20" },
@@ -32,40 +33,42 @@ FXAA::FXAA(IDirect3DDevice9 *device, int width, int height, Quality quality)
 	};
 	defines.push_back(qualityMacros[(int)quality]);
 
-    D3DXMACRO null = { NULL, NULL };
-    defines.push_back(null);
+	D3DXMACRO null = { NULL, NULL };
+	defines.push_back(null);
 
 	DWORD flags = D3DXFX_NOT_CLONEABLE | D3DXSHADER_OPTIMIZATION_LEVEL3;
 
 	// Load effect from file
-	SDLOG(0, "FXAA load\n");	
+	SDLOG(0, "FXAA load");
 	ID3DXBuffer* errors;
-    HRESULT hr = D3DXCreateEffectFromFile(device, GetDirectoryFile("dsfix\\FXAA.fx"), &defines.front(), NULL, flags, NULL, &effect, &errors);
-	if(hr != D3D_OK) SDLOG(0, "ERRORS:\n %s\n", errors->GetBufferPointer());
-	
+	HRESULT hr = D3DXCreateEffectFromFile(device, GetDirectoryFile("dsfix\\FXAA.fx"), &defines.front(), NULL, flags, NULL, &effect, &errors);
+	if(hr != D3D_OK) SDLOG(0, "ERRORS:\n %s", errors->GetBufferPointer());
+
 	// Create buffer
 	device->CreateTexture(width, height, 1, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &buffer1Tex, NULL);
-    buffer1Tex->GetSurfaceLevel(0, &buffer1Surf);
+	buffer1Tex->GetSurfaceLevel(0, &buffer1Surf);
 
 	// get handles
 	frameTexHandle = effect->GetParameterByName(NULL, "frameTex2D");
 }
 
-void FXAA::go(IDirect3DTexture9 *frame, IDirect3DSurface9 *dst) {
+void FXAA::go(IDirect3DTexture9 *frame, IDirect3DSurface9 *dst)
+{
 	device->SetVertexDeclaration(vertexDeclaration);
-	
-    lumaPass(frame, buffer1Surf);
+
+	lumaPass(frame, buffer1Surf);
 	fxaaPass(buffer1Tex, dst);
 }
 
-void FXAA::lumaPass(IDirect3DTexture9 *frame, IDirect3DSurface9 *dst) {
+void FXAA::lumaPass(IDirect3DTexture9 *frame, IDirect3DSurface9 *dst)
+{
 	device->SetRenderTarget(0, dst);
 
-    // Setup variables
-    effect->SetTexture(frameTexHandle, frame);
+	// Setup variables
+	effect->SetTexture(frameTexHandle, frame);
 
-    // Do it!
-    UINT passes;
+	// Do it!
+	UINT passes;
 	effect->Begin(&passes, 0);
 	effect->BeginPass(0);
 	quad(width, height);
@@ -73,14 +76,15 @@ void FXAA::lumaPass(IDirect3DTexture9 *frame, IDirect3DSurface9 *dst) {
 	effect->End();
 }
 
-void FXAA::fxaaPass(IDirect3DTexture9 *src, IDirect3DSurface9* dst) {
+void FXAA::fxaaPass(IDirect3DTexture9 *src, IDirect3DSurface9* dst)
+{
 	device->SetRenderTarget(0, dst);
 
-    // Setup variables
-    effect->SetTexture(frameTexHandle, src);
-	
-    // Do it!
-    UINT passes;
+	// Setup variables
+	effect->SetTexture(frameTexHandle, src);
+
+	// Do it!
+	UINT passes;
 	effect->Begin(&passes, 0);
 	effect->BeginPass(1);
 	quad(width, height);

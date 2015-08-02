@@ -1,37 +1,37 @@
 /**
  * Copyright (C) 2011 Jorge Jimenez (jorge@iryoku.com)
- * Copyright (C) 2011 Belen Masia (bmasia@unizar.es) 
- * Copyright (C) 2011 Jose I. Echevarria (joseignacioechevarria@gmail.com) 
- * Copyright (C) 2011 Fernando Navarro (fernandn@microsoft.com) 
+ * Copyright (C) 2011 Belen Masia (bmasia@unizar.es)
+ * Copyright (C) 2011 Jose I. Echevarria (joseignacioechevarria@gmail.com)
+ * Copyright (C) 2011 Fernando Navarro (fernandn@microsoft.com)
  * Copyright (C) 2011 Diego Gutierrez (diegog@unizar.es)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  *    1. Redistributions of source code must retain the above copyright notice,
  *       this list of conditions and the following disclaimer.
- * 
+ *
  *    2. Redistributions in binary form must reproduce the following disclaimer
- *       in the documentation and/or other materials provided with the 
+ *       in the documentation and/or other materials provided with the
  *       distribution:
- * 
+ *
  *      "Uses SMAA. Copyright (C) 2011 by Jorge Jimenez, Jose I. Echevarria,
  *       Belen Masia, Fernando Navarro and Diego Gutierrez."
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ``AS 
- * IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL COPYRIGHT HOLDERS OR CONTRIBUTORS 
- * BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ``AS
+ * IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL COPYRIGHT HOLDERS OR CONTRIBUTORS
+ * BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- * 
- * The views and conclusions contained in the software and documentation are 
+ *
+ * The views and conclusions contained in the software and documentation are
  * those of the authors and should not be interpreted as representing official
  * policies, either expressed or implied, of the copyright holders.
  */
@@ -53,108 +53,108 @@
 */
 
 class SMAA : public Effect {
+public:
+    enum Preset { PRESET_LOW, PRESET_MEDIUM, PRESET_HIGH, PRESET_ULTRA, PRESET_CUSTOM };
+    enum Input { INPUT_LUMA, INPUT_COLOR, INPUT_DEPTH };
+
+    class ExternalStorage
+    {
     public:
-        enum Preset { PRESET_LOW, PRESET_MEDIUM, PRESET_HIGH, PRESET_ULTRA, PRESET_CUSTOM };
-        enum Input { INPUT_LUMA, INPUT_COLOR, INPUT_DEPTH };
+        ExternalStorage(IDirect3DTexture9 *edgeTex = NULL,
+            IDirect3DSurface9 *edgeSurface = NULL,
+            IDirect3DTexture9 *blendTex = NULL,
+            IDirect3DSurface9 *blendSurface = NULL)
+            : edgeTex(edgeTex),
+            edgeSurface(edgeSurface),
+            blendTex(blendTex),
+            blendSurface(blendSurface)
+        {
+        }
 
-		class ExternalStorage
-		{
-		public:
-			ExternalStorage(IDirect3DTexture9 *edgeTex = NULL,
-				IDirect3DSurface9 *edgeSurface = NULL,
-				IDirect3DTexture9 *blendTex = NULL,
-				IDirect3DSurface9 *blendSurface = NULL)
-				: edgeTex(edgeTex),
-				edgeSurface(edgeSurface),
-				blendTex(blendTex),
-				blendSurface(blendSurface)
-			{
-			}
+        IDirect3DTexture9 *edgeTex, *blendTex;
+        IDirect3DSurface9 *edgeSurface, *blendSurface;
+    };
 
-			IDirect3DTexture9 *edgeTex, *blendTex;
-			IDirect3DSurface9 *edgeSurface, *blendSurface;
-		};
+    /**
+     * If you have one or two spare render targets of the same size as the
+     * backbuffer, you may want to pass them in the 'storage' parameter.
+     * You may pass one or the two, depending on what you have available.
+     *
+     * A RG buffer (at least) is expected for storing edges.
+     * A RGBA buffer is expected for the blending weights.
+     *
+     * By default, two render targets will be created for storing
+     * intermediate calculations.
+     */
+    SMAA(IDirect3DDevice9 *device, int width, int height, Preset preset,
+        const ExternalStorage &storage = ExternalStorage());
+    virtual ~SMAA(){};
 
-        /**
-         * If you have one or two spare render targets of the same size as the
-         * backbuffer, you may want to pass them in the 'storage' parameter.
-         * You may pass one or the two, depending on what you have available.
-         *
-         * A RG buffer (at least) is expected for storing edges.
-         * A RGBA buffer is expected for the blending weights.
-         *
-         * By default, two render targets will be created for storing
-         * intermediate calculations.
-         */
-        SMAA(IDirect3DDevice9 *device, int width, int height, Preset preset,
-             const ExternalStorage &storage=ExternalStorage());
-        virtual ~SMAA(){};
+    /**
+     * Processes input texture 'src', storing the antialiased image into
+     * 'dst'. Note that 'src' and 'dst' should be associated to different
+     * buffers.
+     *
+     * 'edges' should be the input for using for edge detection: either a
+     * depth buffer or a non-sRGB color buffer. Input must be set
+     * accordingly.
+     *
+     * IMPORTANT: the stencil component of currently bound depth-stencil
+     * buffer will be used to mask the zones to be processed. It is assumed
+     * to be already cleared to zero when this function is called. It is
+     * not done here because it is usually cleared together with the depth.
+     *
+     * For performance reasons, the state is not restored before returning
+     * from this function (the render target, the input layout, the
+     * depth-stencil and blend states...)
+     */
+    void go(IDirect3DTexture9 *edges,
+        IDirect3DTexture9 *src,
+        IDirect3DSurface9 *dst,
+        Input input);
 
-        /**
-         * Processes input texture 'src', storing the antialiased image into
-         * 'dst'. Note that 'src' and 'dst' should be associated to different
-         * buffers.
-         *
-         * 'edges' should be the input for using for edge detection: either a
-         * depth buffer or a non-sRGB color buffer. Input must be set 
-         * accordingly.
-         *
-         * IMPORTANT: the stencil component of currently bound depth-stencil
-         * buffer will be used to mask the zones to be processed. It is assumed
-         * to be already cleared to zero when this function is called. It is 
-         * not done here because it is usually cleared together with the depth.
-         *
-         * For performance reasons, the state is not restored before returning
-         * from this function (the render target, the input layout, the 
-         * depth-stencil and blend states...)
-         */
-        void go(IDirect3DTexture9 *edges,
-                IDirect3DTexture9 *src, 
-                IDirect3DSurface9 *dst,
-                Input input);
+    /**
+     * Maximum length to search for patterns. Each step is two pixels wide.
+     */
+    int getMaxSearchSteps() const { return maxSearchSteps; }
+    void setMaxSearchSteps(int maxSearchSteps) { this->maxSearchSteps = maxSearchSteps; }
 
-        /**
-         * Maximum length to search for patterns. Each step is two pixels wide.
-         */
-        int getMaxSearchSteps() const { return maxSearchSteps; }
-        void setMaxSearchSteps(int maxSearchSteps) { this->maxSearchSteps = maxSearchSteps; }
+    /**
+     * Threshold for the edge detection.
+     */
+    float getThreshold() const { return threshold; }
+    void setThreshold(float threshold) { this->threshold = threshold; }
 
-        /**
-         * Threshold for the edge detection.
-         */
-        float getThreshold() const { return threshold; }
-        void setThreshold(float threshold) { this->threshold = threshold; }
+private:
+    void loadAreaTex();
+    void loadSearchTex();
+    void edgesDetectionPass(IDirect3DTexture9 *edges, Input input);
+    void blendingWeightsCalculationPass();
+    void neighborhoodBlendingPass(IDirect3DTexture9 *src, IDirect3DSurface9 *dst);
 
-    private:
-        void loadAreaTex();
-        void loadSearchTex();
-        void edgesDetectionPass(IDirect3DTexture9 *edges, Input input);
-        void blendingWeightsCalculationPass();
-        void neighborhoodBlendingPass(IDirect3DTexture9 *src, IDirect3DSurface9 *dst);
+    CComPtr<ID3DXEffect> effect;
 
-        CComPtr<ID3DXEffect> effect;
+    CComPtr<IDirect3DTexture9> edgeTex;
+    CComPtr<IDirect3DSurface9> edgeSurface;
+    bool releaseEdgeResources;
 
-        CComPtr<IDirect3DTexture9> edgeTex;
-        CComPtr<IDirect3DSurface9> edgeSurface;
-        bool releaseEdgeResources;
+    CComPtr<IDirect3DTexture9> blendTex;
+    CComPtr<IDirect3DSurface9> blendSurface;
+    bool releaseBlendResources;
 
-        CComPtr<IDirect3DTexture9> blendTex;
-        CComPtr<IDirect3DSurface9> blendSurface;
-        bool releaseBlendResources;
+    CComPtr<IDirect3DTexture9> areaTex;
+    CComPtr<IDirect3DTexture9> searchTex;
 
-        CComPtr<IDirect3DTexture9> areaTex;
-        CComPtr<IDirect3DTexture9> searchTex;
+    D3DXHANDLE thresholdHandle, maxSearchStepsHandle;
+    D3DXHANDLE areaTexHandle, searchTexHandle;
+    D3DXHANDLE colorTexHandle, depthTexHandle;
+    D3DXHANDLE edgesTexHandle, blendTexHandle;
+    D3DXHANDLE lumaEdgeDetectionHandle, colorEdgeDetectionHandle, depthEdgeDetectionHandle,
+        blendWeightCalculationHandle, neighborhoodBlendingHandle;
 
-        D3DXHANDLE thresholdHandle, maxSearchStepsHandle;
-        D3DXHANDLE areaTexHandle, searchTexHandle;
-        D3DXHANDLE colorTexHandle, depthTexHandle;
-        D3DXHANDLE edgesTexHandle, blendTexHandle;
-        D3DXHANDLE lumaEdgeDetectionHandle, colorEdgeDetectionHandle, depthEdgeDetectionHandle,
-                   blendWeightCalculationHandle, neighborhoodBlendingHandle;
-        
-        int maxSearchSteps;
-        float threshold;
-        int width, height;
+    int maxSearchSteps;
+    float threshold;
+    int width, height;
 };
 
 #endif

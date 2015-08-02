@@ -9,27 +9,27 @@
 
 class SSAO : public Effect {
 public:
-	enum Type { VSSAO, HBAO, SCAO, VSSAO2 };
+    enum Type { VSSAO, HBAO, SCAO, VSSAO2 };
 
     SSAO(IDirect3DDevice9 *device, int width, int height, unsigned strength, Type type);
     virtual ~SSAO(){};
 
-	void go(IDirect3DTexture9 *frame, IDirect3DTexture9 *depth, IDirect3DSurface9 *dst);
+    void go(IDirect3DTexture9 *frame, IDirect3DTexture9 *depth, IDirect3DSurface9 *dst);
 
 private:
-	int width, height;
+    int width, height;
 
     CComPtr<ID3DXEffect> effect;
-	
+
     CComPtr<IDirect3DTexture9> buffer1Tex;
     CComPtr<IDirect3DSurface9> buffer1Surf;
     CComPtr<IDirect3DTexture9> buffer2Tex;
     CComPtr<IDirect3DSurface9> buffer2Surf;
 
-	D3DXHANDLE depthTexHandle, frameTexHandle, prevPassTexHandle;
-	
-	void mainSsaoPass(IDirect3DTexture9 *depth, IDirect3DSurface9 *dst);
-	void vBlurPass(IDirect3DTexture9 *depth, IDirect3DTexture9* src, IDirect3DSurface9* dst);
-	void hBlurPass(IDirect3DTexture9 *depth, IDirect3DTexture9* src, IDirect3DSurface9* dst);
-	void combinePass(IDirect3DTexture9* frame, IDirect3DTexture9* ao, IDirect3DSurface9* dst);
+    D3DXHANDLE depthTexHandle, frameTexHandle, prevPassTexHandle;
+
+    void mainSsaoPass(IDirect3DTexture9 *depth, IDirect3DSurface9 *dst);
+    void vBlurPass(IDirect3DTexture9 *depth, IDirect3DTexture9* src, IDirect3DSurface9* dst);
+    void hBlurPass(IDirect3DTexture9 *depth, IDirect3DTexture9* src, IDirect3DSurface9* dst);
+    void combinePass(IDirect3DTexture9* frame, IDirect3DTexture9* ao, IDirect3DSurface9* dst);
 };

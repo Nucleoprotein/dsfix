@@ -5,9 +5,8 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <memory>
 #include <fstream>
-#include <locale>
-#include <codecvt>
 
 #define WIN32_LEAN_AND_MEAN
 #define STRICT

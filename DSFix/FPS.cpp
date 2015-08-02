@@ -12,10 +12,6 @@
 #include "RenderstateManager.h"
 #include "memory.h"
 
-#ifndef WITHOUT_GFWL_LIB
-void enableGFWLCompatibility(void);
-#endif
-
 // Globals
 static DWORD OriginalBase = 0x0400000;
 static DWORD ImageBase = NULL;
@@ -51,27 +47,30 @@ DWORD GETCMD_OFFSET = 0x0000000D;
 
 // Misc
 //------------------------------------
-DWORD getAbsoluteAddress(DWORD offset) {
+DWORD getAbsoluteAddress(DWORD offset)
+{
 	if (ImageBase)
 		return ImageBase + offset;
 	else
 		return NULL;
 }
 
-DWORD convertAddress(DWORD Address) {
+DWORD convertAddress(DWORD Address)
+{
 	return getAbsoluteAddress(Address - OriginalBase);
 }
 
 // Memory
 //------------------------------------
-void updateAnimationStepTime(float stepTime, float minFPS, float maxFPS) {
+void updateAnimationStepTime(float stepTime, float minFPS, float maxFPS)
+{
 	float FPS = 1.0f/(stepTime/1000);
 
 	if (FPS < minFPS)
 		FPS = minFPS;
 	else if (FPS > maxFPS)
 		FPS = maxFPS;
-	
+
 	float cappedStep = 1/(float)FPS;
 	if(RSManager::get().isPaused()) cappedStep = 0.000000000000000001f;
 	DWORD data = *(DWORD*)&cappedStep;
@@ -80,7 +79,8 @@ void updateAnimationStepTime(float stepTime, float minFPS, float maxFPS) {
 }
 
 // Timer
-double getElapsedTime(void) {
+double getElapsedTime(void)
+{
 	LARGE_INTEGER c;
 	QueryPerformanceCounter(&c);
 	return (double)( (c.QuadPart - counterAtStart.QuadPart) * 1000.0 / (double)timerFreq.QuadPart );
@@ -90,7 +90,8 @@ double getElapsedTime(void) {
 // Hook functions
 //----------------------------------------------------------------------------------------
 
-void _stdcall updateFramerate(unsigned int cmd) {	
+void _stdcall updateFramerate(unsigned int cmd)
+{
 	// If rendering was performed, update animation step-time
 	if((cmd == 2) || (cmd == 5)) {
 		// FPS regulation based on previous render
@@ -106,7 +107,8 @@ void _stdcall updateFramerate(unsigned int cmd) {
 }
 
 // Hook
-__declspec(naked) void getDrawThreadMsgCommand(void) {
+__declspec(naked) void getDrawThreadMsgCommand(void)
+{
 	__asm {
 		MOV EAX, [ECX+0Ch] // Put msgCmd in EAX (Return value)
 		PUSHAD
@@ -120,71 +122,61 @@ __declspec(naked) void getDrawThreadMsgCommand(void) {
 //----------------------------------------------------------------------------------------
 // Game Patches
 //----------------------------------------------------------------------------------------
-void applyFPSPatch() {
+void applyFPSPatch()
+{
 
-	SDLOG(0, "Starting FPS unlock...\n");
-#ifndef WITHOUT_GFWL_LIB
-	SDLOG(0, "Applying GFWL compatibility\n");
-	enableGFWLCompatibility();
-#endif
+	SDLOG(0, "Starting FPS unlock...");
 
 	// Get image info
 	MODULEINFO moduleInfo;
 	PIMAGE_DOS_HEADER dosHeader;
 	PIMAGE_NT_HEADERS ntHeader;
-    IMAGE_FILE_HEADER header;
+	IMAGE_FILE_HEADER header;
 
-	if(GetModuleInformation(GetCurrentProcess(), GetModuleHandle(NULL), &moduleInfo, sizeof(moduleInfo)))
-	{
+	if(GetModuleInformation(GetCurrentProcess(), GetModuleHandle(NULL), &moduleInfo, sizeof(moduleInfo))) {
 		ImageBase = (DWORD)moduleInfo.lpBaseOfDll;
-		SDLOG(0, "ImageBase at 0x%08X\n", ImageBase);
+		SDLOG(0, "ImageBase at 0x%08X", ImageBase);
 
 		dosHeader = (PIMAGE_DOS_HEADER)ImageBase;
 		ntHeader = (PIMAGE_NT_HEADERS)((DWORD)(dosHeader) + (dosHeader->e_lfanew));
 		header = ntHeader->FileHeader;
 		DWORD TimeStamp = header.TimeDateStamp;
-				SDLOG(0, "Executable timestamp: 0x%08X, config: 0x%08X\n", TimeStamp, EXE_TIMESTAMP);
+		SDLOG(0, "Executable timestamp: 0x%08X, config: 0x%08X", TimeStamp, EXE_TIMESTAMP);
 
 		// Perform pattern matching if timestamp differs
 		if (TimeStamp != EXE_TIMESTAMP) {
-			SDLOG(0, "Trying pattern matching...\n");
+			SDLOG(0, "Trying pattern matching...");
 
 			DWORD address;
 			address = GetMemoryAddressFromPattern(NULL, TS_PATTERN, TS_OFFSET);
 			if(address != NULL) {
-				SDLOG(0, "ADDR_TS found at 0x%08X\n", address);
+				SDLOG(0, "ADDR_TS found at 0x%08X", address);
 				ADDR_TS = address;
-			}
-			else {
-				SDLOG(0, "Could not match ADDR_TS pattern, FPS not unlocked\n");
+			} else {
+				SDLOG(0, "Could not match ADDR_TS pattern, FPS not unlocked");
 				return;
 			}
 			address = GetMemoryAddressFromPattern(NULL, PRESINT_PATTERN, PRESINT_OFFSET);
 			if(address != NULL) {
-				SDLOG(0, "ADDR_PRESINT found at 0x%08X\n", address);
+				SDLOG(0, "ADDR_PRESINT found at 0x%08X", address);
 				ADDR_PRESINT = address;
-			}
-			else {
-				SDLOG(0, "Could not match ADDR_PRESINT pattern, FPS not unlocked\n");
+			} else {
+				SDLOG(0, "Could not match ADDR_PRESINT pattern, FPS not unlocked");
 				return;
 			}
 			address = GetMemoryAddressFromPattern(NULL, GETCMD_PATTERN, GETCMD_OFFSET);
 			if(address != NULL) {
-				SDLOG(0, "ADDR_GETCMD found at 0x%08X\n", address);
+				SDLOG(0, "ADDR_GETCMD found at 0x%08X", address);
 				ADDR_GETCMD = address;
-			}
-			else {
-				SDLOG(0, "Could not match ADDR_GETCMD pattern, FPS not unlocked\n");
+			} else {
+				SDLOG(0, "Could not match ADDR_GETCMD pattern, FPS not unlocked");
 				return;
 			}
-			SDLOG(0, "Pattern matching successful\n");
-		}
-		else
-			SDLOG(0, "Using configured addresses\n");
-	}
-	else
-	{
-		SDLOG(0, "GetModuleInformation failed, FPS not unlocked\n");
+			SDLOG(0, "Pattern matching successful");
+		} else
+			SDLOG(0, "Using configured addresses");
+	} else {
+		SDLOG(0, "GetModuleInformation failed, FPS not unlocked");
 		return;
 	}
 
@@ -206,6 +198,6 @@ void applyFPSPatch() {
 	// Detour call to getDrawThreadMsgCommand
 	address = convertAddress(ADDR_GETCMD);
 	DetourApply((BYTE*)address, (BYTE*)getDrawThreadMsgCommand, 5, CALLOP);
-		
-	SDLOG(0, "FPS unlocked\n");
+
+	SDLOG(0, "FPS unlocked");
 }
