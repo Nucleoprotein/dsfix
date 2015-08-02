@@ -99,6 +99,8 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <SDLCheck>true</SDLCheck>
       <OmitFramePointers>true</OmitFramePointers>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
     </ClCompile>
     <Link>
       <SuppressStartupBanner>true</SuppressStartupBanner>

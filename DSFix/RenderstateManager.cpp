@@ -224,16 +224,17 @@ HRESULT RSManager::redirectSetRenderTarget(DWORD RenderTargetIndex, IDirect3DSur
 
 	// we are switching away from the initial 3D-rendered image, do AA and SSAO
 	if(mainRTuses == 2 && mainRT && zSurf && ((ssao && doSsao) || (doAA && (smaa || fxaa)))) { 
-		IDirect3DSurface9 *oldRenderTarget;
+		CComPtr<IDirect3DSurface9> oldRenderTarget;
 		d3ddev->GetRenderTarget(0, &oldRenderTarget);
 		if(oldRenderTarget == mainRT) {
 			// final renderbuffer has to be from texture, just making sure here
-			if(IDirect3DTexture9* tex = getSurfTexture(oldRenderTarget)) {
+            CComPtr<IDirect3DTexture9> tex = getSurfTexture(oldRenderTarget);
+                if (tex) {
 				// check size just to make even more sure
 				D3DSURFACE_DESC desc;
 				oldRenderTarget->GetDesc(&desc);
 				if(desc.Width == Settings::get().getRenderWidth() && desc.Height == Settings::get().getRenderHeight()) {
-					IDirect3DTexture9 *zTex = getSurfTexture(zSurf);
+                    CComPtr<IDirect3DTexture9> zTex = getSurfTexture(zSurf);
 					//if(takeScreenshot) D3DXSaveTextureToFile("0effect_pre.bmp", D3DXIFF_BMP, tex, NULL);
 					//if(takeScreenshot) D3DXSaveTextureToFile("0effect_z.bmp", D3DXIFF_BMP, zTex, NULL);
 					storeRenderState();
@@ -252,19 +253,16 @@ HRESULT RSManager::redirectSetRenderTarget(DWORD RenderTargetIndex, IDirect3DSur
 						d3ddev->StretchRect(rgbaBuffer1Surf, NULL, oldRenderTarget, NULL, D3DTEXF_NONE);
 					}
 					restoreRenderState();
-					zTex->Release();
 					//if(takeScreenshot) D3DXSaveSurfaceToFile("1effect_buff.bmp", D3DXIFF_BMP, rgbaBuffer1Surf, NULL, NULL);
 					//if(takeScreenshot) D3DXSaveSurfaceToFile("1effect_post.bmp", D3DXIFF_BMP, oldRenderTarget, NULL, NULL);
-				}
-				tex->Release();				
+				}		
 			}
 		}
-		oldRenderTarget->Release();
 	}
 
 	// DoF blur stuff
 	if(gauss && doDofGauss) {
-		IDirect3DSurface9 *oldRenderTarget;
+		CComPtr<IDirect3DSurface9> oldRenderTarget;
 		d3ddev->GetRenderTarget(0, &oldRenderTarget);
 		D3DSURFACE_DESC desc;
 		oldRenderTarget->GetDesc(&desc);
@@ -278,21 +276,19 @@ HRESULT RSManager::redirectSetRenderTarget(DWORD RenderTargetIndex, IDirect3DSur
 			//	D3DXSaveSurfaceToFile(buffer, D3DXIFF_BMP, oldRenderTarget, NULL, NULL);
 			//}
 			if(dofIndex == 1 && doft[1] == 4) {
-				IDirect3DTexture9 *oldRTtex = getSurfTexture(oldRenderTarget);
+                CComPtr<IDirect3DTexture9> oldRTtex = getSurfTexture(oldRenderTarget);
 				if(oldRTtex) {
 					storeRenderState();
 					for(size_t i=0; i<Settings::get().getDOFBlurAmount(); ++i) gauss->go(oldRTtex, oldRenderTarget);
 					restoreRenderState();
-					oldRTtex->Release();
 				}
 			} 
 		}
-		oldRenderTarget->Release();
 	}
 
 	// Timing for hudless screenshots
 	if(mainRTuses == 11 && takeScreenshot) {
-		IDirect3DSurface9 *oldRenderTarget;
+        CComPtr<IDirect3DSurface9> oldRenderTarget;
 		d3ddev->GetRenderTarget(0, &oldRenderTarget);
 		if(oldRenderTarget != mainRT) {
 			static int toggleSS = 0;
@@ -312,21 +308,20 @@ HRESULT RSManager::redirectSetRenderTarget(DWORD RenderTargetIndex, IDirect3DSur
 				
 				D3DSURFACE_DESC desc;
 				oldRenderTarget->GetDesc(&desc);
-				IDirect3DSurface9 *convertedSurface;
+                CComPtr<IDirect3DSurface9> convertedSurface;
 				d3ddev->CreateRenderTarget(desc.Width, desc.Height, D3DFMT_X8R8G8B8, D3DMULTISAMPLE_NONE, 0, true, &convertedSurface, NULL);
 				D3DXLoadSurfaceFromSurface(convertedSurface, NULL, NULL, oldRenderTarget, NULL, NULL, D3DX_FILTER_POINT, 0);
 				D3DXSaveSurfaceToFile(buffer, D3DXIFF_PNG, convertedSurface, NULL, NULL);
-				convertedSurface->Release();
 			}
 		}
-		oldRenderTarget->Release();
 	}
 
 	if(rddp >= 4) { // we just finished rendering the frame (pre-HUD)
-		IDirect3DSurface9 *oldRenderTarget;
+        CComPtr<IDirect3DSurface9>oldRenderTarget;
 		d3ddev->GetRenderTarget(0, &oldRenderTarget);
 		// final renderbuffer has to be from texture, just making sure here
-		if(IDirect3DTexture9* tex = getSurfTexture(oldRenderTarget)) {
+        CComPtr <IDirect3DTexture9> tex = getSurfTexture(oldRenderTarget);
+        if (tex) {
 			// check size just to make even more sure
 			D3DSURFACE_DESC desc;
 			oldRenderTarget->GetDesc(&desc);
@@ -340,8 +335,6 @@ HRESULT RSManager::redirectSetRenderTarget(DWORD RenderTargetIndex, IDirect3DSur
 					d3ddev->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_RGBA(0,0,0,0), 0.0f, 0);
 					prevRenderTex = tex;
 					prevRenderTarget = pRenderTarget;
-					tex->Release();
-					oldRenderTarget->Release();
 					
 					d3ddev->SetRenderState(D3DRS_COLORWRITEENABLE, D3DCOLORWRITEENABLE_RED | D3DCOLORWRITEENABLE_GREEN | D3DCOLORWRITEENABLE_BLUE | D3DCOLORWRITEENABLE_ALPHA);
 					d3ddev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_ADD);
@@ -350,9 +343,7 @@ HRESULT RSManager::redirectSetRenderTarget(DWORD RenderTargetIndex, IDirect3DSur
 					return S_OK;
 				}
 			}
-			tex->Release();
 		}
-		oldRenderTarget->Release();
 	}
 	if(onHudRT) {
 		finishHudRendering();
@@ -403,20 +394,7 @@ HRESULT RSManager::redirectSetTexture(DWORD Stage, IDirect3DBaseTexture9 * pText
 		SDLOG(1, "HUD started!\n");
 		hudStarted = true;
 	}
-	//if(mainRT && mainRTuses > 3) {
-	//	IDirect3DTexture9* tex;
-	//	pTexture->QueryInterface(IID_IDirect3DTexture9, (void**)&tex);
-	//	if(tex) {
-	//		IDirect3DSurface9* surf;
-	//		if(tex->GetSurfaceLevel(0, &surf) == D3D_OK) {
-	//			bool main = surf == mainRT;
-	//			surf->Release();
-	//			if(main) {
-	//				d3ddev->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
-	//			}
-	//		}
-	//	}
-	//}
+
 	if(pTexture && rddp == 0 && Stage == 0) { ++rddp; }
 	else if(pTexture && rddp == 1 && Stage == 1) { ++rddp; }
 	else if(pTexture && rddp == 2 && Stage == 2) { ++rddp; }
@@ -446,12 +424,11 @@ void RSManager::registerD3DXCreateTextureFromFileInMemory(LPCVOID pSrcData, UINT
 		UINT32 hash = SuperFastHash((char*)const_cast<void*>(pSrcData), SrcDataSize);
 		SDLOG(1, " - size: %8u, hash: %8x\n", SrcDataSize, hash);
 
-		IDirect3DSurface9* surf;
-		((IDirect3DTexture9*)pTexture)->GetSurfaceLevel(0, &surf);
+        CComPtr<IDirect3DSurface9> surf;
+		pTexture->GetSurfaceLevel(0, &surf);
 		char buffer[128];
 		sprintf_s(buffer, "dsfix/tex_dump/%08x.tga", hash);
 		D3DXSaveSurfaceToFile(GetDirectoryFile(buffer), D3DXIFF_TGA, surf, NULL, NULL);
-		surf->Release();
 	}
 	registerKnowTexture(pSrcData, SrcDataSize, pTexture);
 }
@@ -535,7 +512,7 @@ HRESULT RSManager::redirectDrawIndexedPrimitiveUP(D3DPRIMITIVETYPE PrimitiveType
 	}
 	bool isTargetIndicator = false;
 	if(pausedHudRT) {
-		IDirect3DBaseTexture9 *t;
+        CComPtr<IDirect3DBaseTexture9> t;
 		d3ddev->GetTexture(0, &t);
 		// check for target indicator
 		if(isTextureHudHealthbar(t)) {
@@ -546,10 +523,9 @@ HRESULT RSManager::redirectDrawIndexedPrimitiveUP(D3DPRIMITIVETYPE PrimitiveType
 		} else {
 			resumeHudRendering();
 		}
-		t->Release();
 	}
 	if(onHudRT) {
-		IDirect3DBaseTexture9 *t;
+        CComPtr<IDirect3DBaseTexture9> t;
 		d3ddev->GetTexture(0, &t);
 		SDLOG(4, "On HUD, redirectDrawIndexedPrimitiveUP texture: %s\n", getTextureName(t));
 		if((hddp < 5 && isTextureHudHealthbar(t)) || (hddp >= 5 && hddp < 7 && isTextureCategoryIconsHumanityCount(t)) || (hddp>=7 && !isTextureCategoryIconsHumanityCount(t))) hddp++;
@@ -561,7 +537,6 @@ HRESULT RSManager::redirectDrawIndexedPrimitiveUP(D3DPRIMITIVETYPE PrimitiveType
 				pauseHudRendering();
 			}
 		}
-		t->Release();
 		if(hddp == 8) {
 			finishHudRendering();
 		} else if(!isTargetIndicator) {
@@ -580,20 +555,18 @@ HRESULT RSManager::redirectDrawIndexedPrimitiveUP(D3DPRIMITIVETYPE PrimitiveType
 
 HRESULT RSManager::redirectDrawPrimitiveUP(D3DPRIMITIVETYPE PrimitiveType, UINT PrimitiveCount, CONST void* pVertexStreamZeroData, UINT VertexStreamZeroStride) {
 	if(hudStarted && hideHud) {
-		IDirect3DBaseTexture9 *t;
+        CComPtr<IDirect3DBaseTexture9> t;
 		d3ddev->GetTexture(0, &t);
 		bool hide = isTextureText(t);
 		hide = hide || isTextureButtonsEffects(t);
 		hide = hide || isTextureHudEffectIcons(t);
-		t->Release();
 		if(hide) return D3D_OK;
 	}
 	if(pausedHudRT) {
-		IDirect3DBaseTexture9 *t;
+        CComPtr<IDirect3DBaseTexture9> t;
 		d3ddev->GetTexture(0, &t);
 		bool isText = isTextureText(t);
 		SDLOG(4, "On HUD, PAUSED, redirectDrawPrimitiveUP texture: %s\n", getTextureName(t));
-		t->Release();
 		//// Print vertices
 		//SDLOG(0, "Vertices: \n");
 		//INT16 *values = (INT16*)pVertexStreamZeroData;
@@ -606,12 +579,11 @@ HRESULT RSManager::redirectDrawPrimitiveUP(D3DPRIMITIVETYPE PrimitiveType, UINT 
 	}
 	bool subbed = false;
 	if(onHudRT) {
-		IDirect3DBaseTexture9 *t;
+        CComPtr<IDirect3DBaseTexture9> t;
 		d3ddev->GetTexture(0, &t);
 		bool isText = isTextureText(t);
 		bool isSub = isTextureText00(t);
 		SDLOG(4, "On HUD, redirectDrawPrimitiveUP texture: %s\n", getTextureName(t));
-		t->Release();
 		//if(isText && PrimitiveCount <= 10) pauseHudRendering();
 		if(isSub) {
 			pauseHudRendering();
@@ -695,10 +667,12 @@ void RSManager::restoreRenderState() {
 	if(prevVDecl) {
 		d3ddev->SetVertexDeclaration(prevVDecl);
 		prevVDecl.Release();
+        prevVDecl = nullptr;
 	}
 	d3ddev->SetDepthStencilSurface(prevDepthStencilSurf); // also restore NULL!
 	if(prevDepthStencilSurf) {
 		prevDepthStencilSurf.Release();
+        prevDepthStencilSurf = nullptr;
 	}
 	prevStateBlock->Apply();
 }
