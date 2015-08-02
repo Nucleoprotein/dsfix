@@ -12,17 +12,17 @@ public:
 	enum Quality { QualityLow, QualityMedium, QualityHigh, QualityUltra };
 
     FXAA(IDirect3DDevice9 *device, int width, int height, Quality quality);
-    virtual ~FXAA();
+    virtual ~FXAA(){};
 
 	void go(IDirect3DTexture9 *frame, IDirect3DSurface9 *dst);
 
 private:
 	int width, height;
 
-	ID3DXEffect *effect;
+    CComPtr<ID3DXEffect> effect;
 	
-	IDirect3DTexture9* buffer1Tex;
-	IDirect3DSurface9* buffer1Surf;
+    CComPtr<IDirect3DTexture9> buffer1Tex;
+    CComPtr<IDirect3DSurface9> buffer1Surf;
 
 	D3DXHANDLE frameTexHandle;
 	

@@ -40,12 +40,6 @@ GAUSS::GAUSS(IDirect3DDevice9 *device, int width, int height)
 	frameTexHandle = effect->GetParameterByName(NULL, "frameTex2D");
 }
 
-GAUSS::~GAUSS() {
-	SAFERELEASE(effect);
-	SAFERELEASE(buffer1Surf);
-	SAFERELEASE(buffer1Tex);
-}
-
 void GAUSS::go(IDirect3DTexture9 *input, IDirect3DSurface9 *dst) {
 	device->SetVertexDeclaration(vertexDeclaration);
 	

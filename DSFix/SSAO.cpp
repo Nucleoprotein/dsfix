@@ -67,14 +67,6 @@ SSAO::SSAO(IDirect3DDevice9 *device, int width, int height, unsigned strength, T
     prevPassTexHandle = effect->GetParameterByName(NULL, "prevPassTex2D");
 }
 
-SSAO::~SSAO() {
-	SAFERELEASE(effect);
-	SAFERELEASE(buffer1Surf);
-	SAFERELEASE(buffer1Tex);
-	SAFERELEASE(buffer2Surf);
-	SAFERELEASE(buffer2Tex);
-}
-
 void SSAO::go(IDirect3DTexture9 *frame, IDirect3DTexture9 *depth, IDirect3DSurface9 *dst) {
 	device->SetVertexDeclaration(vertexDeclaration);
 	

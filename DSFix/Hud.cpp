@@ -24,10 +24,6 @@ HUD::HUD(IDirect3DDevice9 *device, int width, int height)
 	opacityHandle = effect->GetParameterByName(NULL, "opacity");
 }
 
-HUD::~HUD() {
-	SAFERELEASE(effect);
-}
-
 void HUD::go(IDirect3DTexture9 *input, IDirect3DSurface9 *dst) {
 	device->SetVertexDeclaration(vertexDeclaration);
 	device->SetRenderTarget(0, dst);

@@ -29,8 +29,6 @@
 #else
 #define SDLOG(_level, _str, ...) _level
 #endif
-#define SAFERELEASE(_p) { if(_p) { (_p)->Release(); (_p) = NULL; } }
-#define SAFEDELETE(_p) { if(_p) { delete (_p); (_p) = NULL; } }
 
 #include "d3d9.h"
 #include "dinput.h"

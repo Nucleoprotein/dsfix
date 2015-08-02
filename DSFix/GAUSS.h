@@ -10,17 +10,17 @@
 class GAUSS : public Effect {
 public:
     GAUSS(IDirect3DDevice9 *device, int width, int height);
-    virtual ~GAUSS();
+    virtual ~GAUSS(){};
 
 	void go(IDirect3DTexture9 *input, IDirect3DSurface9 *dst);
 
 private:
 	int width, height;
 
-	ID3DXEffect *effect;
+	CComPtr<ID3DXEffect> effect;
 	
-	IDirect3DTexture9* buffer1Tex;
-	IDirect3DSurface9* buffer1Surf;
+    CComPtr<IDirect3DTexture9> buffer1Tex;
+    CComPtr<IDirect3DSurface9> buffer1Surf;
 
 	D3DXHANDLE frameTexHandle;
 };

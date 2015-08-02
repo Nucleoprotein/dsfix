@@ -12,5 +12,6 @@
 
 #include <windows.h>
 #include <dinput.h>
+#include <atlbase.h>
 
 #include "Logger.h"

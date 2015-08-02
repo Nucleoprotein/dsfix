@@ -34,11 +34,11 @@ class RSManager {
 	bool doHud;
 	HUD* hud;
 
-	IDirect3DTexture9* rgbaBuffer1Tex;
-	IDirect3DSurface9* rgbaBuffer1Surf;
-	IDirect3DSurface9* depthStencilSurf;
+	CComPtr<IDirect3DTexture9> rgbaBuffer1Tex;
+    CComPtr<IDirect3DSurface9> rgbaBuffer1Surf;
+    CComPtr<IDirect3DSurface9> depthStencilSurf;
 	
-	IDirect3DSurface9* zSurf;
+    CComPtr<IDirect3DSurface9> zSurf;
 
 	bool hideHud;
 	bool onHudRT, pausedHudRT;
@@ -99,11 +99,11 @@ class RSManager {
 	// Render state store/restore
 	void storeRenderState();
 	void restoreRenderState();
-	IDirect3DVertexDeclaration9* prevVDecl;
-	IDirect3DSurface9* prevDepthStencilSurf;
-	IDirect3DSurface9* prevRenderTarget;
-	IDirect3DTexture9* prevRenderTex;
-	IDirect3DStateBlock9* prevStateBlock;
+    CComPtr<IDirect3DVertexDeclaration9> prevVDecl;
+    CComPtr<IDirect3DSurface9> prevDepthStencilSurf;
+    CComPtr<IDirect3DSurface9> prevRenderTarget;
+    CComPtr<IDirect3DTexture9> prevRenderTex;
+    CComPtr<IDirect3DStateBlock9> prevStateBlock;
 
 public:
 	static RSManager& get() {

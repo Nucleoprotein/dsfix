@@ -8,18 +8,14 @@
 // Base class for effects
 class Effect {
 protected:
-	IDirect3DDevice9* device;
-    IDirect3DVertexDeclaration9 *vertexDeclaration;
+    CComPtr<IDirect3DDevice9> device;
+    CComPtr<IDirect3DVertexDeclaration9> vertexDeclaration;
 
     static const D3DVERTEXELEMENT9 vertexElements[3];
 
 public:
 	Effect(IDirect3DDevice9* device) : device(device) {
 		device->CreateVertexDeclaration(vertexElements , &vertexDeclaration);
-	}
-
-	virtual ~Effect() {
-		SAFERELEASE(vertexDeclaration);
 	}
 
 	void quad(int width, int height) {

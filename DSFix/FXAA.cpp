@@ -51,12 +51,6 @@ FXAA::FXAA(IDirect3DDevice9 *device, int width, int height, Quality quality)
 	frameTexHandle = effect->GetParameterByName(NULL, "frameTex2D");
 }
 
-FXAA::~FXAA() {
-	SAFERELEASE(effect);
-	SAFERELEASE(buffer1Surf);
-	SAFERELEASE(buffer1Tex);
-}
-
 void FXAA::go(IDirect3DTexture9 *frame, IDirect3DSurface9 *dst) {
 	device->SetVertexDeclaration(vertexDeclaration);
 	

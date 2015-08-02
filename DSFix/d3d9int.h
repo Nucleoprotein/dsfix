@@ -1,11 +1,12 @@
 #pragma once
 
+#include "main.h"
 #include "d3d9.h"
 
 interface hkIDirect3D9 : public IDirect3D9 {
 public:
 	hkIDirect3D9(IDirect3D9 **ppIDirect3D9) {
-        PrintLog("hkDirect3D9\n");
+        SDLOG(0, "hkDirect3D9\n");
 		m_pD3Dint = *ppIDirect3D9;
 		*ppIDirect3D9 = this;
 	}

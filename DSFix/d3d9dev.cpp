@@ -20,7 +20,7 @@ hkIDirect3DDevice9::hkIDirect3DDevice9(IDirect3DDevice9 **ppReturnedDeviceInterf
     SDLOG(0, "hkIDirect3DDevice9\n");
     m_pD3Ddev = *ppReturnedDeviceInterface;
     m_pD3Dint = pIDirect3D9;
-    RSManager::get().setD3DDevice(*ppReturnedDeviceInterface);
+    RSManager::get().setD3DDevice(m_pD3Ddev);
     RSManager::get().initResources();
 
     *ppReturnedDeviceInterface = this;
@@ -418,16 +418,25 @@ HRESULT APIENTRY hkIDirect3DDevice9::GetStreamSourceFreq(UINT StreamNumber, UINT
     return m_pD3Ddev->GetStreamSourceFreq(StreamNumber, Divider);
 }
 
-// Dunno why, but when compiler generetes jmp to original GetSwapChain then DarkSouls will crash
-// by using volatile this function will call original GetSwapChain insted and will work fine
-// you cau also disable Global Optimisation using above below pragma
-//#pragma optimize( "g", off )
+// GameOverlay will hook this method. Method must be large enough to hold GameOverlay hook, direct jump will crash !
 HRESULT APIENTRY hkIDirect3DDevice9::GetSwapChain(UINT iSwapChain, IDirect3DSwapChain9** pSwapChain)
 {
-    volatile HRESULT result = m_pD3Ddev->GetSwapChain(iSwapChain, pSwapChain);
-    return result;
+    // Add some space, 16bytes should be enough
+    _asm
+    {
+        nop; nop;
+        nop; nop;
+        nop; nop;
+        nop; nop;
+        nop; nop;
+        nop; nop;
+        nop; nop;
+        nop; nop;
+    }
+
+    return m_pD3Ddev->GetSwapChain(iSwapChain, pSwapChain);
 }
-//#pragma optimize( "", on )
+
 HRESULT APIENTRY hkIDirect3DDevice9::GetTexture(DWORD Stage, IDirect3DBaseTexture9 **ppTexture)
 {
     return m_pD3Ddev->GetTexture(Stage, ppTexture);

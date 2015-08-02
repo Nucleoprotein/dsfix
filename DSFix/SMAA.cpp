@@ -150,25 +150,6 @@ SMAA::SMAA(IDirect3DDevice9 *device, int width, int height, Preset preset, const
     neighborhoodBlendingHandle = effect->GetTechniqueByName("NeighborhoodBlending");
 }
 
-
-SMAA::~SMAA() {
-    SAFERELEASE(effect);
-
-    if(releaseEdgeResources) { // We will be releasing these things *only* if we created them.
-        SAFERELEASE(edgeTex);
-        SAFERELEASE(edgeSurface);
-    }
-
-    if(releaseBlendResources) { // Same applies over here.
-        SAFERELEASE(blendTex);
-        SAFERELEASE(blendSurface);
-    }
-
-    SAFERELEASE(areaTex);
-    SAFERELEASE(searchTex);
-}
-
-
 void SMAA::go(IDirect3DTexture9 *edges,
               IDirect3DTexture9 *src, 
               IDirect3DSurface9 *dst,

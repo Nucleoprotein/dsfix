@@ -88,7 +88,7 @@ class SMAA : public Effect {
          */
         SMAA(IDirect3DDevice9 *device, int width, int height, Preset preset,
              const ExternalStorage &storage=ExternalStorage());
-        virtual ~SMAA();
+        virtual ~SMAA(){};
 
         /**
          * Processes input texture 'src', storing the antialiased image into
@@ -132,18 +132,18 @@ class SMAA : public Effect {
         void blendingWeightsCalculationPass();
         void neighborhoodBlendingPass(IDirect3DTexture9 *src, IDirect3DSurface9 *dst);
 
-        ID3DXEffect *effect;
+        CComPtr<ID3DXEffect> effect;
 
-        IDirect3DTexture9 *edgeTex;
-        IDirect3DSurface9 *edgeSurface;
+        CComPtr<IDirect3DTexture9> edgeTex;
+        CComPtr<IDirect3DSurface9> edgeSurface;
         bool releaseEdgeResources;
 
-        IDirect3DTexture9 *blendTex;
-        IDirect3DSurface9 *blendSurface;
+        CComPtr<IDirect3DTexture9> blendTex;
+        CComPtr<IDirect3DSurface9> blendSurface;
         bool releaseBlendResources;
 
-        IDirect3DTexture9 *areaTex;
-        IDirect3DTexture9 *searchTex;
+        CComPtr<IDirect3DTexture9> areaTex;
+        CComPtr<IDirect3DTexture9> searchTex;
 
         D3DXHANDLE thresholdHandle, maxSearchStepsHandle;
         D3DXHANDLE areaTexHandle, searchTexHandle;
