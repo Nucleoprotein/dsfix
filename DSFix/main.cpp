@@ -22,19 +22,21 @@
 
 // globals
 tDirectInput8Create oDirectInput8Create;
-char dlldir[320];
-TCHAR fileName[512];
+char dlldir[MAX_PATH];
+char fileName[MAX_PATH];
 
 BOOL WINAPI DllMain(HMODULE hDll, DWORD dwReason, PVOID pvReserved)
 {
     switch (dwReason)
     {
     case DLL_PROCESS_ATTACH:
-        GetModuleFileName(NULL, fileName, 512);
+        GetModuleFileName(NULL, fileName, MAX_PATH);
         DisableThreadLibraryCalls(hDll);
-        GetModuleFileName(hDll, dlldir, 512);
+        GetModuleFileName(hDll, dlldir, MAX_PATH);
         for (int i = strlen(dlldir); i > 0; i--) { if (dlldir[i] == '\\') { dlldir[i + 1] = 0; break; } }
+#ifndef RELEASE_VER
         LogFile(GetDirectoryFile("DSfix.log"));
+#endif
         SDLOG(0, "===== start DSfix %s = fn: %s\n", VERSION, fileName);
 
         // load settings
@@ -62,7 +64,7 @@ BOOL WINAPI DllMain(HMODULE hDll, DWORD dwReason, PVOID pvReserved)
 
 const char *GetDirectoryFile(char *filename)
 {
-	static char path[320];
+    static char path[MAX_PATH];
 	strcpy_s(path, dlldir);
 	strcat_s(path, filename);
 	return path;
