@@ -1,13 +1,6 @@
 #include "stdafx.h"
 
-#include <string>
-#include <locale>
-#include <codecvt>
-
 #include "Detouring.h"
-
-#include <Windows.h>
-
 #include "Settings.h"
 #include "RenderstateManager.h"
 

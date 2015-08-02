@@ -16,5 +16,8 @@
 #include <windows.h>
 #include <dinput.h>
 #include <atlbase.h>
+#include <d3d9.h>
+#include <d3dx9.h>
+#include <dinput.h>
 
 #include "Logger.h"

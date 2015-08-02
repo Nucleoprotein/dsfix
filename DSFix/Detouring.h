@@ -1,7 +1,6 @@
 #pragma once
 
 #include "main.h"
-
 #include "MinHook.h"
 
 static DWORD (WINAPI * TrueSleepEx)(DWORD dwMilliseconds, BOOL bAlertable) = SleepEx;

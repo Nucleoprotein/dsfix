@@ -646,7 +646,7 @@ HRESULT RSManager::redirectD3DXCreateTextureFromFileInMemoryEx(LPDIRECT3DDEVICE9
 
         if (FileExists(png) || FileExists(dds)) {
             const char* filename = FileExists(png) ? png.c_str() : dds.c_str();
-            SDLOG(3, "Texture override (%s)! hash: %8x\n", FileExist(png) ? "png" : "dds" , hash);
+            SDLOG(3, "Texture override (%s)! hash: %8x\n", FileExists(png) ? "png" : "dds", hash);
             return D3DXCreateTextureFromFileEx(pDevice, filename, D3DX_DEFAULT, D3DX_DEFAULT, MipLevels, Usage, Format, Pool, Filter, MipFilter, ColorKey, pSrcInfo, pPalette, ppTexture);
 		}
 	}
