@@ -15,6 +15,8 @@
 #include "WindowManager.h"
 #include "FPS.h"
 
+#include "WinUtil.h"
+
 RSManager RSManager::instance;
 
 void RSManager::initResources() {
@@ -637,18 +639,15 @@ unsigned RSManager::isDof(unsigned width, unsigned height) {
 HRESULT RSManager::redirectD3DXCreateTextureFromFileInMemoryEx(LPDIRECT3DDEVICE9 pDevice, LPCVOID pSrcData, UINT SrcDataSize, UINT Width, UINT Height, UINT MipLevels, DWORD Usage, D3DFORMAT Format, D3DPOOL Pool, DWORD Filter, DWORD MipFilter, D3DCOLOR ColorKey, D3DXIMAGE_INFO* pSrcInfo, PALETTEENTRY* pPalette, LPDIRECT3DTEXTURE9* ppTexture) {
 	if(Settings::get().getEnableTextureOverride()) {
 		UINT32 hash = SuperFastHash((char*)const_cast<void*>(pSrcData), SrcDataSize);
-		SDLOG(4, "Trying texture override size: %8u, hash: %8x\n", SrcDataSize, hash);
+		SDLOG(4, "Trying texture override size: %8u, hash: %8x\n", SrcDataSize, hash);		
 		
-		char buffer[128];
-		sprintf_s(buffer, "dsfix/tex_override/%08x.png", hash);
-		if(fileExists(buffer)) {
-			SDLOG(3, "Texture override (png)! hash: %8x\n", SrcDataSize, hash);
-			return D3DXCreateTextureFromFileEx(pDevice, buffer, D3DX_DEFAULT, D3DX_DEFAULT, MipLevels, Usage, Format, Pool, Filter, MipFilter, ColorKey, pSrcInfo, pPalette, ppTexture);
-		}
-		sprintf_s(buffer, "dsfix/tex_override/%08x.dds", hash);
-		if(fileExists(buffer)) {
-			SDLOG(3, "Texture override (dds)! hash: %8x\n", SrcDataSize, hash);
-			return D3DXCreateTextureFromFileEx(pDevice, buffer, D3DX_DEFAULT, D3DX_DEFAULT, MipLevels, Usage, Format, Pool, Filter, MipFilter, ColorKey, pSrcInfo, pPalette, ppTexture);
+		std::string png = StringFromFormat("dsfix/tex_override/%08x.png", hash);
+        std::string dds = StringFromFormat("dsfix/tex_override/%08x.dds", hash);
+
+        if (FileExists(png) || FileExists(dds)) {
+            const char* filename = FileExists(png) ? png.c_str() : dds.c_str();
+            SDLOG(3, "Texture override (%s)! hash: %8x\n", FileExist(png) ? "png" : "dds" , hash);
+            return D3DXCreateTextureFromFileEx(pDevice, filename, D3DX_DEFAULT, D3DX_DEFAULT, MipLevels, Usage, Format, Pool, Filter, MipFilter, ColorKey, pSrcInfo, pPalette, ppTexture);
 		}
 	}
 	return TrueD3DXCreateTextureFromFileInMemoryEx(pDevice, pSrcData, SrcDataSize, Width, Height, MipLevels, Usage, Format, Pool, Filter, MipFilter, ColorKey, pSrcInfo, pPalette, ppTexture);
@@ -656,8 +655,8 @@ HRESULT RSManager::redirectD3DXCreateTextureFromFileInMemoryEx(LPDIRECT3DDEVICE9
 
 void RSManager::storeRenderState() {
 	prevStateBlock->Capture();
-	prevVDecl = NULL;
-	prevDepthStencilSurf = NULL;
+	prevVDecl = nullptr;
+    prevDepthStencilSurf = nullptr;
 	d3ddev->GetVertexDeclaration(&prevVDecl);
 	d3ddev->GetDepthStencilSurface(&prevDepthStencilSurf);
 	d3ddev->SetDepthStencilSurface(depthStencilSurf);
@@ -666,12 +665,10 @@ void RSManager::storeRenderState() {
 void RSManager::restoreRenderState() {
 	if(prevVDecl) {
 		d3ddev->SetVertexDeclaration(prevVDecl);
-		prevVDecl.Release();
         prevVDecl = nullptr;
 	}
 	d3ddev->SetDepthStencilSurface(prevDepthStencilSurf); // also restore NULL!
 	if(prevDepthStencilSurf) {
-		prevDepthStencilSurf.Release();
         prevDepthStencilSurf = nullptr;
 	}
 	prevStateBlock->Apply();

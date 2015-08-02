@@ -78,73 +78,89 @@ inline void StringPathAppend(std::wstring* path, const std::wstring& more)
     path->append(more);
 }
 
-inline bool FileExist(const std::string& path)
+inline bool FileExists(const std::string& path)
 {
-	HANDLE hFile = CreateFileA(path.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile != INVALID_HANDLE_VALUE)
-	{
-		CloseHandle(hFile);
-		return true;
-	}
+    FILE* filep;
+    if (fopen_s(&filep, path.c_str(), "rb") == 0)
+    {
+        fclose(filep);
+        return true;
+    }
 	return false;
 }
 
 inline std::string ModulePathA(HMODULE hModule)
 {
 	std::unique_ptr<char[]> buffer(new char[MAX_PATH]);
-	GetModuleFileNameA(hModule, buffer.get(), MAX_PATH);
-
-    std::string res = buffer.get();
-	return std::move(res);
+    if (GetModuleFileNameA(hModule, buffer.get(), MAX_PATH))
+    {
+        std::string res = buffer.get();
+        return std::move(res);
+    }
+    return "";
 }
 
 inline std::wstring ModulePathW(HMODULE hModule)
 {
 	std::unique_ptr<wchar_t[]> buffer(new wchar_t[MAX_PATH]);
-	GetModuleFileNameW(hModule, buffer.get(), MAX_PATH);
-
-    std::wstring res = buffer.get();
-    return std::move(res);
+    if (GetModuleFileNameW(hModule, buffer.get(), MAX_PATH))
+    {
+        std::wstring res = buffer.get();
+        return std::move(res);
+    }
+    return L"";
 }
 
 inline std::string ModuleDirectoryA(HMODULE hModule)
 {
 	std::unique_ptr<char[]> buffer(new char[MAX_PATH]);
-	GetModuleFileNameA(hModule, buffer.get(), MAX_PATH);
-	RemoveFileSpec(buffer.get(), MAX_PATH);
+    if (GetModuleFileNameA(hModule, buffer.get(), MAX_PATH))
+    {
+        RemoveFileSpec(buffer.get(), MAX_PATH);
 
-    std::string res = buffer.get();
-    return std::move(res);
+        std::string res = buffer.get();
+        return std::move(res);
+    }
+    return "";
 }
 
 inline std::wstring ModuleDirectoryW(HMODULE hModule)
 {
 	std::unique_ptr<wchar_t[]> buffer(new wchar_t[MAX_PATH]);
-	GetModuleFileNameW(hModule, buffer.get(), MAX_PATH);
-	RemoveFileSpec(buffer.get(), MAX_PATH);
+    if (GetModuleFileNameW(hModule, buffer.get(), MAX_PATH))
+    {
+        RemoveFileSpec(buffer.get(), MAX_PATH);
 
-    std::wstring res = buffer.get();
-    return std::move(res);
+        std::wstring res = buffer.get();
+        return std::move(res);
+    }
+    return L"";
 }
 
 inline std::string ModuleNameA(HMODULE hModule)
 {
 	std::unique_ptr<char[]> buffer(new char[MAX_PATH]);
-	GetModuleFileNameA(hModule, buffer.get(), MAX_PATH);
-	RemovePath(buffer.get(), MAX_PATH);
+    if (GetModuleFileNameA(hModule, buffer.get(), MAX_PATH))
+    {
+        RemovePath(buffer.get(), MAX_PATH);
 
-    std::string res = buffer.get();
-    return std::move(res);
+        std::string res = buffer.get();
+        return std::move(res);
+    }
+    return "";
 }
 
 inline std::wstring ModuleNameW(HMODULE hModule)
 {
 	std::unique_ptr<wchar_t[]> buffer(new wchar_t[MAX_PATH]);
-	GetModuleFileNameW(hModule, buffer.get(), MAX_PATH);
-	RemovePath(buffer.get(), MAX_PATH);
+    if (GetModuleFileNameW(hModule, buffer.get(), MAX_PATH))
+    {
+        RemovePath(buffer.get(), MAX_PATH);
 
-    std::wstring res = buffer.get();
-    return std::move(res);
+        std::wstring res = buffer.get();
+        return std::move(res);
+    }
+    return L"";
 }
 
 inline HMODULE LoadLibraryFromDirectory(const char* dir, const char* module)

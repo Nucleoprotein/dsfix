@@ -6,7 +6,7 @@
 class Settings {
 	static Settings instance;
 	
-	bool inited, langOverridden;
+	bool inited;
 	unsigned curFPSlimit;
 
 	void read(char* source, bool& value);
@@ -34,15 +34,11 @@ public:
 	
 	void load();
 
-	void performLanguageOverride();
-
 	void report();
 	void init();
 	void shutdown();
 
-	void undoLanguageOverride();
-
-	Settings() : inited(false), langOverridden(false) {
+	Settings() : inited(false) {
 		#define SETTING(_type, _var, _inistring, _defaultval) \
 		_var = _defaultval;
 		#include "Settings.def"

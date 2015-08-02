@@ -27,47 +27,43 @@ TCHAR fileName[512];
 
 BOOL WINAPI DllMain(HMODULE hDll, DWORD dwReason, PVOID pvReserved)
 {
-
-	if(dwReason == DLL_PROCESS_ATTACH) {
+    switch (dwReason)
+    {
+    case DLL_PROCESS_ATTACH:
         GetModuleFileName(NULL, fileName, 512);
-		DisableThreadLibraryCalls(hDll);
-		GetModuleFileName(hDll, dlldir, 512);
-		for(int i = strlen(dlldir); i > 0; i--) { if(dlldir[i] == '\\') { dlldir[i+1] = 0; break; } }
+        DisableThreadLibraryCalls(hDll);
+        GetModuleFileName(hDll, dlldir, 512);
+        for (int i = strlen(dlldir); i > 0; i--) { if (dlldir[i] == '\\') { dlldir[i + 1] = 0; break; } }
         LogFile(GetDirectoryFile("DSfix.log"));
-		SDLOG(0, "===== start DSfix %s = fn: %s\n", VERSION, fileName);
-		
-		// load settings
-		Settings::get().load();
-		Settings::get().report();
-		
-		KeyActions::get().load();
-		KeyActions::get().report();
-		
-		SaveManager::get().init();
+        SDLOG(0, "===== start DSfix %s = fn: %s\n", VERSION, fileName);
 
-		earlyDetour();
+        // load settings
+        Settings::get().load();
+        Settings::get().report();
 
-		if(Settings::get().getUnlockFPS()) applyFPSPatch();
-	}
-    else if(dwReason == DLL_PROCESS_DETACH){
-		Settings::get().shutdown();
-		endDetour();
-		SDLOG(0, "===== end = fn: %s\n", fileName);
-	}
+        KeyActions::get().load();
+        KeyActions::get().report();
+
+        SaveManager::get().init();
+
+        earlyDetour();
+
+        if (Settings::get().getUnlockFPS()) applyFPSPatch();
+        break;
+    case DLL_PROCESS_DETACH:
+        Settings::get().shutdown();
+        endDetour();
+        SDLOG(0, "===== end = fn: %s\n", fileName);
+        break;
+    }
 
     return TRUE;
 }
 
-char *GetDirectoryFile(char *filename)
+const char *GetDirectoryFile(char *filename)
 {
 	static char path[320];
 	strcpy_s(path, dlldir);
 	strcat_s(path, filename);
 	return path;
-}
-
-bool fileExists(const char *filename)
-{
-  std::ifstream ifile(filename);
-  return ifile.is_open();
 }

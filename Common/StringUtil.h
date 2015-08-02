@@ -102,6 +102,51 @@ inline std::wstring StringFromFormat(const wchar_t* format, ...)
     return std::move(res);
 }
 
+inline std::string UTF16ToUTF8(const std::wstring& input)
+{
+    auto const size = WideCharToMultiByte(CP_UTF8, 0, input.data(), (int)input.size(), nullptr, 0, nullptr, nullptr);
+
+    std::string output;
+    output.resize(size);
+
+    if (size == 0 || size != WideCharToMultiByte(CP_UTF8, 0, input.data(), (int)input.size(), &output[0], (int)output.size(), nullptr, nullptr))
+    {
+        output.clear();
+    }
+
+    return output;
+}
+
+inline std::wstring CPToUTF16(DWORD code_page, const std::string& input)
+{
+    auto const size = MultiByteToWideChar(code_page, 0, input.data(), (int)input.size(), nullptr, 0);
+
+    std::wstring output;
+    output.resize(size);
+
+    if (size == 0 || size != MultiByteToWideChar(code_page, 0, input.data(), (int)input.size(), &output[0], (int)output.size()))
+    {
+        output.clear();
+    }
+
+    return output;
+}
+
+inline std::wstring UTF8ToUTF16(const std::string& input)
+{
+    return CPToUTF16(CP_UTF8, input);
+}
+
+inline std::string SHIFTJISToUTF8(const std::string& input)
+{
+    return UTF16ToUTF8(CPToUTF16(932, input));
+}
+
+inline std::string CP1252ToUTF8(const std::string& input)
+{
+    return UTF16ToUTF8(CPToUTF16(1252, input));
+}
+
 // trim from start
 static inline std::string &ltrim(std::string &s) {
 	s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));

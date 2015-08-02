@@ -33,8 +33,7 @@
 #include "d3d9.h"
 #include "dinput.h"
 
-char *GetDirectoryFile(char *filename);
-bool fileExists(const char *filename);
+const char* GetDirectoryFile(char *filename);
 
 extern bool timingIntroMode;
 

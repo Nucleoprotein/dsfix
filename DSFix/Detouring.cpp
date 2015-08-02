@@ -1,5 +1,9 @@
 #include "stdafx.h"
 
+#include <string>
+#include <locale>
+#include <codecvt>
+
 #include "Detouring.h"
 
 #include <Windows.h>
@@ -84,6 +88,17 @@ HRESULT WINAPI DetouredD3DXCompileShader(_In_ LPCSTR pSrcData, _In_ UINT srcData
     return res;
 }
 
+static LANGID s_langid;
+
+LANGID(WINAPI* TrueGetUserDefaultLangID)(void);
+LANGID WINAPI DetouredGetUserDefaultLangID(void)
+{
+    if (s_langid)
+        return s_langid;
+    else
+        return TrueGetUserDefaultLangID();
+}
+
 void earlyDetour()
 {
     QueryPerformanceFrequency(&countsPerSec);
@@ -98,9 +113,19 @@ void startDetour()
 {
     MH_Initialize();
 
-    if (Settings::get().getSkipIntro())
-    {
+    if (Settings::get().getSkipIntro()) {
         MH_CreateHook(QueryPerformanceCounter, DetouredQueryPerformanceCounter, reinterpret_cast<void**>(&TrueQueryPerformanceCounter));
+    }
+
+    if (Settings::get().getOverrideLanguage().length() >= 2 && Settings::get().getOverrideLanguage().find("none") != 0) {
+        std::wstring langName = UTF8ToUTF16(Settings::get().getOverrideLanguage());
+        LCID lcid = LocaleNameToLCID(langName.c_str(), 0); // Vista+ only, but I do not care about XP
+        if (lcid) {
+            s_langid = LANGIDFROMLCID(lcid);
+
+            MH_CreateHook(GetUserDefaultLangID, DetouredGetUserDefaultLangID, reinterpret_cast<void**>(&TrueGetUserDefaultLangID));
+            MH_EnableHook(GetUserDefaultLangID);
+        }
     }
 
     MH_CreateHook(D3DXCreateTextureFromFileInMemory, DetouredD3DXCreateTextureFromFileInMemory, reinterpret_cast<void**>(&TrueD3DXCreateTextureFromFileInMemory));
