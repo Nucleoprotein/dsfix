@@ -4,6 +4,7 @@
 #include "KeyActions.h"
 #include "SaveManager.h"
 
+WindowManager WindowManager::instance;
 HWND WindowManager::hWnd;
 WNDPROC WindowManager::oldWndProc;
 

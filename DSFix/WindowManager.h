@@ -4,6 +4,8 @@
 
 class WindowManager
 {
+	static WindowManager instance;
+
 	bool captureCursor, cursorVisible;
 
 	bool borderlessFullscreen;
@@ -19,7 +21,7 @@ class WindowManager
 public:
 	static WindowManager& get()
 	{
-		static WindowManager instance;
+
 		return instance;
 	}
 
