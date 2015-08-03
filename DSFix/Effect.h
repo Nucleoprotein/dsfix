@@ -6,22 +6,26 @@
 #include "main.h"
 
 // Base class for effects
-class Effect {
+class Effect
+{
 protected:
-    CComPtr<IDirect3DDevice9> device;
-    CComPtr<IDirect3DVertexDeclaration9> vertexDeclaration;
+	CComPtr<IDirect3DDevice9> device;
+	CComPtr<IDirect3DVertexDeclaration9> vertexDeclaration;
 
-    static const D3DVERTEXELEMENT9 vertexElements[3];
+	static const D3DVERTEXELEMENT9 vertexElements[3];
 
 public:
-	Effect(IDirect3DDevice9* device) : device(device) {
+	Effect(IDirect3DDevice9* device) : device(device)
+	{
 		device->CreateVertexDeclaration(vertexElements , &vertexDeclaration);
 	}
 
-	void quad(int width, int height) {
+	void quad(int width, int height)
+	{
 		// Draw aligned fullscreen quad
 		D3DXVECTOR2 pixelSize = D3DXVECTOR2(1.0f / float(width), 1.0f / float(height));
-		float quad[4][5] = {
+		float quad[4][5] =
+		{
 			{ -1.0f - pixelSize.x,  1.0f + pixelSize.y, 0.5f, 0.0f, 0.0f },
 			{  1.0f - pixelSize.x,  1.0f + pixelSize.y, 0.5f, 1.0f, 0.0f },
 			{ -1.0f - pixelSize.x, -1.0f + pixelSize.y, 0.5f, 0.0f, 1.0f },

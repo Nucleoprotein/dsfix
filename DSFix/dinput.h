@@ -176,88 +176,96 @@ DEFINE_GUID(GUID_CustomForce,   0x13541C2B,0x8E33,0x11D0,0x9A,0xD0,0x00,0xA0,0xC
 #define DI_FFNOMINALMAX             10000
 #define DI_SECONDS                  1000000
 
-typedef struct DICONSTANTFORCE {
-    LONG  lMagnitude;
+typedef struct DICONSTANTFORCE
+{
+	LONG  lMagnitude;
 } DICONSTANTFORCE, *LPDICONSTANTFORCE;
 typedef const DICONSTANTFORCE *LPCDICONSTANTFORCE;
 
-typedef struct DIRAMPFORCE {
-    LONG  lStart;
-    LONG  lEnd;
+typedef struct DIRAMPFORCE
+{
+	LONG  lStart;
+	LONG  lEnd;
 } DIRAMPFORCE, *LPDIRAMPFORCE;
 typedef const DIRAMPFORCE *LPCDIRAMPFORCE;
 
-typedef struct DIPERIODIC {
-    DWORD dwMagnitude;
-    LONG  lOffset;
-    DWORD dwPhase;
-    DWORD dwPeriod;
+typedef struct DIPERIODIC
+{
+	DWORD dwMagnitude;
+	LONG  lOffset;
+	DWORD dwPhase;
+	DWORD dwPeriod;
 } DIPERIODIC, *LPDIPERIODIC;
 typedef const DIPERIODIC *LPCDIPERIODIC;
 
-typedef struct DICONDITION {
-    LONG  lOffset;
-    LONG  lPositiveCoefficient;
-    LONG  lNegativeCoefficient;
-    DWORD dwPositiveSaturation;
-    DWORD dwNegativeSaturation;
-    LONG  lDeadBand;
+typedef struct DICONDITION
+{
+	LONG  lOffset;
+	LONG  lPositiveCoefficient;
+	LONG  lNegativeCoefficient;
+	DWORD dwPositiveSaturation;
+	DWORD dwNegativeSaturation;
+	LONG  lDeadBand;
 } DICONDITION, *LPDICONDITION;
 typedef const DICONDITION *LPCDICONDITION;
 
-typedef struct DICUSTOMFORCE {
-    DWORD cChannels;
-    DWORD dwSamplePeriod;
-    DWORD cSamples;
-    LPLONG rglForceData;
+typedef struct DICUSTOMFORCE
+{
+	DWORD cChannels;
+	DWORD dwSamplePeriod;
+	DWORD cSamples;
+	LPLONG rglForceData;
 } DICUSTOMFORCE, *LPDICUSTOMFORCE;
 typedef const DICUSTOMFORCE *LPCDICUSTOMFORCE;
 
 
-typedef struct DIENVELOPE {
-    DWORD dwSize;                   /* sizeof(DIENVELOPE)   */
-    DWORD dwAttackLevel;
-    DWORD dwAttackTime;             /* Microseconds         */
-    DWORD dwFadeLevel;
-    DWORD dwFadeTime;               /* Microseconds         */
+typedef struct DIENVELOPE
+{
+	DWORD dwSize;                   /* sizeof(DIENVELOPE)   */
+	DWORD dwAttackLevel;
+	DWORD dwAttackTime;             /* Microseconds         */
+	DWORD dwFadeLevel;
+	DWORD dwFadeTime;               /* Microseconds         */
 } DIENVELOPE, *LPDIENVELOPE;
 typedef const DIENVELOPE *LPCDIENVELOPE;
 
 
 /* This structure is defined for DirectX 5.0 compatibility */
-typedef struct DIEFFECT_DX5 {
-    DWORD dwSize;                   /* sizeof(DIEFFECT_DX5) */
-    DWORD dwFlags;                  /* DIEFF_*              */
-    DWORD dwDuration;               /* Microseconds         */
-    DWORD dwSamplePeriod;           /* Microseconds         */
-    DWORD dwGain;
-    DWORD dwTriggerButton;          /* or DIEB_NOTRIGGER    */
-    DWORD dwTriggerRepeatInterval;  /* Microseconds         */
-    DWORD cAxes;                    /* Number of axes       */
-    LPDWORD rgdwAxes;               /* Array of axes        */
-    LPLONG rglDirection;            /* Array of directions  */
-    LPDIENVELOPE lpEnvelope;        /* Optional             */
-    DWORD cbTypeSpecificParams;     /* Size of params       */
-    LPVOID lpvTypeSpecificParams;   /* Pointer to params    */
+typedef struct DIEFFECT_DX5
+{
+	DWORD dwSize;                   /* sizeof(DIEFFECT_DX5) */
+	DWORD dwFlags;                  /* DIEFF_*              */
+	DWORD dwDuration;               /* Microseconds         */
+	DWORD dwSamplePeriod;           /* Microseconds         */
+	DWORD dwGain;
+	DWORD dwTriggerButton;          /* or DIEB_NOTRIGGER    */
+	DWORD dwTriggerRepeatInterval;  /* Microseconds         */
+	DWORD cAxes;                    /* Number of axes       */
+	LPDWORD rgdwAxes;               /* Array of axes        */
+	LPLONG rglDirection;            /* Array of directions  */
+	LPDIENVELOPE lpEnvelope;        /* Optional             */
+	DWORD cbTypeSpecificParams;     /* Size of params       */
+	LPVOID lpvTypeSpecificParams;   /* Pointer to params    */
 } DIEFFECT_DX5, *LPDIEFFECT_DX5;
 typedef const DIEFFECT_DX5 *LPCDIEFFECT_DX5;
 
-typedef struct DIEFFECT {
-    DWORD dwSize;                   /* sizeof(DIEFFECT)     */
-    DWORD dwFlags;                  /* DIEFF_*              */
-    DWORD dwDuration;               /* Microseconds         */
-    DWORD dwSamplePeriod;           /* Microseconds         */
-    DWORD dwGain;
-    DWORD dwTriggerButton;          /* or DIEB_NOTRIGGER    */
-    DWORD dwTriggerRepeatInterval;  /* Microseconds         */
-    DWORD cAxes;                    /* Number of axes       */
-    LPDWORD rgdwAxes;               /* Array of axes        */
-    LPLONG rglDirection;            /* Array of directions  */
-    LPDIENVELOPE lpEnvelope;        /* Optional             */
-    DWORD cbTypeSpecificParams;     /* Size of params       */
-    LPVOID lpvTypeSpecificParams;   /* Pointer to params    */
+typedef struct DIEFFECT
+{
+	DWORD dwSize;                   /* sizeof(DIEFFECT)     */
+	DWORD dwFlags;                  /* DIEFF_*              */
+	DWORD dwDuration;               /* Microseconds         */
+	DWORD dwSamplePeriod;           /* Microseconds         */
+	DWORD dwGain;
+	DWORD dwTriggerButton;          /* or DIEB_NOTRIGGER    */
+	DWORD dwTriggerRepeatInterval;  /* Microseconds         */
+	DWORD cAxes;                    /* Number of axes       */
+	LPDWORD rgdwAxes;               /* Array of axes        */
+	LPLONG rglDirection;            /* Array of directions  */
+	LPDIENVELOPE lpEnvelope;        /* Optional             */
+	DWORD cbTypeSpecificParams;     /* Size of params       */
+	LPVOID lpvTypeSpecificParams;   /* Pointer to params    */
 #if(DIRECTINPUT_VERSION >= 0x0600)
-    DWORD  dwStartDelay;            /* Microseconds         */
+	DWORD  dwStartDelay;            /* Microseconds         */
 #endif /* DIRECTINPUT_VERSION >= 0x0600 */
 } DIEFFECT, *LPDIEFFECT;
 typedef DIEFFECT DIEFFECT_DX6;
@@ -267,12 +275,13 @@ typedef const DIEFFECT *LPCDIEFFECT;
 
 #if(DIRECTINPUT_VERSION >= 0x0700)
 #ifndef DIJ_RINGZERO
-typedef struct DIFILEEFFECT{
-    DWORD       dwSize;
-    GUID        GuidEffect;
-    LPCDIEFFECT lpDiEffect;
-    CHAR        szFriendlyName[MAX_PATH];
-}DIFILEEFFECT, *LPDIFILEEFFECT;
+typedef struct DIFILEEFFECT
+{
+	DWORD       dwSize;
+	GUID        GuidEffect;
+	LPCDIEFFECT lpDiEffect;
+	CHAR        szFriendlyName[MAX_PATH];
+} DIFILEEFFECT, *LPDIFILEEFFECT;
 typedef const DIFILEEFFECT *LPCDIFILEEFFECT;
 typedef BOOL (FAR PASCAL * LPDIENUMEFFECTSINFILECALLBACK)(LPCDIFILEEFFECT , LPVOID);
 #endif /* DIJ_RINGZERO */
@@ -311,13 +320,14 @@ typedef BOOL (FAR PASCAL * LPDIENUMEFFECTSINFILECALLBACK)(LPCDIFILEEFFECT , LPVO
 #define DIEGES_PLAYING              0x00000001
 #define DIEGES_EMULATED             0x00000002
 
-typedef struct DIEFFESCAPE {
-    DWORD   dwSize;
-    DWORD   dwCommand;
-    LPVOID  lpvInBuffer;
-    DWORD   cbInBuffer;
-    LPVOID  lpvOutBuffer;
-    DWORD   cbOutBuffer;
+typedef struct DIEFFESCAPE
+{
+	DWORD   dwSize;
+	DWORD   dwCommand;
+	LPVOID  lpvInBuffer;
+	DWORD   cbInBuffer;
+	LPVOID  lpvOutBuffer;
+	DWORD   cbOutBuffer;
 } DIEFFESCAPE, *LPDIEFFESCAPE;
 
 #ifndef DIJ_RINGZERO
@@ -327,22 +337,22 @@ typedef struct DIEFFESCAPE {
 
 DECLARE_INTERFACE_(IDirectInputEffect, IUnknown)
 {
-    /*** IUnknown methods ***/
-    STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
-    STDMETHOD_(ULONG,AddRef)(THIS) PURE;
-    STDMETHOD_(ULONG,Release)(THIS) PURE;
+	/*** IUnknown methods ***/
+	STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
 
-    /*** IDirectInputEffect methods ***/
-    STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD,REFGUID) PURE;
-    STDMETHOD(GetEffectGuid)(THIS_ LPGUID) PURE;
-    STDMETHOD(GetParameters)(THIS_ LPDIEFFECT,DWORD) PURE;
-    STDMETHOD(SetParameters)(THIS_ LPCDIEFFECT,DWORD) PURE;
-    STDMETHOD(Start)(THIS_ DWORD,DWORD) PURE;
-    STDMETHOD(Stop)(THIS) PURE;
-    STDMETHOD(GetEffectStatus)(THIS_ LPDWORD) PURE;
-    STDMETHOD(Download)(THIS) PURE;
-    STDMETHOD(Unload)(THIS) PURE;
-    STDMETHOD(Escape)(THIS_ LPDIEFFESCAPE) PURE;
+	/*** IDirectInputEffect methods ***/
+	STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD,REFGUID) PURE;
+	STDMETHOD(GetEffectGuid)(THIS_ LPGUID) PURE;
+	STDMETHOD(GetParameters)(THIS_ LPDIEFFECT,DWORD) PURE;
+	STDMETHOD(SetParameters)(THIS_ LPCDIEFFECT,DWORD) PURE;
+	STDMETHOD(Start)(THIS_ DWORD,DWORD) PURE;
+	STDMETHOD(Stop)(THIS) PURE;
+	STDMETHOD(GetEffectStatus)(THIS_ LPDWORD) PURE;
+	STDMETHOD(Download)(THIS) PURE;
+	STDMETHOD(Unload)(THIS) PURE;
+	STDMETHOD(Escape)(THIS_ LPDIEFFESCAPE) PURE;
 };
 
 typedef struct IDirectInputEffect *LPDIRECTINPUTEFFECT;
@@ -522,29 +532,31 @@ typedef struct IDirectInputEffect *LPDIRECTINPUTEFFECT;
 
 #if(DIRECTINPUT_VERSION >= 0x0500)
 /* This structure is defined for DirectX 3.0 compatibility */
-typedef struct DIDEVCAPS_DX3 {
-    DWORD   dwSize;
-    DWORD   dwFlags;
-    DWORD   dwDevType;
-    DWORD   dwAxes;
-    DWORD   dwButtons;
-    DWORD   dwPOVs;
+typedef struct DIDEVCAPS_DX3
+{
+	DWORD   dwSize;
+	DWORD   dwFlags;
+	DWORD   dwDevType;
+	DWORD   dwAxes;
+	DWORD   dwButtons;
+	DWORD   dwPOVs;
 } DIDEVCAPS_DX3, *LPDIDEVCAPS_DX3;
 #endif /* DIRECTINPUT_VERSION >= 0x0500 */
 
-typedef struct DIDEVCAPS {
-    DWORD   dwSize;
-    DWORD   dwFlags;
-    DWORD   dwDevType;
-    DWORD   dwAxes;
-    DWORD   dwButtons;
-    DWORD   dwPOVs;
+typedef struct DIDEVCAPS
+{
+	DWORD   dwSize;
+	DWORD   dwFlags;
+	DWORD   dwDevType;
+	DWORD   dwAxes;
+	DWORD   dwButtons;
+	DWORD   dwPOVs;
 #if(DIRECTINPUT_VERSION >= 0x0500)
-    DWORD   dwFFSamplePeriod;
-    DWORD   dwFFMinTimeResolution;
-    DWORD   dwFirmwareRevision;
-    DWORD   dwHardwareRevision;
-    DWORD   dwFFDriverVersion;
+	DWORD   dwFFSamplePeriod;
+	DWORD   dwFFMinTimeResolution;
+	DWORD   dwFirmwareRevision;
+	DWORD   dwHardwareRevision;
+	DWORD   dwFFDriverVersion;
 #endif /* DIRECTINPUT_VERSION >= 0x0500 */
 } DIDEVCAPS, *LPDIDEVCAPS;
 
@@ -605,21 +617,23 @@ typedef struct DIDEVCAPS {
 
 #ifndef DIJ_RINGZERO
 
-typedef struct _DIOBJECTDATAFORMAT {
-    const GUID *pguid;
-    DWORD   dwOfs;
-    DWORD   dwType;
-    DWORD   dwFlags;
+typedef struct _DIOBJECTDATAFORMAT
+{
+	const GUID *pguid;
+	DWORD   dwOfs;
+	DWORD   dwType;
+	DWORD   dwFlags;
 } DIOBJECTDATAFORMAT, *LPDIOBJECTDATAFORMAT;
 typedef const DIOBJECTDATAFORMAT *LPCDIOBJECTDATAFORMAT;
 
-typedef struct _DIDATAFORMAT {
-    DWORD   dwSize;
-    DWORD   dwObjSize;
-    DWORD   dwFlags;
-    DWORD   dwDataSize;
-    DWORD   dwNumObjs;
-    LPDIOBJECTDATAFORMAT rgodf;
+typedef struct _DIDATAFORMAT
+{
+	DWORD   dwSize;
+	DWORD   dwObjSize;
+	DWORD   dwFlags;
+	DWORD   dwDataSize;
+	DWORD   dwNumObjs;
+	LPDIOBJECTDATAFORMAT rgodf;
 } DIDATAFORMAT, *LPDIDATAFORMAT;
 typedef const DIDATAFORMAT *LPCDIDATAFORMAT;
 
@@ -629,17 +643,17 @@ typedef const DIDATAFORMAT *LPCDIDATAFORMAT;
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern const DIDATAFORMAT c_dfDIMouse;
+	extern const DIDATAFORMAT c_dfDIMouse;
 
 #if(DIRECTINPUT_VERSION >= 0x0700)
-extern const DIDATAFORMAT c_dfDIMouse2;
+	extern const DIDATAFORMAT c_dfDIMouse2;
 #endif /* DIRECTINPUT_VERSION >= 0x0700 */
 
-extern const DIDATAFORMAT c_dfDIKeyboard;
+	extern const DIDATAFORMAT c_dfDIKeyboard;
 
 #if(DIRECTINPUT_VERSION >= 0x0500)
-extern const DIDATAFORMAT c_dfDIJoystick;
-extern const DIDATAFORMAT c_dfDIJoystick2;
+	extern const DIDATAFORMAT c_dfDIJoystick;
+	extern const DIDATAFORMAT c_dfDIJoystick2;
 #endif /* DIRECTINPUT_VERSION >= 0x0500 */
 
 #ifdef __cplusplus
@@ -649,29 +663,33 @@ extern const DIDATAFORMAT c_dfDIJoystick2;
 
 #if DIRECTINPUT_VERSION > 0x0700
 
-typedef struct _DIACTIONA {
-                UINT_PTR    uAppData;
-                DWORD       dwSemantic;
-    OPTIONAL    DWORD       dwFlags;
-    OPTIONAL    union {
-                    LPCSTR      lptszActionName;
-                    UINT        uResIdString;
-                };
-    OPTIONAL    GUID        guidInstance;
-    OPTIONAL    DWORD       dwObjID;
-    OPTIONAL    DWORD       dwHow;
+typedef struct _DIACTIONA
+{
+	UINT_PTR    uAppData;
+	DWORD       dwSemantic;
+	OPTIONAL    DWORD       dwFlags;
+	OPTIONAL    union
+	{
+		LPCSTR      lptszActionName;
+		UINT        uResIdString;
+	};
+	OPTIONAL    GUID        guidInstance;
+	OPTIONAL    DWORD       dwObjID;
+	OPTIONAL    DWORD       dwHow;
 } DIACTIONA, *LPDIACTIONA ;
-typedef struct _DIACTIONW {
-                UINT_PTR    uAppData;
-                DWORD       dwSemantic;
-    OPTIONAL    DWORD       dwFlags;
-    OPTIONAL    union {
-                    LPCWSTR     lptszActionName;
-                    UINT        uResIdString;
-                };
-    OPTIONAL    GUID        guidInstance;
-    OPTIONAL    DWORD       dwObjID;
-    OPTIONAL    DWORD       dwHow;
+typedef struct _DIACTIONW
+{
+	UINT_PTR    uAppData;
+	DWORD       dwSemantic;
+	OPTIONAL    DWORD       dwFlags;
+	OPTIONAL    union
+	{
+		LPCWSTR     lptszActionName;
+		UINT        uResIdString;
+	};
+	OPTIONAL    GUID        guidInstance;
+	OPTIONAL    DWORD       dwObjID;
+	OPTIONAL    DWORD       dwHow;
 } DIACTIONW, *LPDIACTIONW ;
 #ifdef UNICODE
 typedef DIACTIONW DIACTION;
@@ -707,37 +725,39 @@ typedef const DIACTION *LPCDIACTION;
 #define DIAH_DEFAULT            0x00000020
 #define DIAH_ERROR              0x80000000
 
-typedef struct _DIACTIONFORMATA {
-                DWORD       dwSize;
-                DWORD       dwActionSize;
-                DWORD       dwDataSize;
-                DWORD       dwNumActions;
-                LPDIACTIONA rgoAction;
-                GUID        guidActionMap;
-                DWORD       dwGenre;
-                DWORD       dwBufferSize;
-    OPTIONAL    LONG        lAxisMin;
-    OPTIONAL    LONG        lAxisMax;
-    OPTIONAL    HINSTANCE   hInstString;
-                FILETIME    ftTimeStamp;
-                DWORD       dwCRC;
-                CHAR        tszActionMap[MAX_PATH];
+typedef struct _DIACTIONFORMATA
+{
+	DWORD       dwSize;
+	DWORD       dwActionSize;
+	DWORD       dwDataSize;
+	DWORD       dwNumActions;
+	LPDIACTIONA rgoAction;
+	GUID        guidActionMap;
+	DWORD       dwGenre;
+	DWORD       dwBufferSize;
+	OPTIONAL    LONG        lAxisMin;
+	OPTIONAL    LONG        lAxisMax;
+	OPTIONAL    HINSTANCE   hInstString;
+	FILETIME    ftTimeStamp;
+	DWORD       dwCRC;
+	CHAR        tszActionMap[MAX_PATH];
 } DIACTIONFORMATA, *LPDIACTIONFORMATA;
-typedef struct _DIACTIONFORMATW {
-                DWORD       dwSize;
-                DWORD       dwActionSize;
-                DWORD       dwDataSize;
-                DWORD       dwNumActions;
-                LPDIACTIONW rgoAction;
-                GUID        guidActionMap;
-                DWORD       dwGenre;
-                DWORD       dwBufferSize;
-    OPTIONAL    LONG        lAxisMin;
-    OPTIONAL    LONG        lAxisMax;
-    OPTIONAL    HINSTANCE   hInstString;
-                FILETIME    ftTimeStamp;
-                DWORD       dwCRC;
-                WCHAR       tszActionMap[MAX_PATH];
+typedef struct _DIACTIONFORMATW
+{
+	DWORD       dwSize;
+	DWORD       dwActionSize;
+	DWORD       dwDataSize;
+	DWORD       dwNumActions;
+	LPDIACTIONW rgoAction;
+	GUID        guidActionMap;
+	DWORD       dwGenre;
+	DWORD       dwBufferSize;
+	OPTIONAL    LONG        lAxisMin;
+	OPTIONAL    LONG        lAxisMax;
+	OPTIONAL    HINSTANCE   hInstString;
+	FILETIME    ftTimeStamp;
+	DWORD       dwCRC;
+	WCHAR       tszActionMap[MAX_PATH];
 } DIACTIONFORMATW, *LPDIACTIONFORMATW;
 #ifdef UNICODE
 typedef DIACTIONFORMATW DIACTIONFORMAT;
@@ -782,39 +802,42 @@ typedef DWORD D3DCOLOR;
 #define D3DCOLOR_DEFINED
 #endif
 
-typedef struct _DICOLORSET{
-    DWORD dwSize;
-    D3DCOLOR cTextFore;
-    D3DCOLOR cTextHighlight;
-    D3DCOLOR cCalloutLine;
-    D3DCOLOR cCalloutHighlight;
-    D3DCOLOR cBorder;
-    D3DCOLOR cControlFill;
-    D3DCOLOR cHighlightFill;
-    D3DCOLOR cAreaFill;
+typedef struct _DICOLORSET
+{
+	DWORD dwSize;
+	D3DCOLOR cTextFore;
+	D3DCOLOR cTextHighlight;
+	D3DCOLOR cCalloutLine;
+	D3DCOLOR cCalloutHighlight;
+	D3DCOLOR cBorder;
+	D3DCOLOR cControlFill;
+	D3DCOLOR cHighlightFill;
+	D3DCOLOR cAreaFill;
 } DICOLORSET, *LPDICOLORSET;
 typedef const DICOLORSET *LPCDICOLORSET;
 
 
-typedef struct _DICONFIGUREDEVICESPARAMSA{
-     DWORD             dwSize;
-     DWORD             dwcUsers;
-     LPSTR             lptszUserNames;
-     DWORD             dwcFormats;
-     LPDIACTIONFORMATA lprgFormats;
-     HWND              hwnd;
-     DICOLORSET        dics;
-     IUnknown FAR *    lpUnkDDSTarget;
+typedef struct _DICONFIGUREDEVICESPARAMSA
+{
+	DWORD             dwSize;
+	DWORD             dwcUsers;
+	LPSTR             lptszUserNames;
+	DWORD             dwcFormats;
+	LPDIACTIONFORMATA lprgFormats;
+	HWND              hwnd;
+	DICOLORSET        dics;
+	IUnknown FAR *    lpUnkDDSTarget;
 } DICONFIGUREDEVICESPARAMSA, *LPDICONFIGUREDEVICESPARAMSA;
-typedef struct _DICONFIGUREDEVICESPARAMSW{
-     DWORD             dwSize;
-     DWORD             dwcUsers;
-     LPWSTR            lptszUserNames;
-     DWORD             dwcFormats;
-     LPDIACTIONFORMATW lprgFormats;
-     HWND              hwnd;
-     DICOLORSET        dics;
-     IUnknown FAR *    lpUnkDDSTarget;
+typedef struct _DICONFIGUREDEVICESPARAMSW
+{
+	DWORD             dwSize;
+	DWORD             dwcUsers;
+	LPWSTR            lptszUserNames;
+	DWORD             dwcFormats;
+	LPDIACTIONFORMATW lprgFormats;
+	HWND              hwnd;
+	DICOLORSET        dics;
+	IUnknown FAR *    lpUnkDDSTarget;
 } DICONFIGUREDEVICESPARAMSW, *LPDICONFIGUREDEVICESPARAMSW;
 #ifdef UNICODE
 typedef DICONFIGUREDEVICESPARAMSW DICONFIGUREDEVICESPARAMS;
@@ -845,29 +868,31 @@ typedef const DICONFIGUREDEVICESPARAMS *LPCDICONFIGUREDEVICESPARAMS;
 #define DIDAL_TOPALIGNED    0x00000004
 #define DIDAL_BOTTOMALIGNED 0x00000008
 
-typedef struct _DIDEVICEIMAGEINFOA {
-    CHAR        tszImagePath[MAX_PATH];
-    DWORD       dwFlags; 
-    // These are valid if DIDIFT_OVERLAY is present in dwFlags.
-    DWORD       dwViewID;      
-    RECT        rcOverlay;             
-    DWORD       dwObjID;
-    DWORD       dwcValidPts;
-    POINT       rgptCalloutLine[5];  
-    RECT        rcCalloutRect;  
-    DWORD       dwTextAlign;     
+typedef struct _DIDEVICEIMAGEINFOA
+{
+	CHAR        tszImagePath[MAX_PATH];
+	DWORD       dwFlags;
+	// These are valid if DIDIFT_OVERLAY is present in dwFlags.
+	DWORD       dwViewID;
+	RECT        rcOverlay;
+	DWORD       dwObjID;
+	DWORD       dwcValidPts;
+	POINT       rgptCalloutLine[5];
+	RECT        rcCalloutRect;
+	DWORD       dwTextAlign;
 } DIDEVICEIMAGEINFOA, *LPDIDEVICEIMAGEINFOA;
-typedef struct _DIDEVICEIMAGEINFOW {
-    WCHAR       tszImagePath[MAX_PATH];
-    DWORD       dwFlags; 
-    // These are valid if DIDIFT_OVERLAY is present in dwFlags.
-    DWORD       dwViewID;      
-    RECT        rcOverlay;             
-    DWORD       dwObjID;
-    DWORD       dwcValidPts;
-    POINT       rgptCalloutLine[5];  
-    RECT        rcCalloutRect;  
-    DWORD       dwTextAlign;     
+typedef struct _DIDEVICEIMAGEINFOW
+{
+	WCHAR       tszImagePath[MAX_PATH];
+	DWORD       dwFlags;
+	// These are valid if DIDIFT_OVERLAY is present in dwFlags.
+	DWORD       dwViewID;
+	RECT        rcOverlay;
+	DWORD       dwObjID;
+	DWORD       dwcValidPts;
+	POINT       rgptCalloutLine[5];
+	RECT        rcCalloutRect;
+	DWORD       dwTextAlign;
 } DIDEVICEIMAGEINFOW, *LPDIDEVICEIMAGEINFOW;
 #ifdef UNICODE
 typedef DIDEVICEIMAGEINFOW DIDEVICEIMAGEINFO;
@@ -887,27 +912,29 @@ typedef LPCDIDEVICEIMAGEINFOA LPCDIDEVICEIMAGEINFO;
 #endif // UNICODE
 typedef const DIDEVICEIMAGEINFO *LPCDIDEVICEIMAGEINFO;
 
-typedef struct _DIDEVICEIMAGEINFOHEADERA {
-    DWORD       dwSize;
-    DWORD       dwSizeImageInfo;
-    DWORD       dwcViews;
-    DWORD       dwcButtons;
-    DWORD       dwcAxes;
-    DWORD       dwcPOVs;
-    DWORD       dwBufferSize;
-    DWORD       dwBufferUsed;
-    LPDIDEVICEIMAGEINFOA lprgImageInfoArray;
+typedef struct _DIDEVICEIMAGEINFOHEADERA
+{
+	DWORD       dwSize;
+	DWORD       dwSizeImageInfo;
+	DWORD       dwcViews;
+	DWORD       dwcButtons;
+	DWORD       dwcAxes;
+	DWORD       dwcPOVs;
+	DWORD       dwBufferSize;
+	DWORD       dwBufferUsed;
+	LPDIDEVICEIMAGEINFOA lprgImageInfoArray;
 } DIDEVICEIMAGEINFOHEADERA, *LPDIDEVICEIMAGEINFOHEADERA;
-typedef struct _DIDEVICEIMAGEINFOHEADERW {
-    DWORD       dwSize;
-    DWORD       dwSizeImageInfo;
-    DWORD       dwcViews;
-    DWORD       dwcButtons;
-    DWORD       dwcAxes;
-    DWORD       dwcPOVs;
-    DWORD       dwBufferSize;
-    DWORD       dwBufferUsed;
-    LPDIDEVICEIMAGEINFOW lprgImageInfoArray;
+typedef struct _DIDEVICEIMAGEINFOHEADERW
+{
+	DWORD       dwSize;
+	DWORD       dwSizeImageInfo;
+	DWORD       dwcViews;
+	DWORD       dwcButtons;
+	DWORD       dwcAxes;
+	DWORD       dwcPOVs;
+	DWORD       dwBufferSize;
+	DWORD       dwBufferUsed;
+	LPDIDEVICEIMAGEINFOW lprgImageInfoArray;
 } DIDEVICEIMAGEINFOHEADERW, *LPDIDEVICEIMAGEINFOHEADERW;
 #ifdef UNICODE
 typedef DIDEVICEIMAGEINFOHEADERW DIDEVICEIMAGEINFOHEADER;
@@ -932,21 +959,23 @@ typedef const DIDEVICEIMAGEINFOHEADER *LPCDIDEVICEIMAGEINFOHEADER;
 #if(DIRECTINPUT_VERSION >= 0x0500)
 /* These structures are defined for DirectX 3.0 compatibility */
 
-typedef struct DIDEVICEOBJECTINSTANCE_DX3A {
-    DWORD   dwSize;
-    GUID    guidType;
-    DWORD   dwOfs;
-    DWORD   dwType;
-    DWORD   dwFlags;
-    CHAR    tszName[MAX_PATH];
+typedef struct DIDEVICEOBJECTINSTANCE_DX3A
+{
+	DWORD   dwSize;
+	GUID    guidType;
+	DWORD   dwOfs;
+	DWORD   dwType;
+	DWORD   dwFlags;
+	CHAR    tszName[MAX_PATH];
 } DIDEVICEOBJECTINSTANCE_DX3A, *LPDIDEVICEOBJECTINSTANCE_DX3A;
-typedef struct DIDEVICEOBJECTINSTANCE_DX3W {
-    DWORD   dwSize;
-    GUID    guidType;
-    DWORD   dwOfs;
-    DWORD   dwType;
-    DWORD   dwFlags;
-    WCHAR   tszName[MAX_PATH];
+typedef struct DIDEVICEOBJECTINSTANCE_DX3W
+{
+	DWORD   dwSize;
+	GUID    guidType;
+	DWORD   dwOfs;
+	DWORD   dwType;
+	DWORD   dwFlags;
+	WCHAR   tszName[MAX_PATH];
 } DIDEVICEOBJECTINSTANCE_DX3W, *LPDIDEVICEOBJECTINSTANCE_DX3W;
 #ifdef UNICODE
 typedef DIDEVICEOBJECTINSTANCE_DX3W DIDEVICEOBJECTINSTANCE_DX3;
@@ -960,42 +989,44 @@ typedef const DIDEVICEOBJECTINSTANCE_DX3W *LPCDIDEVICEOBJECTINSTANCE_DX3W;
 typedef const DIDEVICEOBJECTINSTANCE_DX3  *LPCDIDEVICEOBJECTINSTANCE_DX3;
 #endif /* DIRECTINPUT_VERSION >= 0x0500 */
 
-typedef struct DIDEVICEOBJECTINSTANCEA {
-    DWORD   dwSize;
-    GUID    guidType;
-    DWORD   dwOfs;
-    DWORD   dwType;
-    DWORD   dwFlags;
-    CHAR    tszName[MAX_PATH];
+typedef struct DIDEVICEOBJECTINSTANCEA
+{
+	DWORD   dwSize;
+	GUID    guidType;
+	DWORD   dwOfs;
+	DWORD   dwType;
+	DWORD   dwFlags;
+	CHAR    tszName[MAX_PATH];
 #if(DIRECTINPUT_VERSION >= 0x0500)
-    DWORD   dwFFMaxForce;
-    DWORD   dwFFForceResolution;
-    WORD    wCollectionNumber;
-    WORD    wDesignatorIndex;
-    WORD    wUsagePage;
-    WORD    wUsage;
-    DWORD   dwDimension;
-    WORD    wExponent;
-    WORD    wReportId;
+	DWORD   dwFFMaxForce;
+	DWORD   dwFFForceResolution;
+	WORD    wCollectionNumber;
+	WORD    wDesignatorIndex;
+	WORD    wUsagePage;
+	WORD    wUsage;
+	DWORD   dwDimension;
+	WORD    wExponent;
+	WORD    wReportId;
 #endif /* DIRECTINPUT_VERSION >= 0x0500 */
 } DIDEVICEOBJECTINSTANCEA, *LPDIDEVICEOBJECTINSTANCEA;
-typedef struct DIDEVICEOBJECTINSTANCEW {
-    DWORD   dwSize;
-    GUID    guidType;
-    DWORD   dwOfs;
-    DWORD   dwType;
-    DWORD   dwFlags;
-    WCHAR   tszName[MAX_PATH];
+typedef struct DIDEVICEOBJECTINSTANCEW
+{
+	DWORD   dwSize;
+	GUID    guidType;
+	DWORD   dwOfs;
+	DWORD   dwType;
+	DWORD   dwFlags;
+	WCHAR   tszName[MAX_PATH];
 #if(DIRECTINPUT_VERSION >= 0x0500)
-    DWORD   dwFFMaxForce;
-    DWORD   dwFFForceResolution;
-    WORD    wCollectionNumber;
-    WORD    wDesignatorIndex;
-    WORD    wUsagePage;
-    WORD    wUsage;
-    DWORD   dwDimension;
-    WORD    wExponent;
-    WORD    wReportId;
+	DWORD   dwFFMaxForce;
+	DWORD   dwFFForceResolution;
+	WORD    wCollectionNumber;
+	WORD    wDesignatorIndex;
+	WORD    wUsagePage;
+	WORD    wUsage;
+	DWORD   dwDimension;
+	WORD    wExponent;
+	WORD    wReportId;
 #endif /* DIRECTINPUT_VERSION >= 0x0500 */
 } DIDEVICEOBJECTINSTANCEW, *LPDIDEVICEOBJECTINSTANCEW;
 #ifdef UNICODE
@@ -1031,11 +1062,12 @@ typedef BOOL (FAR PASCAL * LPDIENUMDEVICEOBJECTSCALLBACKW)(LPCDIDEVICEOBJECTINST
 #define DIDOI_GUIDISUSAGE       0x00010000
 #endif /* DIRECTINPUT_VERSION >= 0x050a */
 
-typedef struct DIPROPHEADER {
-    DWORD   dwSize;
-    DWORD   dwHeaderSize;
-    DWORD   dwObj;
-    DWORD   dwHow;
+typedef struct DIPROPHEADER
+{
+	DWORD   dwSize;
+	DWORD   dwHeaderSize;
+	DWORD   dwObj;
+	DWORD   dwHow;
 } DIPROPHEADER, *LPDIPROPHEADER;
 typedef const DIPROPHEADER *LPCDIPROPHEADER;
 
@@ -1051,24 +1083,27 @@ typedef const DIPROPHEADER *LPCDIPROPHEADER;
                                 (DWORD)MAKELONG(Usage, UsagePage)
 #endif /* DIRECTINPUT_VERSION >= 0x050a */
 
-typedef struct DIPROPDWORD {
-    DIPROPHEADER diph;
-    DWORD   dwData;
+typedef struct DIPROPDWORD
+{
+	DIPROPHEADER diph;
+	DWORD   dwData;
 } DIPROPDWORD, *LPDIPROPDWORD;
 typedef const DIPROPDWORD *LPCDIPROPDWORD;
 
 #if(DIRECTINPUT_VERSION >= 0x0800)
-typedef struct DIPROPPOINTER {
-    DIPROPHEADER diph;
-    UINT_PTR uData;
+typedef struct DIPROPPOINTER
+{
+	DIPROPHEADER diph;
+	UINT_PTR uData;
 } DIPROPPOINTER, *LPDIPROPPOINTER;
 typedef const DIPROPPOINTER *LPCDIPROPPOINTER;
 #endif /* DIRECTINPUT_VERSION >= 0x0800 */
 
-typedef struct DIPROPRANGE {
-    DIPROPHEADER diph;
-    LONG    lMin;
-    LONG    lMax;
+typedef struct DIPROPRANGE
+{
+	DIPROPHEADER diph;
+	LONG    lMin;
+	LONG    lMax;
 } DIPROPRANGE, *LPDIPROPRANGE;
 typedef const DIPROPRANGE *LPCDIPROPRANGE;
 
@@ -1076,31 +1111,35 @@ typedef const DIPROPRANGE *LPCDIPROPRANGE;
 #define DIPROPRANGE_NOMAX       ((LONG)0x7FFFFFFF)
 
 #if(DIRECTINPUT_VERSION >= 0x050a)
-typedef struct DIPROPCAL {
-    DIPROPHEADER diph;
-    LONG    lMin;
-    LONG    lCenter;
-    LONG    lMax;
+typedef struct DIPROPCAL
+{
+	DIPROPHEADER diph;
+	LONG    lMin;
+	LONG    lCenter;
+	LONG    lMax;
 } DIPROPCAL, *LPDIPROPCAL;
 typedef const DIPROPCAL *LPCDIPROPCAL;
 
-typedef struct DIPROPCALPOV {
-    DIPROPHEADER diph;
-    LONG   lMin[5];
-    LONG   lMax[5];
+typedef struct DIPROPCALPOV
+{
+	DIPROPHEADER diph;
+	LONG   lMin[5];
+	LONG   lMax[5];
 } DIPROPCALPOV, *LPDIPROPCALPOV;
 typedef const DIPROPCALPOV *LPCDIPROPCALPOV;
 
-typedef struct DIPROPGUIDANDPATH {
-    DIPROPHEADER diph;
-    GUID    guidClass;
-    WCHAR   wszPath[MAX_PATH];
+typedef struct DIPROPGUIDANDPATH
+{
+	DIPROPHEADER diph;
+	GUID    guidClass;
+	WCHAR   wszPath[MAX_PATH];
 } DIPROPGUIDANDPATH, *LPDIPROPGUIDANDPATH;
 typedef const DIPROPGUIDANDPATH *LPCDIPROPGUIDANDPATH;
 
-typedef struct DIPROPSTRING {
-    DIPROPHEADER diph;
-    WCHAR   wsz[MAX_PATH];
+typedef struct DIPROPSTRING
+{
+	DIPROPHEADER diph;
+	WCHAR   wsz[MAX_PATH];
 } DIPROPSTRING, *LPDIPROPSTRING;
 typedef const DIPROPSTRING *LPCDIPROPSTRING;
 
@@ -1111,14 +1150,15 @@ typedef const DIPROPSTRING *LPCDIPROPSTRING;
 
 typedef struct _CPOINT
 {
-    LONG  lP;     // raw value
-    DWORD dwLog;  // logical_value / max_logical_value * 10000
+	LONG  lP;     // raw value
+	DWORD dwLog;  // logical_value / max_logical_value * 10000
 } CPOINT, *PCPOINT;
 
-typedef struct DIPROPCPOINTS {
-    DIPROPHEADER diph;
-    DWORD  dwCPointsNum;
-    CPOINT cp[MAXCPOINTSNUM];
+typedef struct DIPROPCPOINTS
+{
+	DIPROPHEADER diph;
+	DWORD  dwCPointsNum;
+	CPOINT cp[MAXCPOINTSNUM];
 } DIPROPCPOINTS, *LPDIPROPCPOINTS;
 typedef const DIPROPCPOINTS *LPCDIPROPCPOINTS;
 #endif /* DIRECTINPUT_VERSION >= 0x0800 */
@@ -1199,21 +1239,23 @@ typedef const DIPROPCPOINTS *LPCDIPROPCPOINTS;
 #endif /* DIRECTINPUT_VERSION >= 0x0800 */
 
 
-typedef struct DIDEVICEOBJECTDATA_DX3 {
-    DWORD       dwOfs;
-    DWORD       dwData;
-    DWORD       dwTimeStamp;
-    DWORD       dwSequence;
+typedef struct DIDEVICEOBJECTDATA_DX3
+{
+	DWORD       dwOfs;
+	DWORD       dwData;
+	DWORD       dwTimeStamp;
+	DWORD       dwSequence;
 } DIDEVICEOBJECTDATA_DX3, *LPDIDEVICEOBJECTDATA_DX3;
 typedef const DIDEVICEOBJECTDATA_DX3 *LPCDIDEVICEOBJECTDATA_DX;
 
-typedef struct DIDEVICEOBJECTDATA {
-    DWORD       dwOfs;
-    DWORD       dwData;
-    DWORD       dwTimeStamp;
-    DWORD       dwSequence;
+typedef struct DIDEVICEOBJECTDATA
+{
+	DWORD       dwOfs;
+	DWORD       dwData;
+	DWORD       dwTimeStamp;
+	DWORD       dwSequence;
 #if(DIRECTINPUT_VERSION >= 0x0800)
-    UINT_PTR    uAppData;
+	UINT_PTR    uAppData;
 #endif /* DIRECTINPUT_VERSION >= 0x0800 */
 } DIDEVICEOBJECTDATA, *LPDIDEVICEOBJECTDATA;
 typedef const DIDEVICEOBJECTDATA *LPCDIDEVICEOBJECTDATA;
@@ -1231,21 +1273,23 @@ typedef const DIDEVICEOBJECTDATA *LPCDIDEVICEOBJECTDATA;
 #if(DIRECTINPUT_VERSION >= 0x0500)
 /* These structures are defined for DirectX 3.0 compatibility */
 
-typedef struct DIDEVICEINSTANCE_DX3A {
-    DWORD   dwSize;
-    GUID    guidInstance;
-    GUID    guidProduct;
-    DWORD   dwDevType;
-    CHAR    tszInstanceName[MAX_PATH];
-    CHAR    tszProductName[MAX_PATH];
+typedef struct DIDEVICEINSTANCE_DX3A
+{
+	DWORD   dwSize;
+	GUID    guidInstance;
+	GUID    guidProduct;
+	DWORD   dwDevType;
+	CHAR    tszInstanceName[MAX_PATH];
+	CHAR    tszProductName[MAX_PATH];
 } DIDEVICEINSTANCE_DX3A, *LPDIDEVICEINSTANCE_DX3A;
-typedef struct DIDEVICEINSTANCE_DX3W {
-    DWORD   dwSize;
-    GUID    guidInstance;
-    GUID    guidProduct;
-    DWORD   dwDevType;
-    WCHAR   tszInstanceName[MAX_PATH];
-    WCHAR   tszProductName[MAX_PATH];
+typedef struct DIDEVICEINSTANCE_DX3W
+{
+	DWORD   dwSize;
+	GUID    guidInstance;
+	GUID    guidProduct;
+	DWORD   dwDevType;
+	WCHAR   tszInstanceName[MAX_PATH];
+	WCHAR   tszProductName[MAX_PATH];
 } DIDEVICEINSTANCE_DX3W, *LPDIDEVICEINSTANCE_DX3W;
 #ifdef UNICODE
 typedef DIDEVICEINSTANCE_DX3W DIDEVICEINSTANCE_DX3;
@@ -1259,30 +1303,32 @@ typedef const DIDEVICEINSTANCE_DX3W *LPCDIDEVICEINSTANCE_DX3W;
 typedef const DIDEVICEINSTANCE_DX3  *LPCDIDEVICEINSTANCE_DX3;
 #endif /* DIRECTINPUT_VERSION >= 0x0500 */
 
-typedef struct DIDEVICEINSTANCEA {
-    DWORD   dwSize;
-    GUID    guidInstance;
-    GUID    guidProduct;
-    DWORD   dwDevType;
-    CHAR    tszInstanceName[MAX_PATH];
-    CHAR    tszProductName[MAX_PATH];
+typedef struct DIDEVICEINSTANCEA
+{
+	DWORD   dwSize;
+	GUID    guidInstance;
+	GUID    guidProduct;
+	DWORD   dwDevType;
+	CHAR    tszInstanceName[MAX_PATH];
+	CHAR    tszProductName[MAX_PATH];
 #if(DIRECTINPUT_VERSION >= 0x0500)
-    GUID    guidFFDriver;
-    WORD    wUsagePage;
-    WORD    wUsage;
+	GUID    guidFFDriver;
+	WORD    wUsagePage;
+	WORD    wUsage;
 #endif /* DIRECTINPUT_VERSION >= 0x0500 */
 } DIDEVICEINSTANCEA, *LPDIDEVICEINSTANCEA;
-typedef struct DIDEVICEINSTANCEW {
-    DWORD   dwSize;
-    GUID    guidInstance;
-    GUID    guidProduct;
-    DWORD   dwDevType;
-    WCHAR   tszInstanceName[MAX_PATH];
-    WCHAR   tszProductName[MAX_PATH];
+typedef struct DIDEVICEINSTANCEW
+{
+	DWORD   dwSize;
+	GUID    guidInstance;
+	GUID    guidProduct;
+	DWORD   dwDevType;
+	WCHAR   tszInstanceName[MAX_PATH];
+	WCHAR   tszProductName[MAX_PATH];
 #if(DIRECTINPUT_VERSION >= 0x0500)
-    GUID    guidFFDriver;
-    WORD    wUsagePage;
-    WORD    wUsage;
+	GUID    guidFFDriver;
+	WORD    wUsagePage;
+	WORD    wUsage;
 #endif /* DIRECTINPUT_VERSION >= 0x0500 */
 } DIDEVICEINSTANCEW, *LPDIDEVICEINSTANCEW;
 #ifdef UNICODE
@@ -1309,27 +1355,27 @@ typedef const DIDEVICEINSTANCE  *LPCDIDEVICEINSTANCE;
 
 DECLARE_INTERFACE_(IDirectInputDeviceW, IUnknown)
 {
-    /*** IUnknown methods ***/
-    STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
-    STDMETHOD_(ULONG,AddRef)(THIS) PURE;
-    STDMETHOD_(ULONG,Release)(THIS) PURE;
+	/*** IUnknown methods ***/
+	STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
 
-    /*** IDirectInputDeviceW methods ***/
-    STDMETHOD(GetCapabilities)(THIS_ LPDIDEVCAPS) PURE;
-    STDMETHOD(EnumObjects)(THIS_ LPDIENUMDEVICEOBJECTSCALLBACKW,LPVOID,DWORD) PURE;
-    STDMETHOD(GetProperty)(THIS_ REFGUID,LPDIPROPHEADER) PURE;
-    STDMETHOD(SetProperty)(THIS_ REFGUID,LPCDIPROPHEADER) PURE;
-    STDMETHOD(Acquire)(THIS) PURE;
-    STDMETHOD(Unacquire)(THIS) PURE;
-    STDMETHOD(GetDeviceState)(THIS_ DWORD,LPVOID) PURE;
-    STDMETHOD(GetDeviceData)(THIS_ DWORD,LPDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
-    STDMETHOD(SetDataFormat)(THIS_ LPCDIDATAFORMAT) PURE;
-    STDMETHOD(SetEventNotification)(THIS_ HANDLE) PURE;
-    STDMETHOD(SetCooperativeLevel)(THIS_ HWND,DWORD) PURE;
-    STDMETHOD(GetObjectInfo)(THIS_ LPDIDEVICEOBJECTINSTANCEW,DWORD,DWORD) PURE;
-    STDMETHOD(GetDeviceInfo)(THIS_ LPDIDEVICEINSTANCEW) PURE;
-    STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
-    STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD,REFGUID) PURE;
+	/*** IDirectInputDeviceW methods ***/
+	STDMETHOD(GetCapabilities)(THIS_ LPDIDEVCAPS) PURE;
+	STDMETHOD(EnumObjects)(THIS_ LPDIENUMDEVICEOBJECTSCALLBACKW,LPVOID,DWORD) PURE;
+	STDMETHOD(GetProperty)(THIS_ REFGUID,LPDIPROPHEADER) PURE;
+	STDMETHOD(SetProperty)(THIS_ REFGUID,LPCDIPROPHEADER) PURE;
+	STDMETHOD(Acquire)(THIS) PURE;
+	STDMETHOD(Unacquire)(THIS) PURE;
+	STDMETHOD(GetDeviceState)(THIS_ DWORD,LPVOID) PURE;
+	STDMETHOD(GetDeviceData)(THIS_ DWORD,LPDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
+	STDMETHOD(SetDataFormat)(THIS_ LPCDIDATAFORMAT) PURE;
+	STDMETHOD(SetEventNotification)(THIS_ HANDLE) PURE;
+	STDMETHOD(SetCooperativeLevel)(THIS_ HWND,DWORD) PURE;
+	STDMETHOD(GetObjectInfo)(THIS_ LPDIDEVICEOBJECTINSTANCEW,DWORD,DWORD) PURE;
+	STDMETHOD(GetDeviceInfo)(THIS_ LPDIDEVICEINSTANCEW) PURE;
+	STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
+	STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD,REFGUID) PURE;
 };
 
 typedef struct IDirectInputDeviceW *LPDIRECTINPUTDEVICEW;
@@ -1339,27 +1385,27 @@ typedef struct IDirectInputDeviceW *LPDIRECTINPUTDEVICEW;
 
 DECLARE_INTERFACE_(IDirectInputDeviceA, IUnknown)
 {
-    /*** IUnknown methods ***/
-    STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
-    STDMETHOD_(ULONG,AddRef)(THIS) PURE;
-    STDMETHOD_(ULONG,Release)(THIS) PURE;
+	/*** IUnknown methods ***/
+	STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
 
-    /*** IDirectInputDeviceA methods ***/
-    STDMETHOD(GetCapabilities)(THIS_ LPDIDEVCAPS) PURE;
-    STDMETHOD(EnumObjects)(THIS_ LPDIENUMDEVICEOBJECTSCALLBACKA,LPVOID,DWORD) PURE;
-    STDMETHOD(GetProperty)(THIS_ REFGUID,LPDIPROPHEADER) PURE;
-    STDMETHOD(SetProperty)(THIS_ REFGUID,LPCDIPROPHEADER) PURE;
-    STDMETHOD(Acquire)(THIS) PURE;
-    STDMETHOD(Unacquire)(THIS) PURE;
-    STDMETHOD(GetDeviceState)(THIS_ DWORD,LPVOID) PURE;
-    STDMETHOD(GetDeviceData)(THIS_ DWORD,LPDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
-    STDMETHOD(SetDataFormat)(THIS_ LPCDIDATAFORMAT) PURE;
-    STDMETHOD(SetEventNotification)(THIS_ HANDLE) PURE;
-    STDMETHOD(SetCooperativeLevel)(THIS_ HWND,DWORD) PURE;
-    STDMETHOD(GetObjectInfo)(THIS_ LPDIDEVICEOBJECTINSTANCEA,DWORD,DWORD) PURE;
-    STDMETHOD(GetDeviceInfo)(THIS_ LPDIDEVICEINSTANCEA) PURE;
-    STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
-    STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD,REFGUID) PURE;
+	/*** IDirectInputDeviceA methods ***/
+	STDMETHOD(GetCapabilities)(THIS_ LPDIDEVCAPS) PURE;
+	STDMETHOD(EnumObjects)(THIS_ LPDIENUMDEVICEOBJECTSCALLBACKA,LPVOID,DWORD) PURE;
+	STDMETHOD(GetProperty)(THIS_ REFGUID,LPDIPROPHEADER) PURE;
+	STDMETHOD(SetProperty)(THIS_ REFGUID,LPCDIPROPHEADER) PURE;
+	STDMETHOD(Acquire)(THIS) PURE;
+	STDMETHOD(Unacquire)(THIS) PURE;
+	STDMETHOD(GetDeviceState)(THIS_ DWORD,LPVOID) PURE;
+	STDMETHOD(GetDeviceData)(THIS_ DWORD,LPDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
+	STDMETHOD(SetDataFormat)(THIS_ LPCDIDATAFORMAT) PURE;
+	STDMETHOD(SetEventNotification)(THIS_ HANDLE) PURE;
+	STDMETHOD(SetCooperativeLevel)(THIS_ HWND,DWORD) PURE;
+	STDMETHOD(GetObjectInfo)(THIS_ LPDIDEVICEOBJECTINSTANCEA,DWORD,DWORD) PURE;
+	STDMETHOD(GetDeviceInfo)(THIS_ LPDIDEVICEINSTANCEA) PURE;
+	STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
+	STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD,REFGUID) PURE;
 };
 
 typedef struct IDirectInputDeviceA *LPDIRECTINPUTDEVICEA;
@@ -1442,21 +1488,23 @@ typedef struct IDirectInputDevice *LPDIRECTINPUTDEVICE;
 
 #ifndef DIJ_RINGZERO
 
-typedef struct DIEFFECTINFOA {
-    DWORD   dwSize;
-    GUID    guid;
-    DWORD   dwEffType;
-    DWORD   dwStaticParams;
-    DWORD   dwDynamicParams;
-    CHAR    tszName[MAX_PATH];
+typedef struct DIEFFECTINFOA
+{
+	DWORD   dwSize;
+	GUID    guid;
+	DWORD   dwEffType;
+	DWORD   dwStaticParams;
+	DWORD   dwDynamicParams;
+	CHAR    tszName[MAX_PATH];
 } DIEFFECTINFOA, *LPDIEFFECTINFOA;
-typedef struct DIEFFECTINFOW {
-    DWORD   dwSize;
-    GUID    guid;
-    DWORD   dwEffType;
-    DWORD   dwStaticParams;
-    DWORD   dwDynamicParams;
-    WCHAR   tszName[MAX_PATH];
+typedef struct DIEFFECTINFOW
+{
+	DWORD   dwSize;
+	GUID    guid;
+	DWORD   dwEffType;
+	DWORD   dwStaticParams;
+	DWORD   dwDynamicParams;
+	WCHAR   tszName[MAX_PATH];
 } DIEFFECTINFOW, *LPDIEFFECTINFOW;
 #ifdef UNICODE
 typedef DIEFFECTINFOW DIEFFECTINFO;
@@ -1485,38 +1533,38 @@ typedef BOOL (FAR PASCAL * LPDIENUMCREATEDEFFECTOBJECTSCALLBACK)(LPDIRECTINPUTEF
 
 DECLARE_INTERFACE_(IDirectInputDevice2W, IDirectInputDeviceW)
 {
-    /*** IUnknown methods ***/
-    STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
-    STDMETHOD_(ULONG,AddRef)(THIS) PURE;
-    STDMETHOD_(ULONG,Release)(THIS) PURE;
+	/*** IUnknown methods ***/
+	STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
 
-    /*** IDirectInputDeviceW methods ***/
-    STDMETHOD(GetCapabilities)(THIS_ LPDIDEVCAPS) PURE;
-    STDMETHOD(EnumObjects)(THIS_ LPDIENUMDEVICEOBJECTSCALLBACKW,LPVOID,DWORD) PURE;
-    STDMETHOD(GetProperty)(THIS_ REFGUID,LPDIPROPHEADER) PURE;
-    STDMETHOD(SetProperty)(THIS_ REFGUID,LPCDIPROPHEADER) PURE;
-    STDMETHOD(Acquire)(THIS) PURE;
-    STDMETHOD(Unacquire)(THIS) PURE;
-    STDMETHOD(GetDeviceState)(THIS_ DWORD,LPVOID) PURE;
-    STDMETHOD(GetDeviceData)(THIS_ DWORD,LPDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
-    STDMETHOD(SetDataFormat)(THIS_ LPCDIDATAFORMAT) PURE;
-    STDMETHOD(SetEventNotification)(THIS_ HANDLE) PURE;
-    STDMETHOD(SetCooperativeLevel)(THIS_ HWND,DWORD) PURE;
-    STDMETHOD(GetObjectInfo)(THIS_ LPDIDEVICEOBJECTINSTANCEW,DWORD,DWORD) PURE;
-    STDMETHOD(GetDeviceInfo)(THIS_ LPDIDEVICEINSTANCEW) PURE;
-    STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
-    STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD,REFGUID) PURE;
+	/*** IDirectInputDeviceW methods ***/
+	STDMETHOD(GetCapabilities)(THIS_ LPDIDEVCAPS) PURE;
+	STDMETHOD(EnumObjects)(THIS_ LPDIENUMDEVICEOBJECTSCALLBACKW,LPVOID,DWORD) PURE;
+	STDMETHOD(GetProperty)(THIS_ REFGUID,LPDIPROPHEADER) PURE;
+	STDMETHOD(SetProperty)(THIS_ REFGUID,LPCDIPROPHEADER) PURE;
+	STDMETHOD(Acquire)(THIS) PURE;
+	STDMETHOD(Unacquire)(THIS) PURE;
+	STDMETHOD(GetDeviceState)(THIS_ DWORD,LPVOID) PURE;
+	STDMETHOD(GetDeviceData)(THIS_ DWORD,LPDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
+	STDMETHOD(SetDataFormat)(THIS_ LPCDIDATAFORMAT) PURE;
+	STDMETHOD(SetEventNotification)(THIS_ HANDLE) PURE;
+	STDMETHOD(SetCooperativeLevel)(THIS_ HWND,DWORD) PURE;
+	STDMETHOD(GetObjectInfo)(THIS_ LPDIDEVICEOBJECTINSTANCEW,DWORD,DWORD) PURE;
+	STDMETHOD(GetDeviceInfo)(THIS_ LPDIDEVICEINSTANCEW) PURE;
+	STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
+	STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD,REFGUID) PURE;
 
-    /*** IDirectInputDevice2W methods ***/
-    STDMETHOD(CreateEffect)(THIS_ REFGUID,LPCDIEFFECT,LPDIRECTINPUTEFFECT *,LPUNKNOWN) PURE;
-    STDMETHOD(EnumEffects)(THIS_ LPDIENUMEFFECTSCALLBACKW,LPVOID,DWORD) PURE;
-    STDMETHOD(GetEffectInfo)(THIS_ LPDIEFFECTINFOW,REFGUID) PURE;
-    STDMETHOD(GetForceFeedbackState)(THIS_ LPDWORD) PURE;
-    STDMETHOD(SendForceFeedbackCommand)(THIS_ DWORD) PURE;
-    STDMETHOD(EnumCreatedEffectObjects)(THIS_ LPDIENUMCREATEDEFFECTOBJECTSCALLBACK,LPVOID,DWORD) PURE;
-    STDMETHOD(Escape)(THIS_ LPDIEFFESCAPE) PURE;
-    STDMETHOD(Poll)(THIS) PURE;
-    STDMETHOD(SendDeviceData)(THIS_ DWORD,LPCDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
+	/*** IDirectInputDevice2W methods ***/
+	STDMETHOD(CreateEffect)(THIS_ REFGUID,LPCDIEFFECT,LPDIRECTINPUTEFFECT *,LPUNKNOWN) PURE;
+	STDMETHOD(EnumEffects)(THIS_ LPDIENUMEFFECTSCALLBACKW,LPVOID,DWORD) PURE;
+	STDMETHOD(GetEffectInfo)(THIS_ LPDIEFFECTINFOW,REFGUID) PURE;
+	STDMETHOD(GetForceFeedbackState)(THIS_ LPDWORD) PURE;
+	STDMETHOD(SendForceFeedbackCommand)(THIS_ DWORD) PURE;
+	STDMETHOD(EnumCreatedEffectObjects)(THIS_ LPDIENUMCREATEDEFFECTOBJECTSCALLBACK,LPVOID,DWORD) PURE;
+	STDMETHOD(Escape)(THIS_ LPDIEFFESCAPE) PURE;
+	STDMETHOD(Poll)(THIS) PURE;
+	STDMETHOD(SendDeviceData)(THIS_ DWORD,LPCDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
 };
 
 typedef struct IDirectInputDevice2W *LPDIRECTINPUTDEVICE2W;
@@ -1526,38 +1574,38 @@ typedef struct IDirectInputDevice2W *LPDIRECTINPUTDEVICE2W;
 
 DECLARE_INTERFACE_(IDirectInputDevice2A, IDirectInputDeviceA)
 {
-    /*** IUnknown methods ***/
-    STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
-    STDMETHOD_(ULONG,AddRef)(THIS) PURE;
-    STDMETHOD_(ULONG,Release)(THIS) PURE;
+	/*** IUnknown methods ***/
+	STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
 
-    /*** IDirectInputDeviceA methods ***/
-    STDMETHOD(GetCapabilities)(THIS_ LPDIDEVCAPS) PURE;
-    STDMETHOD(EnumObjects)(THIS_ LPDIENUMDEVICEOBJECTSCALLBACKA,LPVOID,DWORD) PURE;
-    STDMETHOD(GetProperty)(THIS_ REFGUID,LPDIPROPHEADER) PURE;
-    STDMETHOD(SetProperty)(THIS_ REFGUID,LPCDIPROPHEADER) PURE;
-    STDMETHOD(Acquire)(THIS) PURE;
-    STDMETHOD(Unacquire)(THIS) PURE;
-    STDMETHOD(GetDeviceState)(THIS_ DWORD,LPVOID) PURE;
-    STDMETHOD(GetDeviceData)(THIS_ DWORD,LPDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
-    STDMETHOD(SetDataFormat)(THIS_ LPCDIDATAFORMAT) PURE;
-    STDMETHOD(SetEventNotification)(THIS_ HANDLE) PURE;
-    STDMETHOD(SetCooperativeLevel)(THIS_ HWND,DWORD) PURE;
-    STDMETHOD(GetObjectInfo)(THIS_ LPDIDEVICEOBJECTINSTANCEA,DWORD,DWORD) PURE;
-    STDMETHOD(GetDeviceInfo)(THIS_ LPDIDEVICEINSTANCEA) PURE;
-    STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
-    STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD,REFGUID) PURE;
+	/*** IDirectInputDeviceA methods ***/
+	STDMETHOD(GetCapabilities)(THIS_ LPDIDEVCAPS) PURE;
+	STDMETHOD(EnumObjects)(THIS_ LPDIENUMDEVICEOBJECTSCALLBACKA,LPVOID,DWORD) PURE;
+	STDMETHOD(GetProperty)(THIS_ REFGUID,LPDIPROPHEADER) PURE;
+	STDMETHOD(SetProperty)(THIS_ REFGUID,LPCDIPROPHEADER) PURE;
+	STDMETHOD(Acquire)(THIS) PURE;
+	STDMETHOD(Unacquire)(THIS) PURE;
+	STDMETHOD(GetDeviceState)(THIS_ DWORD,LPVOID) PURE;
+	STDMETHOD(GetDeviceData)(THIS_ DWORD,LPDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
+	STDMETHOD(SetDataFormat)(THIS_ LPCDIDATAFORMAT) PURE;
+	STDMETHOD(SetEventNotification)(THIS_ HANDLE) PURE;
+	STDMETHOD(SetCooperativeLevel)(THIS_ HWND,DWORD) PURE;
+	STDMETHOD(GetObjectInfo)(THIS_ LPDIDEVICEOBJECTINSTANCEA,DWORD,DWORD) PURE;
+	STDMETHOD(GetDeviceInfo)(THIS_ LPDIDEVICEINSTANCEA) PURE;
+	STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
+	STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD,REFGUID) PURE;
 
-    /*** IDirectInputDevice2A methods ***/
-    STDMETHOD(CreateEffect)(THIS_ REFGUID,LPCDIEFFECT,LPDIRECTINPUTEFFECT *,LPUNKNOWN) PURE;
-    STDMETHOD(EnumEffects)(THIS_ LPDIENUMEFFECTSCALLBACKA,LPVOID,DWORD) PURE;
-    STDMETHOD(GetEffectInfo)(THIS_ LPDIEFFECTINFOA,REFGUID) PURE;
-    STDMETHOD(GetForceFeedbackState)(THIS_ LPDWORD) PURE;
-    STDMETHOD(SendForceFeedbackCommand)(THIS_ DWORD) PURE;
-    STDMETHOD(EnumCreatedEffectObjects)(THIS_ LPDIENUMCREATEDEFFECTOBJECTSCALLBACK,LPVOID,DWORD) PURE;
-    STDMETHOD(Escape)(THIS_ LPDIEFFESCAPE) PURE;
-    STDMETHOD(Poll)(THIS) PURE;
-    STDMETHOD(SendDeviceData)(THIS_ DWORD,LPCDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
+	/*** IDirectInputDevice2A methods ***/
+	STDMETHOD(CreateEffect)(THIS_ REFGUID,LPCDIEFFECT,LPDIRECTINPUTEFFECT *,LPUNKNOWN) PURE;
+	STDMETHOD(EnumEffects)(THIS_ LPDIENUMEFFECTSCALLBACKA,LPVOID,DWORD) PURE;
+	STDMETHOD(GetEffectInfo)(THIS_ LPDIEFFECTINFOA,REFGUID) PURE;
+	STDMETHOD(GetForceFeedbackState)(THIS_ LPDWORD) PURE;
+	STDMETHOD(SendForceFeedbackCommand)(THIS_ DWORD) PURE;
+	STDMETHOD(EnumCreatedEffectObjects)(THIS_ LPDIENUMCREATEDEFFECTOBJECTSCALLBACK,LPVOID,DWORD) PURE;
+	STDMETHOD(Escape)(THIS_ LPDIEFFESCAPE) PURE;
+	STDMETHOD(Poll)(THIS) PURE;
+	STDMETHOD(SendDeviceData)(THIS_ DWORD,LPCDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
 };
 
 typedef struct IDirectInputDevice2A *LPDIRECTINPUTDEVICE2A;
@@ -1647,40 +1695,40 @@ typedef struct IDirectInputDevice2 *LPDIRECTINPUTDEVICE2;
 
 DECLARE_INTERFACE_(IDirectInputDevice7W, IDirectInputDevice2W)
 {
-    /*** IUnknown methods ***/
-    STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
-    STDMETHOD_(ULONG,AddRef)(THIS) PURE;
-    STDMETHOD_(ULONG,Release)(THIS) PURE;
+	/*** IUnknown methods ***/
+	STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
 
-    /*** IDirectInputDevice2W methods ***/
-    STDMETHOD(GetCapabilities)(THIS_ LPDIDEVCAPS) PURE;
-    STDMETHOD(EnumObjects)(THIS_ LPDIENUMDEVICEOBJECTSCALLBACKW,LPVOID,DWORD) PURE;
-    STDMETHOD(GetProperty)(THIS_ REFGUID,LPDIPROPHEADER) PURE;
-    STDMETHOD(SetProperty)(THIS_ REFGUID,LPCDIPROPHEADER) PURE;
-    STDMETHOD(Acquire)(THIS) PURE;
-    STDMETHOD(Unacquire)(THIS) PURE;
-    STDMETHOD(GetDeviceState)(THIS_ DWORD,LPVOID) PURE;
-    STDMETHOD(GetDeviceData)(THIS_ DWORD,LPDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
-    STDMETHOD(SetDataFormat)(THIS_ LPCDIDATAFORMAT) PURE;
-    STDMETHOD(SetEventNotification)(THIS_ HANDLE) PURE;
-    STDMETHOD(SetCooperativeLevel)(THIS_ HWND,DWORD) PURE;
-    STDMETHOD(GetObjectInfo)(THIS_ LPDIDEVICEOBJECTINSTANCEW,DWORD,DWORD) PURE;
-    STDMETHOD(GetDeviceInfo)(THIS_ LPDIDEVICEINSTANCEW) PURE;
-    STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
-    STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD,REFGUID) PURE;
-    STDMETHOD(CreateEffect)(THIS_ REFGUID,LPCDIEFFECT,LPDIRECTINPUTEFFECT *,LPUNKNOWN) PURE;
-    STDMETHOD(EnumEffects)(THIS_ LPDIENUMEFFECTSCALLBACKW,LPVOID,DWORD) PURE;
-    STDMETHOD(GetEffectInfo)(THIS_ LPDIEFFECTINFOW,REFGUID) PURE;
-    STDMETHOD(GetForceFeedbackState)(THIS_ LPDWORD) PURE;
-    STDMETHOD(SendForceFeedbackCommand)(THIS_ DWORD) PURE;
-    STDMETHOD(EnumCreatedEffectObjects)(THIS_ LPDIENUMCREATEDEFFECTOBJECTSCALLBACK,LPVOID,DWORD) PURE;
-    STDMETHOD(Escape)(THIS_ LPDIEFFESCAPE) PURE;
-    STDMETHOD(Poll)(THIS) PURE;
-    STDMETHOD(SendDeviceData)(THIS_ DWORD,LPCDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
+	/*** IDirectInputDevice2W methods ***/
+	STDMETHOD(GetCapabilities)(THIS_ LPDIDEVCAPS) PURE;
+	STDMETHOD(EnumObjects)(THIS_ LPDIENUMDEVICEOBJECTSCALLBACKW,LPVOID,DWORD) PURE;
+	STDMETHOD(GetProperty)(THIS_ REFGUID,LPDIPROPHEADER) PURE;
+	STDMETHOD(SetProperty)(THIS_ REFGUID,LPCDIPROPHEADER) PURE;
+	STDMETHOD(Acquire)(THIS) PURE;
+	STDMETHOD(Unacquire)(THIS) PURE;
+	STDMETHOD(GetDeviceState)(THIS_ DWORD,LPVOID) PURE;
+	STDMETHOD(GetDeviceData)(THIS_ DWORD,LPDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
+	STDMETHOD(SetDataFormat)(THIS_ LPCDIDATAFORMAT) PURE;
+	STDMETHOD(SetEventNotification)(THIS_ HANDLE) PURE;
+	STDMETHOD(SetCooperativeLevel)(THIS_ HWND,DWORD) PURE;
+	STDMETHOD(GetObjectInfo)(THIS_ LPDIDEVICEOBJECTINSTANCEW,DWORD,DWORD) PURE;
+	STDMETHOD(GetDeviceInfo)(THIS_ LPDIDEVICEINSTANCEW) PURE;
+	STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
+	STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD,REFGUID) PURE;
+	STDMETHOD(CreateEffect)(THIS_ REFGUID,LPCDIEFFECT,LPDIRECTINPUTEFFECT *,LPUNKNOWN) PURE;
+	STDMETHOD(EnumEffects)(THIS_ LPDIENUMEFFECTSCALLBACKW,LPVOID,DWORD) PURE;
+	STDMETHOD(GetEffectInfo)(THIS_ LPDIEFFECTINFOW,REFGUID) PURE;
+	STDMETHOD(GetForceFeedbackState)(THIS_ LPDWORD) PURE;
+	STDMETHOD(SendForceFeedbackCommand)(THIS_ DWORD) PURE;
+	STDMETHOD(EnumCreatedEffectObjects)(THIS_ LPDIENUMCREATEDEFFECTOBJECTSCALLBACK,LPVOID,DWORD) PURE;
+	STDMETHOD(Escape)(THIS_ LPDIEFFESCAPE) PURE;
+	STDMETHOD(Poll)(THIS) PURE;
+	STDMETHOD(SendDeviceData)(THIS_ DWORD,LPCDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
 
-    /*** IDirectInputDevice7W methods ***/
-    STDMETHOD(EnumEffectsInFile)(THIS_ LPCWSTR,LPDIENUMEFFECTSINFILECALLBACK,LPVOID,DWORD) PURE;
-    STDMETHOD(WriteEffectToFile)(THIS_ LPCWSTR,DWORD,LPDIFILEEFFECT,DWORD) PURE;
+	/*** IDirectInputDevice7W methods ***/
+	STDMETHOD(EnumEffectsInFile)(THIS_ LPCWSTR,LPDIENUMEFFECTSINFILECALLBACK,LPVOID,DWORD) PURE;
+	STDMETHOD(WriteEffectToFile)(THIS_ LPCWSTR,DWORD,LPDIFILEEFFECT,DWORD) PURE;
 };
 
 typedef struct IDirectInputDevice7W *LPDIRECTINPUTDEVICE7W;
@@ -1690,40 +1738,40 @@ typedef struct IDirectInputDevice7W *LPDIRECTINPUTDEVICE7W;
 
 DECLARE_INTERFACE_(IDirectInputDevice7A, IDirectInputDevice2A)
 {
-    /*** IUnknown methods ***/
-    STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
-    STDMETHOD_(ULONG,AddRef)(THIS) PURE;
-    STDMETHOD_(ULONG,Release)(THIS) PURE;
+	/*** IUnknown methods ***/
+	STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
 
-    /*** IDirectInputDevice2A methods ***/
-    STDMETHOD(GetCapabilities)(THIS_ LPDIDEVCAPS) PURE;
-    STDMETHOD(EnumObjects)(THIS_ LPDIENUMDEVICEOBJECTSCALLBACKA,LPVOID,DWORD) PURE;
-    STDMETHOD(GetProperty)(THIS_ REFGUID,LPDIPROPHEADER) PURE;
-    STDMETHOD(SetProperty)(THIS_ REFGUID,LPCDIPROPHEADER) PURE;
-    STDMETHOD(Acquire)(THIS) PURE;
-    STDMETHOD(Unacquire)(THIS) PURE;
-    STDMETHOD(GetDeviceState)(THIS_ DWORD,LPVOID) PURE;
-    STDMETHOD(GetDeviceData)(THIS_ DWORD,LPDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
-    STDMETHOD(SetDataFormat)(THIS_ LPCDIDATAFORMAT) PURE;
-    STDMETHOD(SetEventNotification)(THIS_ HANDLE) PURE;
-    STDMETHOD(SetCooperativeLevel)(THIS_ HWND,DWORD) PURE;
-    STDMETHOD(GetObjectInfo)(THIS_ LPDIDEVICEOBJECTINSTANCEA,DWORD,DWORD) PURE;
-    STDMETHOD(GetDeviceInfo)(THIS_ LPDIDEVICEINSTANCEA) PURE;
-    STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
-    STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD,REFGUID) PURE;
-    STDMETHOD(CreateEffect)(THIS_ REFGUID,LPCDIEFFECT,LPDIRECTINPUTEFFECT *,LPUNKNOWN) PURE;
-    STDMETHOD(EnumEffects)(THIS_ LPDIENUMEFFECTSCALLBACKA,LPVOID,DWORD) PURE;
-    STDMETHOD(GetEffectInfo)(THIS_ LPDIEFFECTINFOA,REFGUID) PURE;
-    STDMETHOD(GetForceFeedbackState)(THIS_ LPDWORD) PURE;
-    STDMETHOD(SendForceFeedbackCommand)(THIS_ DWORD) PURE;
-    STDMETHOD(EnumCreatedEffectObjects)(THIS_ LPDIENUMCREATEDEFFECTOBJECTSCALLBACK,LPVOID,DWORD) PURE;
-    STDMETHOD(Escape)(THIS_ LPDIEFFESCAPE) PURE;
-    STDMETHOD(Poll)(THIS) PURE;
-    STDMETHOD(SendDeviceData)(THIS_ DWORD,LPCDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
+	/*** IDirectInputDevice2A methods ***/
+	STDMETHOD(GetCapabilities)(THIS_ LPDIDEVCAPS) PURE;
+	STDMETHOD(EnumObjects)(THIS_ LPDIENUMDEVICEOBJECTSCALLBACKA,LPVOID,DWORD) PURE;
+	STDMETHOD(GetProperty)(THIS_ REFGUID,LPDIPROPHEADER) PURE;
+	STDMETHOD(SetProperty)(THIS_ REFGUID,LPCDIPROPHEADER) PURE;
+	STDMETHOD(Acquire)(THIS) PURE;
+	STDMETHOD(Unacquire)(THIS) PURE;
+	STDMETHOD(GetDeviceState)(THIS_ DWORD,LPVOID) PURE;
+	STDMETHOD(GetDeviceData)(THIS_ DWORD,LPDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
+	STDMETHOD(SetDataFormat)(THIS_ LPCDIDATAFORMAT) PURE;
+	STDMETHOD(SetEventNotification)(THIS_ HANDLE) PURE;
+	STDMETHOD(SetCooperativeLevel)(THIS_ HWND,DWORD) PURE;
+	STDMETHOD(GetObjectInfo)(THIS_ LPDIDEVICEOBJECTINSTANCEA,DWORD,DWORD) PURE;
+	STDMETHOD(GetDeviceInfo)(THIS_ LPDIDEVICEINSTANCEA) PURE;
+	STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
+	STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD,REFGUID) PURE;
+	STDMETHOD(CreateEffect)(THIS_ REFGUID,LPCDIEFFECT,LPDIRECTINPUTEFFECT *,LPUNKNOWN) PURE;
+	STDMETHOD(EnumEffects)(THIS_ LPDIENUMEFFECTSCALLBACKA,LPVOID,DWORD) PURE;
+	STDMETHOD(GetEffectInfo)(THIS_ LPDIEFFECTINFOA,REFGUID) PURE;
+	STDMETHOD(GetForceFeedbackState)(THIS_ LPDWORD) PURE;
+	STDMETHOD(SendForceFeedbackCommand)(THIS_ DWORD) PURE;
+	STDMETHOD(EnumCreatedEffectObjects)(THIS_ LPDIENUMCREATEDEFFECTOBJECTSCALLBACK,LPVOID,DWORD) PURE;
+	STDMETHOD(Escape)(THIS_ LPDIEFFESCAPE) PURE;
+	STDMETHOD(Poll)(THIS) PURE;
+	STDMETHOD(SendDeviceData)(THIS_ DWORD,LPCDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
 
-    /*** IDirectInputDevice7A methods ***/
-    STDMETHOD(EnumEffectsInFile)(THIS_ LPCSTR,LPDIENUMEFFECTSINFILECALLBACK,LPVOID,DWORD) PURE;
-    STDMETHOD(WriteEffectToFile)(THIS_ LPCSTR,DWORD,LPDIFILEEFFECT,DWORD) PURE;
+	/*** IDirectInputDevice7A methods ***/
+	STDMETHOD(EnumEffectsInFile)(THIS_ LPCSTR,LPDIENUMEFFECTSINFILECALLBACK,LPVOID,DWORD) PURE;
+	STDMETHOD(WriteEffectToFile)(THIS_ LPCSTR,DWORD,LPDIFILEEFFECT,DWORD) PURE;
 };
 
 typedef struct IDirectInputDevice7A *LPDIRECTINPUTDEVICE7A;
@@ -1814,41 +1862,41 @@ typedef struct IDirectInputDevice7 *LPDIRECTINPUTDEVICE7;
 
 DECLARE_INTERFACE_(IDirectInputDevice8W, IUnknown)
 {
-    /*** IUnknown methods ***/
-    STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
-    STDMETHOD_(ULONG,AddRef)(THIS) PURE;
-    STDMETHOD_(ULONG,Release)(THIS) PURE;
+	/*** IUnknown methods ***/
+	STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
 
-    /*** IDirectInputDevice8W methods ***/
-    STDMETHOD(GetCapabilities)(THIS_ LPDIDEVCAPS) PURE;
-    STDMETHOD(EnumObjects)(THIS_ LPDIENUMDEVICEOBJECTSCALLBACKW,LPVOID,DWORD) PURE;
-    STDMETHOD(GetProperty)(THIS_ REFGUID,LPDIPROPHEADER) PURE;
-    STDMETHOD(SetProperty)(THIS_ REFGUID,LPCDIPROPHEADER) PURE;
-    STDMETHOD(Acquire)(THIS) PURE;
-    STDMETHOD(Unacquire)(THIS) PURE;
-    STDMETHOD(GetDeviceState)(THIS_ DWORD,LPVOID) PURE;
-    STDMETHOD(GetDeviceData)(THIS_ DWORD,LPDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
-    STDMETHOD(SetDataFormat)(THIS_ LPCDIDATAFORMAT) PURE;
-    STDMETHOD(SetEventNotification)(THIS_ HANDLE) PURE;
-    STDMETHOD(SetCooperativeLevel)(THIS_ HWND,DWORD) PURE;
-    STDMETHOD(GetObjectInfo)(THIS_ LPDIDEVICEOBJECTINSTANCEW,DWORD,DWORD) PURE;
-    STDMETHOD(GetDeviceInfo)(THIS_ LPDIDEVICEINSTANCEW) PURE;
-    STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
-    STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD,REFGUID) PURE;
-    STDMETHOD(CreateEffect)(THIS_ REFGUID,LPCDIEFFECT,LPDIRECTINPUTEFFECT *,LPUNKNOWN) PURE;
-    STDMETHOD(EnumEffects)(THIS_ LPDIENUMEFFECTSCALLBACKW,LPVOID,DWORD) PURE;
-    STDMETHOD(GetEffectInfo)(THIS_ LPDIEFFECTINFOW,REFGUID) PURE;
-    STDMETHOD(GetForceFeedbackState)(THIS_ LPDWORD) PURE;
-    STDMETHOD(SendForceFeedbackCommand)(THIS_ DWORD) PURE;
-    STDMETHOD(EnumCreatedEffectObjects)(THIS_ LPDIENUMCREATEDEFFECTOBJECTSCALLBACK,LPVOID,DWORD) PURE;
-    STDMETHOD(Escape)(THIS_ LPDIEFFESCAPE) PURE;
-    STDMETHOD(Poll)(THIS) PURE;
-    STDMETHOD(SendDeviceData)(THIS_ DWORD,LPCDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
-    STDMETHOD(EnumEffectsInFile)(THIS_ LPCWSTR,LPDIENUMEFFECTSINFILECALLBACK,LPVOID,DWORD) PURE;
-    STDMETHOD(WriteEffectToFile)(THIS_ LPCWSTR,DWORD,LPDIFILEEFFECT,DWORD) PURE;
-    STDMETHOD(BuildActionMap)(THIS_ LPDIACTIONFORMATW,LPCWSTR,DWORD) PURE;
-    STDMETHOD(SetActionMap)(THIS_ LPDIACTIONFORMATW,LPCWSTR,DWORD) PURE;
-    STDMETHOD(GetImageInfo)(THIS_ LPDIDEVICEIMAGEINFOHEADERW) PURE;
+	/*** IDirectInputDevice8W methods ***/
+	STDMETHOD(GetCapabilities)(THIS_ LPDIDEVCAPS) PURE;
+	STDMETHOD(EnumObjects)(THIS_ LPDIENUMDEVICEOBJECTSCALLBACKW,LPVOID,DWORD) PURE;
+	STDMETHOD(GetProperty)(THIS_ REFGUID,LPDIPROPHEADER) PURE;
+	STDMETHOD(SetProperty)(THIS_ REFGUID,LPCDIPROPHEADER) PURE;
+	STDMETHOD(Acquire)(THIS) PURE;
+	STDMETHOD(Unacquire)(THIS) PURE;
+	STDMETHOD(GetDeviceState)(THIS_ DWORD,LPVOID) PURE;
+	STDMETHOD(GetDeviceData)(THIS_ DWORD,LPDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
+	STDMETHOD(SetDataFormat)(THIS_ LPCDIDATAFORMAT) PURE;
+	STDMETHOD(SetEventNotification)(THIS_ HANDLE) PURE;
+	STDMETHOD(SetCooperativeLevel)(THIS_ HWND,DWORD) PURE;
+	STDMETHOD(GetObjectInfo)(THIS_ LPDIDEVICEOBJECTINSTANCEW,DWORD,DWORD) PURE;
+	STDMETHOD(GetDeviceInfo)(THIS_ LPDIDEVICEINSTANCEW) PURE;
+	STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
+	STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD,REFGUID) PURE;
+	STDMETHOD(CreateEffect)(THIS_ REFGUID,LPCDIEFFECT,LPDIRECTINPUTEFFECT *,LPUNKNOWN) PURE;
+	STDMETHOD(EnumEffects)(THIS_ LPDIENUMEFFECTSCALLBACKW,LPVOID,DWORD) PURE;
+	STDMETHOD(GetEffectInfo)(THIS_ LPDIEFFECTINFOW,REFGUID) PURE;
+	STDMETHOD(GetForceFeedbackState)(THIS_ LPDWORD) PURE;
+	STDMETHOD(SendForceFeedbackCommand)(THIS_ DWORD) PURE;
+	STDMETHOD(EnumCreatedEffectObjects)(THIS_ LPDIENUMCREATEDEFFECTOBJECTSCALLBACK,LPVOID,DWORD) PURE;
+	STDMETHOD(Escape)(THIS_ LPDIEFFESCAPE) PURE;
+	STDMETHOD(Poll)(THIS) PURE;
+	STDMETHOD(SendDeviceData)(THIS_ DWORD,LPCDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
+	STDMETHOD(EnumEffectsInFile)(THIS_ LPCWSTR,LPDIENUMEFFECTSINFILECALLBACK,LPVOID,DWORD) PURE;
+	STDMETHOD(WriteEffectToFile)(THIS_ LPCWSTR,DWORD,LPDIFILEEFFECT,DWORD) PURE;
+	STDMETHOD(BuildActionMap)(THIS_ LPDIACTIONFORMATW,LPCWSTR,DWORD) PURE;
+	STDMETHOD(SetActionMap)(THIS_ LPDIACTIONFORMATW,LPCWSTR,DWORD) PURE;
+	STDMETHOD(GetImageInfo)(THIS_ LPDIDEVICEIMAGEINFOHEADERW) PURE;
 };
 
 typedef struct IDirectInputDevice8W *LPDIRECTINPUTDEVICE8W;
@@ -1858,41 +1906,41 @@ typedef struct IDirectInputDevice8W *LPDIRECTINPUTDEVICE8W;
 
 DECLARE_INTERFACE_(IDirectInputDevice8A, IUnknown)
 {
-    /*** IUnknown methods ***/
-    STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
-    STDMETHOD_(ULONG,AddRef)(THIS) PURE;
-    STDMETHOD_(ULONG,Release)(THIS) PURE;
+	/*** IUnknown methods ***/
+	STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
 
-    /*** IDirectInputDevice8A methods ***/
-    STDMETHOD(GetCapabilities)(THIS_ LPDIDEVCAPS) PURE;
-    STDMETHOD(EnumObjects)(THIS_ LPDIENUMDEVICEOBJECTSCALLBACKA,LPVOID,DWORD) PURE;
-    STDMETHOD(GetProperty)(THIS_ REFGUID,LPDIPROPHEADER) PURE;
-    STDMETHOD(SetProperty)(THIS_ REFGUID,LPCDIPROPHEADER) PURE;
-    STDMETHOD(Acquire)(THIS) PURE;
-    STDMETHOD(Unacquire)(THIS) PURE;
-    STDMETHOD(GetDeviceState)(THIS_ DWORD,LPVOID) PURE;
-    STDMETHOD(GetDeviceData)(THIS_ DWORD,LPDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
-    STDMETHOD(SetDataFormat)(THIS_ LPCDIDATAFORMAT) PURE;
-    STDMETHOD(SetEventNotification)(THIS_ HANDLE) PURE;
-    STDMETHOD(SetCooperativeLevel)(THIS_ HWND,DWORD) PURE;
-    STDMETHOD(GetObjectInfo)(THIS_ LPDIDEVICEOBJECTINSTANCEA,DWORD,DWORD) PURE;
-    STDMETHOD(GetDeviceInfo)(THIS_ LPDIDEVICEINSTANCEA) PURE;
-    STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
-    STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD,REFGUID) PURE;
-    STDMETHOD(CreateEffect)(THIS_ REFGUID,LPCDIEFFECT,LPDIRECTINPUTEFFECT *,LPUNKNOWN) PURE;
-    STDMETHOD(EnumEffects)(THIS_ LPDIENUMEFFECTSCALLBACKA,LPVOID,DWORD) PURE;
-    STDMETHOD(GetEffectInfo)(THIS_ LPDIEFFECTINFOA,REFGUID) PURE;
-    STDMETHOD(GetForceFeedbackState)(THIS_ LPDWORD) PURE;
-    STDMETHOD(SendForceFeedbackCommand)(THIS_ DWORD) PURE;
-    STDMETHOD(EnumCreatedEffectObjects)(THIS_ LPDIENUMCREATEDEFFECTOBJECTSCALLBACK,LPVOID,DWORD) PURE;
-    STDMETHOD(Escape)(THIS_ LPDIEFFESCAPE) PURE;
-    STDMETHOD(Poll)(THIS) PURE;
-    STDMETHOD(SendDeviceData)(THIS_ DWORD,LPCDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
-    STDMETHOD(EnumEffectsInFile)(THIS_ LPCSTR,LPDIENUMEFFECTSINFILECALLBACK,LPVOID,DWORD) PURE;
-    STDMETHOD(WriteEffectToFile)(THIS_ LPCSTR,DWORD,LPDIFILEEFFECT,DWORD) PURE;
-    STDMETHOD(BuildActionMap)(THIS_ LPDIACTIONFORMATA,LPCSTR,DWORD) PURE;
-    STDMETHOD(SetActionMap)(THIS_ LPDIACTIONFORMATA,LPCSTR,DWORD) PURE;
-    STDMETHOD(GetImageInfo)(THIS_ LPDIDEVICEIMAGEINFOHEADERA) PURE;
+	/*** IDirectInputDevice8A methods ***/
+	STDMETHOD(GetCapabilities)(THIS_ LPDIDEVCAPS) PURE;
+	STDMETHOD(EnumObjects)(THIS_ LPDIENUMDEVICEOBJECTSCALLBACKA,LPVOID,DWORD) PURE;
+	STDMETHOD(GetProperty)(THIS_ REFGUID,LPDIPROPHEADER) PURE;
+	STDMETHOD(SetProperty)(THIS_ REFGUID,LPCDIPROPHEADER) PURE;
+	STDMETHOD(Acquire)(THIS) PURE;
+	STDMETHOD(Unacquire)(THIS) PURE;
+	STDMETHOD(GetDeviceState)(THIS_ DWORD,LPVOID) PURE;
+	STDMETHOD(GetDeviceData)(THIS_ DWORD,LPDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
+	STDMETHOD(SetDataFormat)(THIS_ LPCDIDATAFORMAT) PURE;
+	STDMETHOD(SetEventNotification)(THIS_ HANDLE) PURE;
+	STDMETHOD(SetCooperativeLevel)(THIS_ HWND,DWORD) PURE;
+	STDMETHOD(GetObjectInfo)(THIS_ LPDIDEVICEOBJECTINSTANCEA,DWORD,DWORD) PURE;
+	STDMETHOD(GetDeviceInfo)(THIS_ LPDIDEVICEINSTANCEA) PURE;
+	STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
+	STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD,REFGUID) PURE;
+	STDMETHOD(CreateEffect)(THIS_ REFGUID,LPCDIEFFECT,LPDIRECTINPUTEFFECT *,LPUNKNOWN) PURE;
+	STDMETHOD(EnumEffects)(THIS_ LPDIENUMEFFECTSCALLBACKA,LPVOID,DWORD) PURE;
+	STDMETHOD(GetEffectInfo)(THIS_ LPDIEFFECTINFOA,REFGUID) PURE;
+	STDMETHOD(GetForceFeedbackState)(THIS_ LPDWORD) PURE;
+	STDMETHOD(SendForceFeedbackCommand)(THIS_ DWORD) PURE;
+	STDMETHOD(EnumCreatedEffectObjects)(THIS_ LPDIENUMCREATEDEFFECTOBJECTSCALLBACK,LPVOID,DWORD) PURE;
+	STDMETHOD(Escape)(THIS_ LPDIEFFESCAPE) PURE;
+	STDMETHOD(Poll)(THIS) PURE;
+	STDMETHOD(SendDeviceData)(THIS_ DWORD,LPCDIDEVICEOBJECTDATA,LPDWORD,DWORD) PURE;
+	STDMETHOD(EnumEffectsInFile)(THIS_ LPCSTR,LPDIENUMEFFECTSINFILECALLBACK,LPVOID,DWORD) PURE;
+	STDMETHOD(WriteEffectToFile)(THIS_ LPCSTR,DWORD,LPDIFILEEFFECT,DWORD) PURE;
+	STDMETHOD(BuildActionMap)(THIS_ LPDIACTIONFORMATA,LPCSTR,DWORD) PURE;
+	STDMETHOD(SetActionMap)(THIS_ LPDIACTIONFORMATA,LPCSTR,DWORD) PURE;
+	STDMETHOD(GetImageInfo)(THIS_ LPDIDEVICEIMAGEINFOHEADERA) PURE;
 };
 
 typedef struct IDirectInputDevice8A *LPDIRECTINPUTDEVICE8A;
@@ -1988,19 +2036,21 @@ typedef struct IDirectInputDevice8 *LPDIRECTINPUTDEVICE8;
 
 #ifndef DIJ_RINGZERO
 
-typedef struct _DIMOUSESTATE {
-    LONG    lX;
-    LONG    lY;
-    LONG    lZ;
-    BYTE    rgbButtons[4];
+typedef struct _DIMOUSESTATE
+{
+	LONG    lX;
+	LONG    lY;
+	LONG    lZ;
+	BYTE    rgbButtons[4];
 } DIMOUSESTATE, *LPDIMOUSESTATE;
 
 #if DIRECTINPUT_VERSION >= 0x0700
-typedef struct _DIMOUSESTATE2 {
-    LONG    lX;
-    LONG    lY;
-    LONG    lZ;
-    BYTE    rgbButtons[8];
+typedef struct _DIMOUSESTATE2
+{
+	LONG    lX;
+	LONG    lY;
+	LONG    lZ;
+	BYTE    rgbButtons[8];
 } DIMOUSESTATE2, *LPDIMOUSESTATE2;
 #endif
 
@@ -2212,49 +2262,51 @@ typedef struct _DIMOUSESTATE2 {
 
 #ifndef DIJ_RINGZERO
 
-typedef struct DIJOYSTATE {
-    LONG    lX;                     /* x-axis position              */
-    LONG    lY;                     /* y-axis position              */
-    LONG    lZ;                     /* z-axis position              */
-    LONG    lRx;                    /* x-axis rotation              */
-    LONG    lRy;                    /* y-axis rotation              */
-    LONG    lRz;                    /* z-axis rotation              */
-    LONG    rglSlider[2];           /* extra axes positions         */
-    DWORD   rgdwPOV[4];             /* POV directions               */
-    BYTE    rgbButtons[32];         /* 32 buttons                   */
+typedef struct DIJOYSTATE
+{
+	LONG    lX;                     /* x-axis position              */
+	LONG    lY;                     /* y-axis position              */
+	LONG    lZ;                     /* z-axis position              */
+	LONG    lRx;                    /* x-axis rotation              */
+	LONG    lRy;                    /* y-axis rotation              */
+	LONG    lRz;                    /* z-axis rotation              */
+	LONG    rglSlider[2];           /* extra axes positions         */
+	DWORD   rgdwPOV[4];             /* POV directions               */
+	BYTE    rgbButtons[32];         /* 32 buttons                   */
 } DIJOYSTATE, *LPDIJOYSTATE;
 
-typedef struct DIJOYSTATE2 {
-    LONG    lX;                     /* x-axis position              */
-    LONG    lY;                     /* y-axis position              */
-    LONG    lZ;                     /* z-axis position              */
-    LONG    lRx;                    /* x-axis rotation              */
-    LONG    lRy;                    /* y-axis rotation              */
-    LONG    lRz;                    /* z-axis rotation              */
-    LONG    rglSlider[2];           /* extra axes positions         */
-    DWORD   rgdwPOV[4];             /* POV directions               */
-    BYTE    rgbButtons[128];        /* 128 buttons                  */
-    LONG    lVX;                    /* x-axis velocity              */
-    LONG    lVY;                    /* y-axis velocity              */
-    LONG    lVZ;                    /* z-axis velocity              */
-    LONG    lVRx;                   /* x-axis angular velocity      */
-    LONG    lVRy;                   /* y-axis angular velocity      */
-    LONG    lVRz;                   /* z-axis angular velocity      */
-    LONG    rglVSlider[2];          /* extra axes velocities        */
-    LONG    lAX;                    /* x-axis acceleration          */
-    LONG    lAY;                    /* y-axis acceleration          */
-    LONG    lAZ;                    /* z-axis acceleration          */
-    LONG    lARx;                   /* x-axis angular acceleration  */
-    LONG    lARy;                   /* y-axis angular acceleration  */
-    LONG    lARz;                   /* z-axis angular acceleration  */
-    LONG    rglASlider[2];          /* extra axes accelerations     */
-    LONG    lFX;                    /* x-axis force                 */
-    LONG    lFY;                    /* y-axis force                 */
-    LONG    lFZ;                    /* z-axis force                 */
-    LONG    lFRx;                   /* x-axis torque                */
-    LONG    lFRy;                   /* y-axis torque                */
-    LONG    lFRz;                   /* z-axis torque                */
-    LONG    rglFSlider[2];          /* extra axes forces            */
+typedef struct DIJOYSTATE2
+{
+	LONG    lX;                     /* x-axis position              */
+	LONG    lY;                     /* y-axis position              */
+	LONG    lZ;                     /* z-axis position              */
+	LONG    lRx;                    /* x-axis rotation              */
+	LONG    lRy;                    /* y-axis rotation              */
+	LONG    lRz;                    /* z-axis rotation              */
+	LONG    rglSlider[2];           /* extra axes positions         */
+	DWORD   rgdwPOV[4];             /* POV directions               */
+	BYTE    rgbButtons[128];        /* 128 buttons                  */
+	LONG    lVX;                    /* x-axis velocity              */
+	LONG    lVY;                    /* y-axis velocity              */
+	LONG    lVZ;                    /* z-axis velocity              */
+	LONG    lVRx;                   /* x-axis angular velocity      */
+	LONG    lVRy;                   /* y-axis angular velocity      */
+	LONG    lVRz;                   /* z-axis angular velocity      */
+	LONG    rglVSlider[2];          /* extra axes velocities        */
+	LONG    lAX;                    /* x-axis acceleration          */
+	LONG    lAY;                    /* y-axis acceleration          */
+	LONG    lAZ;                    /* z-axis acceleration          */
+	LONG    lARx;                   /* x-axis angular acceleration  */
+	LONG    lARy;                   /* y-axis angular acceleration  */
+	LONG    lARz;                   /* z-axis angular acceleration  */
+	LONG    rglASlider[2];          /* extra axes accelerations     */
+	LONG    lFX;                    /* x-axis force                 */
+	LONG    lFY;                    /* y-axis force                 */
+	LONG    lFZ;                    /* z-axis force                 */
+	LONG    lFRx;                   /* x-axis torque                */
+	LONG    lFRy;                   /* y-axis torque                */
+	LONG    lFRz;                   /* z-axis torque                */
+	LONG    rglFSlider[2];          /* extra axes forces            */
 } DIJOYSTATE2, *LPDIJOYSTATE2;
 
 #define DIJOFS_X            FIELD_OFFSET(DIJOYSTATE, lX)
@@ -2370,17 +2422,17 @@ typedef BOOL (FAR PASCAL * LPDIENUMDEVICESBYSEMANTICSCBW)(LPCDIDEVICEINSTANCEW, 
 
 DECLARE_INTERFACE_(IDirectInputW, IUnknown)
 {
-    /*** IUnknown methods ***/
-    STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
-    STDMETHOD_(ULONG,AddRef)(THIS) PURE;
-    STDMETHOD_(ULONG,Release)(THIS) PURE;
+	/*** IUnknown methods ***/
+	STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
 
-    /*** IDirectInputW methods ***/
-    STDMETHOD(CreateDevice)(THIS_ REFGUID,LPDIRECTINPUTDEVICEW *,LPUNKNOWN) PURE;
-    STDMETHOD(EnumDevices)(THIS_ DWORD,LPDIENUMDEVICESCALLBACKW,LPVOID,DWORD) PURE;
-    STDMETHOD(GetDeviceStatus)(THIS_ REFGUID) PURE;
-    STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
-    STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD) PURE;
+	/*** IDirectInputW methods ***/
+	STDMETHOD(CreateDevice)(THIS_ REFGUID,LPDIRECTINPUTDEVICEW *,LPUNKNOWN) PURE;
+	STDMETHOD(EnumDevices)(THIS_ DWORD,LPDIENUMDEVICESCALLBACKW,LPVOID,DWORD) PURE;
+	STDMETHOD(GetDeviceStatus)(THIS_ REFGUID) PURE;
+	STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
+	STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD) PURE;
 };
 
 typedef struct IDirectInputW *LPDIRECTINPUTW;
@@ -2390,17 +2442,17 @@ typedef struct IDirectInputW *LPDIRECTINPUTW;
 
 DECLARE_INTERFACE_(IDirectInputA, IUnknown)
 {
-    /*** IUnknown methods ***/
-    STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
-    STDMETHOD_(ULONG,AddRef)(THIS) PURE;
-    STDMETHOD_(ULONG,Release)(THIS) PURE;
+	/*** IUnknown methods ***/
+	STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
 
-    /*** IDirectInputA methods ***/
-    STDMETHOD(CreateDevice)(THIS_ REFGUID,LPDIRECTINPUTDEVICEA *,LPUNKNOWN) PURE;
-    STDMETHOD(EnumDevices)(THIS_ DWORD,LPDIENUMDEVICESCALLBACKA,LPVOID,DWORD) PURE;
-    STDMETHOD(GetDeviceStatus)(THIS_ REFGUID) PURE;
-    STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
-    STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD) PURE;
+	/*** IDirectInputA methods ***/
+	STDMETHOD(CreateDevice)(THIS_ REFGUID,LPDIRECTINPUTDEVICEA *,LPUNKNOWN) PURE;
+	STDMETHOD(EnumDevices)(THIS_ DWORD,LPDIENUMDEVICESCALLBACKA,LPVOID,DWORD) PURE;
+	STDMETHOD(GetDeviceStatus)(THIS_ REFGUID) PURE;
+	STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
+	STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD) PURE;
 };
 
 typedef struct IDirectInputA *LPDIRECTINPUTA;
@@ -2441,20 +2493,20 @@ typedef struct IDirectInput *LPDIRECTINPUT;
 
 DECLARE_INTERFACE_(IDirectInput2W, IDirectInputW)
 {
-    /*** IUnknown methods ***/
-    STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
-    STDMETHOD_(ULONG,AddRef)(THIS) PURE;
-    STDMETHOD_(ULONG,Release)(THIS) PURE;
+	/*** IUnknown methods ***/
+	STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
 
-    /*** IDirectInputW methods ***/
-    STDMETHOD(CreateDevice)(THIS_ REFGUID,LPDIRECTINPUTDEVICEW *,LPUNKNOWN) PURE;
-    STDMETHOD(EnumDevices)(THIS_ DWORD,LPDIENUMDEVICESCALLBACKW,LPVOID,DWORD) PURE;
-    STDMETHOD(GetDeviceStatus)(THIS_ REFGUID) PURE;
-    STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
-    STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD) PURE;
+	/*** IDirectInputW methods ***/
+	STDMETHOD(CreateDevice)(THIS_ REFGUID,LPDIRECTINPUTDEVICEW *,LPUNKNOWN) PURE;
+	STDMETHOD(EnumDevices)(THIS_ DWORD,LPDIENUMDEVICESCALLBACKW,LPVOID,DWORD) PURE;
+	STDMETHOD(GetDeviceStatus)(THIS_ REFGUID) PURE;
+	STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
+	STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD) PURE;
 
-    /*** IDirectInput2W methods ***/
-    STDMETHOD(FindDevice)(THIS_ REFGUID,LPCWSTR,LPGUID) PURE;
+	/*** IDirectInput2W methods ***/
+	STDMETHOD(FindDevice)(THIS_ REFGUID,LPCWSTR,LPGUID) PURE;
 };
 
 typedef struct IDirectInput2W *LPDIRECTINPUT2W;
@@ -2464,20 +2516,20 @@ typedef struct IDirectInput2W *LPDIRECTINPUT2W;
 
 DECLARE_INTERFACE_(IDirectInput2A, IDirectInputA)
 {
-    /*** IUnknown methods ***/
-    STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
-    STDMETHOD_(ULONG,AddRef)(THIS) PURE;
-    STDMETHOD_(ULONG,Release)(THIS) PURE;
+	/*** IUnknown methods ***/
+	STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
 
-    /*** IDirectInputA methods ***/
-    STDMETHOD(CreateDevice)(THIS_ REFGUID,LPDIRECTINPUTDEVICEA *,LPUNKNOWN) PURE;
-    STDMETHOD(EnumDevices)(THIS_ DWORD,LPDIENUMDEVICESCALLBACKA,LPVOID,DWORD) PURE;
-    STDMETHOD(GetDeviceStatus)(THIS_ REFGUID) PURE;
-    STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
-    STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD) PURE;
+	/*** IDirectInputA methods ***/
+	STDMETHOD(CreateDevice)(THIS_ REFGUID,LPDIRECTINPUTDEVICEA *,LPUNKNOWN) PURE;
+	STDMETHOD(EnumDevices)(THIS_ DWORD,LPDIENUMDEVICESCALLBACKA,LPVOID,DWORD) PURE;
+	STDMETHOD(GetDeviceStatus)(THIS_ REFGUID) PURE;
+	STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
+	STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD) PURE;
 
-    /*** IDirectInput2A methods ***/
-    STDMETHOD(FindDevice)(THIS_ REFGUID,LPCSTR,LPGUID) PURE;
+	/*** IDirectInput2A methods ***/
+	STDMETHOD(FindDevice)(THIS_ REFGUID,LPCSTR,LPGUID) PURE;
 };
 
 typedef struct IDirectInput2A *LPDIRECTINPUT2A;
@@ -2521,21 +2573,21 @@ typedef struct IDirectInput2 *LPDIRECTINPUT2;
 
 DECLARE_INTERFACE_(IDirectInput7W, IDirectInput2W)
 {
-    /*** IUnknown methods ***/
-    STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
-    STDMETHOD_(ULONG,AddRef)(THIS) PURE;
-    STDMETHOD_(ULONG,Release)(THIS) PURE;
+	/*** IUnknown methods ***/
+	STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
 
-    /*** IDirectInput2W methods ***/
-    STDMETHOD(CreateDevice)(THIS_ REFGUID,LPDIRECTINPUTDEVICEW *,LPUNKNOWN) PURE;
-    STDMETHOD(EnumDevices)(THIS_ DWORD,LPDIENUMDEVICESCALLBACKW,LPVOID,DWORD) PURE;
-    STDMETHOD(GetDeviceStatus)(THIS_ REFGUID) PURE;
-    STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
-    STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD) PURE;
-    STDMETHOD(FindDevice)(THIS_ REFGUID,LPCWSTR,LPGUID) PURE;
+	/*** IDirectInput2W methods ***/
+	STDMETHOD(CreateDevice)(THIS_ REFGUID,LPDIRECTINPUTDEVICEW *,LPUNKNOWN) PURE;
+	STDMETHOD(EnumDevices)(THIS_ DWORD,LPDIENUMDEVICESCALLBACKW,LPVOID,DWORD) PURE;
+	STDMETHOD(GetDeviceStatus)(THIS_ REFGUID) PURE;
+	STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
+	STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD) PURE;
+	STDMETHOD(FindDevice)(THIS_ REFGUID,LPCWSTR,LPGUID) PURE;
 
-    /*** IDirectInput7W methods ***/
-    STDMETHOD(CreateDeviceEx)(THIS_ REFGUID,REFIID,LPVOID *,LPUNKNOWN) PURE;
+	/*** IDirectInput7W methods ***/
+	STDMETHOD(CreateDeviceEx)(THIS_ REFGUID,REFIID,LPVOID *,LPUNKNOWN) PURE;
 };
 
 typedef struct IDirectInput7W *LPDIRECTINPUT7W;
@@ -2545,21 +2597,21 @@ typedef struct IDirectInput7W *LPDIRECTINPUT7W;
 
 DECLARE_INTERFACE_(IDirectInput7A, IDirectInput2A)
 {
-    /*** IUnknown methods ***/
-    STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
-    STDMETHOD_(ULONG,AddRef)(THIS) PURE;
-    STDMETHOD_(ULONG,Release)(THIS) PURE;
+	/*** IUnknown methods ***/
+	STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
 
-    /*** IDirectInput2A methods ***/
-    STDMETHOD(CreateDevice)(THIS_ REFGUID,LPDIRECTINPUTDEVICEA *,LPUNKNOWN) PURE;
-    STDMETHOD(EnumDevices)(THIS_ DWORD,LPDIENUMDEVICESCALLBACKA,LPVOID,DWORD) PURE;
-    STDMETHOD(GetDeviceStatus)(THIS_ REFGUID) PURE;
-    STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
-    STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD) PURE;
-    STDMETHOD(FindDevice)(THIS_ REFGUID,LPCSTR,LPGUID) PURE;
+	/*** IDirectInput2A methods ***/
+	STDMETHOD(CreateDevice)(THIS_ REFGUID,LPDIRECTINPUTDEVICEA *,LPUNKNOWN) PURE;
+	STDMETHOD(EnumDevices)(THIS_ DWORD,LPDIENUMDEVICESCALLBACKA,LPVOID,DWORD) PURE;
+	STDMETHOD(GetDeviceStatus)(THIS_ REFGUID) PURE;
+	STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
+	STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD) PURE;
+	STDMETHOD(FindDevice)(THIS_ REFGUID,LPCSTR,LPGUID) PURE;
 
-    /*** IDirectInput7A methods ***/
-    STDMETHOD(CreateDeviceEx)(THIS_ REFGUID,REFIID,LPVOID *,LPUNKNOWN) PURE;
+	/*** IDirectInput7A methods ***/
+	STDMETHOD(CreateDeviceEx)(THIS_ REFGUID,REFIID,LPVOID *,LPUNKNOWN) PURE;
 };
 
 typedef struct IDirectInput7A *LPDIRECTINPUT7A;
@@ -2605,20 +2657,20 @@ typedef struct IDirectInput7 *LPDIRECTINPUT7;
 
 DECLARE_INTERFACE_(IDirectInput8W, IUnknown)
 {
-    /*** IUnknown methods ***/
-    STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
-    STDMETHOD_(ULONG,AddRef)(THIS) PURE;
-    STDMETHOD_(ULONG,Release)(THIS) PURE;
+	/*** IUnknown methods ***/
+	STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
 
-    /*** IDirectInput8W methods ***/
-    STDMETHOD(CreateDevice)(THIS_ REFGUID,LPDIRECTINPUTDEVICE8W *,LPUNKNOWN) PURE;
-    STDMETHOD(EnumDevices)(THIS_ DWORD,LPDIENUMDEVICESCALLBACKW,LPVOID,DWORD) PURE;
-    STDMETHOD(GetDeviceStatus)(THIS_ REFGUID) PURE;
-    STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
-    STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD) PURE;
-    STDMETHOD(FindDevice)(THIS_ REFGUID,LPCWSTR,LPGUID) PURE;
-    STDMETHOD(EnumDevicesBySemantics)(THIS_ LPCWSTR,LPDIACTIONFORMATW,LPDIENUMDEVICESBYSEMANTICSCBW,LPVOID,DWORD) PURE;
-    STDMETHOD(ConfigureDevices)(THIS_ LPDICONFIGUREDEVICESCALLBACK,LPDICONFIGUREDEVICESPARAMSW,DWORD,LPVOID) PURE;
+	/*** IDirectInput8W methods ***/
+	STDMETHOD(CreateDevice)(THIS_ REFGUID,LPDIRECTINPUTDEVICE8W *,LPUNKNOWN) PURE;
+	STDMETHOD(EnumDevices)(THIS_ DWORD,LPDIENUMDEVICESCALLBACKW,LPVOID,DWORD) PURE;
+	STDMETHOD(GetDeviceStatus)(THIS_ REFGUID) PURE;
+	STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
+	STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD) PURE;
+	STDMETHOD(FindDevice)(THIS_ REFGUID,LPCWSTR,LPGUID) PURE;
+	STDMETHOD(EnumDevicesBySemantics)(THIS_ LPCWSTR,LPDIACTIONFORMATW,LPDIENUMDEVICESBYSEMANTICSCBW,LPVOID,DWORD) PURE;
+	STDMETHOD(ConfigureDevices)(THIS_ LPDICONFIGUREDEVICESCALLBACK,LPDICONFIGUREDEVICESPARAMSW,DWORD,LPVOID) PURE;
 };
 
 typedef struct IDirectInput8W *LPDIRECTINPUT8W;
@@ -2628,20 +2680,20 @@ typedef struct IDirectInput8W *LPDIRECTINPUT8W;
 
 DECLARE_INTERFACE_(IDirectInput8A, IUnknown)
 {
-    /*** IUnknown methods ***/
-    STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
-    STDMETHOD_(ULONG,AddRef)(THIS) PURE;
-    STDMETHOD_(ULONG,Release)(THIS) PURE;
+	/*** IUnknown methods ***/
+	STDMETHOD(QueryInterface)(THIS_ REFIID riid, LPVOID * ppvObj) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
 
-    /*** IDirectInput8A methods ***/
-    STDMETHOD(CreateDevice)(THIS_ REFGUID,LPDIRECTINPUTDEVICE8A *,LPUNKNOWN) PURE;
-    STDMETHOD(EnumDevices)(THIS_ DWORD,LPDIENUMDEVICESCALLBACKA,LPVOID,DWORD) PURE;
-    STDMETHOD(GetDeviceStatus)(THIS_ REFGUID) PURE;
-    STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
-    STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD) PURE;
-    STDMETHOD(FindDevice)(THIS_ REFGUID,LPCSTR,LPGUID) PURE;
-    STDMETHOD(EnumDevicesBySemantics)(THIS_ LPCSTR,LPDIACTIONFORMATA,LPDIENUMDEVICESBYSEMANTICSCBA,LPVOID,DWORD) PURE;
-    STDMETHOD(ConfigureDevices)(THIS_ LPDICONFIGUREDEVICESCALLBACK,LPDICONFIGUREDEVICESPARAMSA,DWORD,LPVOID) PURE;
+	/*** IDirectInput8A methods ***/
+	STDMETHOD(CreateDevice)(THIS_ REFGUID,LPDIRECTINPUTDEVICE8A *,LPUNKNOWN) PURE;
+	STDMETHOD(EnumDevices)(THIS_ DWORD,LPDIENUMDEVICESCALLBACKA,LPVOID,DWORD) PURE;
+	STDMETHOD(GetDeviceStatus)(THIS_ REFGUID) PURE;
+	STDMETHOD(RunControlPanel)(THIS_ HWND,DWORD) PURE;
+	STDMETHOD(Initialize)(THIS_ HINSTANCE,DWORD) PURE;
+	STDMETHOD(FindDevice)(THIS_ REFGUID,LPCSTR,LPGUID) PURE;
+	STDMETHOD(EnumDevicesBySemantics)(THIS_ LPCSTR,LPDIACTIONFORMATA,LPDIENUMDEVICESBYSEMANTICSCBA,LPVOID,DWORD) PURE;
+	STDMETHOD(ConfigureDevices)(THIS_ LPDICONFIGUREDEVICESCALLBACK,LPDICONFIGUREDEVICESPARAMSA,DWORD,LPVOID) PURE;
 };
 
 typedef struct IDirectInput8A *LPDIRECTINPUT8A;
@@ -2766,8 +2818,8 @@ extern HRESULT WINAPI DirectInputCreateEx(HINSTANCE hinst, DWORD dwVersion, REFI
 #define DI_TRUNCATED                    ((HRESULT)0x00000008L)
 
 /*
- *  The settings have been successfully applied but could not be 
- *  persisted. 
+ *  The settings have been successfully applied but could not be
+ *  persisted.
  */
 #define DI_SETTINGSNOTSAVED				((HRESULT)0x0000000BL)
 
@@ -2975,7 +3027,7 @@ extern HRESULT WINAPI DirectInputCreateEx(HINSTANCE hinst, DWORD dwVersion, REFI
 
 
 /*
- *  A mapper file function failed because reading or writing the user or IHV 
+ *  A mapper file function failed because reading or writing the user or IHV
  *  settings file failed.
  */
 #define DIERR_MAPFILEFAIL               0x8004020BL
@@ -3131,12 +3183,12 @@ extern HRESULT WINAPI DirectInputCreateEx(HINSTANCE hinst, DWORD dwVersion, REFI
 #define DIKEYBOARD_MYCOMPUTER                   0x810004EB    /* My Computer */
 #define DIKEYBOARD_MAIL                         0x810004EC    /* Mail */
 #define DIKEYBOARD_MEDIASELECT                  0x810004ED    /* Media Select */
-  
+
 
 /*--- MOUSE
       Physical Mouse Device             ---*/
 
-#define DIMOUSE_XAXISAB                         (0x82000200 |DIMOFS_X ) /* X Axis-absolute: Some mice natively report absolute coordinates  */ 
+#define DIMOUSE_XAXISAB                         (0x82000200 |DIMOFS_X ) /* X Axis-absolute: Some mice natively report absolute coordinates  */
 #define DIMOUSE_YAXISAB                         (0x82000200 |DIMOFS_Y ) /* Y Axis-absolute: Some mice natively report absolute coordinates */
 #define DIMOUSE_XAXIS                           (0x82000300 |DIMOFS_X ) /* X Axis */
 #define DIMOUSE_YAXIS                           (0x82000300 |DIMOFS_Y ) /* Y Axis */
@@ -3259,7 +3311,7 @@ extern HRESULT WINAPI DirectInputCreateEx(HINSTANCE hinst, DWORD dwVersion, REFI
 #define DIBUTTON_DRIVINGT_DEVICE                0x030044FE /* Show input device and controls */
 #define DIBUTTON_DRIVINGT_PAUSE                 0x030044FC /* Start / Pause / Restart game */
 
-/*--- Flight Simulator - Civilian 
+/*--- Flight Simulator - Civilian
       Plane control is the primary objective  ---*/
 #define DIVIRTUAL_FLYING_CIVILIAN               0x04000000
 #define DIAXIS_FLYINGC_BANK                     0x04008A01 /* Roll ship left / right */
@@ -3287,7 +3339,7 @@ extern HRESULT WINAPI DirectInputCreateEx(HINSTANCE hinst, DWORD dwVersion, REFI
 #define DIBUTTON_FLYINGC_DEVICE                 0x040044FE /* Show input device and controls */
 #define DIBUTTON_FLYINGC_PAUSE                  0x040044FC /* Start / Pause / Restart game */
 
-/*--- Flight Simulator - Military 
+/*--- Flight Simulator - Military
       Aerial combat is the primary objective  ---*/
 #define DIVIRTUAL_FLYING_MILITARY               0x05000000
 #define DIAXIS_FLYINGM_BANK                     0x05008A01 /* Bank - Roll ship left / right */
@@ -3384,7 +3436,7 @@ extern HRESULT WINAPI DirectInputCreateEx(HINSTANCE hinst, DWORD dwVersion, REFI
 #define DIBUTTON_SPACESIM_DEVICE                0x070044FE /* Show input device and controls */
 #define DIBUTTON_SPACESIM_PAUSE                 0x070044FC /* Start / Pause / Restart game */
 
-/*--- Fighting - First Person 
+/*--- Fighting - First Person
       Hand to Hand combat is primary objective  ---*/
 #define DIVIRTUAL_FIGHTING_HAND2HAND            0x08000000
 #define DIAXIS_FIGHTINGH_LATERAL                0x08008201 /* Sidestep left/right */
@@ -4248,42 +4300,42 @@ extern HRESULT WINAPI DirectInputCreateEx(HINSTANCE hinst, DWORD dwVersion, REFI
 #define DIBUTTON_MECHA_PAUSE                    0x290044FC /* Start / Pause / Restart game */
 
 /*
- *  "ANY" semantics can be used as a last resort to get mappings for actions 
- *  that match nothing in the chosen virtual genre.  These semantics will be 
- *  mapped at a lower priority that virtual genre semantics.  Also, hardware 
- *  vendors will not be able to provide sensible mappings for these unless 
+ *  "ANY" semantics can be used as a last resort to get mappings for actions
+ *  that match nothing in the chosen virtual genre.  These semantics will be
+ *  mapped at a lower priority that virtual genre semantics.  Also, hardware
+ *  vendors will not be able to provide sensible mappings for these unless
  *  they provide application specific mappings.
  */
-#define DIAXIS_ANY_X_1                          0xFF00C201 
-#define DIAXIS_ANY_X_2                          0xFF00C202 
-#define DIAXIS_ANY_Y_1                          0xFF014201 
-#define DIAXIS_ANY_Y_2                          0xFF014202 
-#define DIAXIS_ANY_Z_1                          0xFF01C201 
-#define DIAXIS_ANY_Z_2                          0xFF01C202 
-#define DIAXIS_ANY_R_1                          0xFF024201 
-#define DIAXIS_ANY_R_2                          0xFF024202 
-#define DIAXIS_ANY_U_1                          0xFF02C201 
-#define DIAXIS_ANY_U_2                          0xFF02C202 
-#define DIAXIS_ANY_V_1                          0xFF034201 
-#define DIAXIS_ANY_V_2                          0xFF034202 
-#define DIAXIS_ANY_A_1                          0xFF03C201 
-#define DIAXIS_ANY_A_2                          0xFF03C202 
-#define DIAXIS_ANY_B_1                          0xFF044201 
-#define DIAXIS_ANY_B_2                          0xFF044202 
-#define DIAXIS_ANY_C_1                          0xFF04C201 
-#define DIAXIS_ANY_C_2                          0xFF04C202 
-#define DIAXIS_ANY_S_1                          0xFF054201 
-#define DIAXIS_ANY_S_2                          0xFF054202 
+#define DIAXIS_ANY_X_1                          0xFF00C201
+#define DIAXIS_ANY_X_2                          0xFF00C202
+#define DIAXIS_ANY_Y_1                          0xFF014201
+#define DIAXIS_ANY_Y_2                          0xFF014202
+#define DIAXIS_ANY_Z_1                          0xFF01C201
+#define DIAXIS_ANY_Z_2                          0xFF01C202
+#define DIAXIS_ANY_R_1                          0xFF024201
+#define DIAXIS_ANY_R_2                          0xFF024202
+#define DIAXIS_ANY_U_1                          0xFF02C201
+#define DIAXIS_ANY_U_2                          0xFF02C202
+#define DIAXIS_ANY_V_1                          0xFF034201
+#define DIAXIS_ANY_V_2                          0xFF034202
+#define DIAXIS_ANY_A_1                          0xFF03C201
+#define DIAXIS_ANY_A_2                          0xFF03C202
+#define DIAXIS_ANY_B_1                          0xFF044201
+#define DIAXIS_ANY_B_2                          0xFF044202
+#define DIAXIS_ANY_C_1                          0xFF04C201
+#define DIAXIS_ANY_C_2                          0xFF04C202
+#define DIAXIS_ANY_S_1                          0xFF054201
+#define DIAXIS_ANY_S_2                          0xFF054202
 
-#define DIAXIS_ANY_1                            0xFF004201 
-#define DIAXIS_ANY_2                            0xFF004202 
-#define DIAXIS_ANY_3                            0xFF004203 
-#define DIAXIS_ANY_4                            0xFF004204 
+#define DIAXIS_ANY_1                            0xFF004201
+#define DIAXIS_ANY_2                            0xFF004202
+#define DIAXIS_ANY_3                            0xFF004203
+#define DIAXIS_ANY_4                            0xFF004204
 
-#define DIPOV_ANY_1                             0xFF004601 
-#define DIPOV_ANY_2                             0xFF004602 
-#define DIPOV_ANY_3                             0xFF004603 
-#define DIPOV_ANY_4                             0xFF004604 
+#define DIPOV_ANY_1                             0xFF004601
+#define DIPOV_ANY_2                             0xFF004602
+#define DIPOV_ANY_3                             0xFF004603
+#define DIPOV_ANY_4                             0xFF004604
 
 #define DIBUTTON_ANY(instance)                  ( 0xFF004400 | instance )
 
@@ -4327,13 +4379,13 @@ WINMMAPI MMRESULT WINAPI joyConfigChanged( DWORD dwFlags );
 
 #ifndef DIJ_RINGZERO
 /*
- * Invoke the joystick control panel directly, using the passed window handle 
- * as the parent of the dialog.  This API is only supported for compatibility 
- * purposes; new applications should use the RunControlPanel method of a 
+ * Invoke the joystick control panel directly, using the passed window handle
+ * as the parent of the dialog.  This API is only supported for compatibility
+ * purposes; new applications should use the RunControlPanel method of a
  * device interface for a game controller.
  * The API is called by using the function pointer returned by
- * GetProcAddress( hCPL, TEXT("ShowJoyCPL") ) where hCPL is a HMODULE returned 
- * by LoadLibrary( TEXT("joy.cpl") ).  The typedef is provided to allow 
+ * GetProcAddress( hCPL, TEXT("ShowJoyCPL") ) where hCPL is a HMODULE returned
+ * by LoadLibrary( TEXT("joy.cpl") ).  The typedef is provided to allow
  * declaration and casting of an appropriately typed variable.
  */
 void WINAPI ShowJoyCPL( HWND hWnd );

@@ -52,109 +52,122 @@
 * This class allows to pass spare storage buffers to the SMAA class.
 */
 
-class SMAA : public Effect {
+class SMAA : public Effect
+{
 public:
-    enum Preset { PRESET_LOW, PRESET_MEDIUM, PRESET_HIGH, PRESET_ULTRA, PRESET_CUSTOM };
-    enum Input { INPUT_LUMA, INPUT_COLOR, INPUT_DEPTH };
+	enum Preset { PRESET_LOW, PRESET_MEDIUM, PRESET_HIGH, PRESET_ULTRA, PRESET_CUSTOM };
+	enum Input { INPUT_LUMA, INPUT_COLOR, INPUT_DEPTH };
 
-    class ExternalStorage
-    {
-    public:
-        ExternalStorage(IDirect3DTexture9 *edgeTex = NULL,
-            IDirect3DSurface9 *edgeSurface = NULL,
-            IDirect3DTexture9 *blendTex = NULL,
-            IDirect3DSurface9 *blendSurface = NULL)
-            : edgeTex(edgeTex),
-            edgeSurface(edgeSurface),
-            blendTex(blendTex),
-            blendSurface(blendSurface)
-        {
-        }
+	class ExternalStorage
+	{
+	public:
+		ExternalStorage(IDirect3DTexture9 *edgeTex = NULL,
+		                IDirect3DSurface9 *edgeSurface = NULL,
+		                IDirect3DTexture9 *blendTex = NULL,
+		                IDirect3DSurface9 *blendSurface = NULL)
+			: edgeTex(edgeTex),
+			  edgeSurface(edgeSurface),
+			  blendTex(blendTex),
+			  blendSurface(blendSurface)
+		{
+		}
 
-        IDirect3DTexture9 *edgeTex, *blendTex;
-        IDirect3DSurface9 *edgeSurface, *blendSurface;
-    };
+		IDirect3DTexture9 *edgeTex, *blendTex;
+		IDirect3DSurface9 *edgeSurface, *blendSurface;
+	};
 
-    /**
-     * If you have one or two spare render targets of the same size as the
-     * backbuffer, you may want to pass them in the 'storage' parameter.
-     * You may pass one or the two, depending on what you have available.
-     *
-     * A RG buffer (at least) is expected for storing edges.
-     * A RGBA buffer is expected for the blending weights.
-     *
-     * By default, two render targets will be created for storing
-     * intermediate calculations.
-     */
-    SMAA(IDirect3DDevice9 *device, int width, int height, Preset preset,
-        const ExternalStorage &storage = ExternalStorage());
-    virtual ~SMAA(){};
+	/**
+	 * If you have one or two spare render targets of the same size as the
+	 * backbuffer, you may want to pass them in the 'storage' parameter.
+	 * You may pass one or the two, depending on what you have available.
+	 *
+	 * A RG buffer (at least) is expected for storing edges.
+	 * A RGBA buffer is expected for the blending weights.
+	 *
+	 * By default, two render targets will be created for storing
+	 * intermediate calculations.
+	 */
+	SMAA(IDirect3DDevice9 *device, int width, int height, Preset preset,
+	     const ExternalStorage &storage = ExternalStorage());
+	virtual ~SMAA() {};
 
-    /**
-     * Processes input texture 'src', storing the antialiased image into
-     * 'dst'. Note that 'src' and 'dst' should be associated to different
-     * buffers.
-     *
-     * 'edges' should be the input for using for edge detection: either a
-     * depth buffer or a non-sRGB color buffer. Input must be set
-     * accordingly.
-     *
-     * IMPORTANT: the stencil component of currently bound depth-stencil
-     * buffer will be used to mask the zones to be processed. It is assumed
-     * to be already cleared to zero when this function is called. It is
-     * not done here because it is usually cleared together with the depth.
-     *
-     * For performance reasons, the state is not restored before returning
-     * from this function (the render target, the input layout, the
-     * depth-stencil and blend states...)
-     */
-    void go(IDirect3DTexture9 *edges,
-        IDirect3DTexture9 *src,
-        IDirect3DSurface9 *dst,
-        Input input);
+	/**
+	 * Processes input texture 'src', storing the antialiased image into
+	 * 'dst'. Note that 'src' and 'dst' should be associated to different
+	 * buffers.
+	 *
+	 * 'edges' should be the input for using for edge detection: either a
+	 * depth buffer or a non-sRGB color buffer. Input must be set
+	 * accordingly.
+	 *
+	 * IMPORTANT: the stencil component of currently bound depth-stencil
+	 * buffer will be used to mask the zones to be processed. It is assumed
+	 * to be already cleared to zero when this function is called. It is
+	 * not done here because it is usually cleared together with the depth.
+	 *
+	 * For performance reasons, the state is not restored before returning
+	 * from this function (the render target, the input layout, the
+	 * depth-stencil and blend states...)
+	 */
+	void go(IDirect3DTexture9 *edges,
+	        IDirect3DTexture9 *src,
+	        IDirect3DSurface9 *dst,
+	        Input input);
 
-    /**
-     * Maximum length to search for patterns. Each step is two pixels wide.
-     */
-    int getMaxSearchSteps() const { return maxSearchSteps; }
-    void setMaxSearchSteps(int maxSearchSteps) { this->maxSearchSteps = maxSearchSteps; }
+	/**
+	 * Maximum length to search for patterns. Each step is two pixels wide.
+	 */
+	int getMaxSearchSteps() const
+	{
+		return maxSearchSteps;
+	}
+	void setMaxSearchSteps(int maxSearchSteps)
+	{
+		this->maxSearchSteps = maxSearchSteps;
+	}
 
-    /**
-     * Threshold for the edge detection.
-     */
-    float getThreshold() const { return threshold; }
-    void setThreshold(float threshold) { this->threshold = threshold; }
+	/**
+	 * Threshold for the edge detection.
+	 */
+	float getThreshold() const
+	{
+		return threshold;
+	}
+	void setThreshold(float threshold)
+	{
+		this->threshold = threshold;
+	}
 
 private:
-    void loadAreaTex();
-    void loadSearchTex();
-    void edgesDetectionPass(IDirect3DTexture9 *edges, Input input);
-    void blendingWeightsCalculationPass();
-    void neighborhoodBlendingPass(IDirect3DTexture9 *src, IDirect3DSurface9 *dst);
+	void loadAreaTex();
+	void loadSearchTex();
+	void edgesDetectionPass(IDirect3DTexture9 *edges, Input input);
+	void blendingWeightsCalculationPass();
+	void neighborhoodBlendingPass(IDirect3DTexture9 *src, IDirect3DSurface9 *dst);
 
-    CComPtr<ID3DXEffect> effect;
+	CComPtr<ID3DXEffect> effect;
 
-    CComPtr<IDirect3DTexture9> edgeTex;
-    CComPtr<IDirect3DSurface9> edgeSurface;
-    bool releaseEdgeResources;
+	CComPtr<IDirect3DTexture9> edgeTex;
+	CComPtr<IDirect3DSurface9> edgeSurface;
+	bool releaseEdgeResources;
 
-    CComPtr<IDirect3DTexture9> blendTex;
-    CComPtr<IDirect3DSurface9> blendSurface;
-    bool releaseBlendResources;
+	CComPtr<IDirect3DTexture9> blendTex;
+	CComPtr<IDirect3DSurface9> blendSurface;
+	bool releaseBlendResources;
 
-    CComPtr<IDirect3DTexture9> areaTex;
-    CComPtr<IDirect3DTexture9> searchTex;
+	CComPtr<IDirect3DTexture9> areaTex;
+	CComPtr<IDirect3DTexture9> searchTex;
 
-    D3DXHANDLE thresholdHandle, maxSearchStepsHandle;
-    D3DXHANDLE areaTexHandle, searchTexHandle;
-    D3DXHANDLE colorTexHandle, depthTexHandle;
-    D3DXHANDLE edgesTexHandle, blendTexHandle;
-    D3DXHANDLE lumaEdgeDetectionHandle, colorEdgeDetectionHandle, depthEdgeDetectionHandle,
-        blendWeightCalculationHandle, neighborhoodBlendingHandle;
+	D3DXHANDLE thresholdHandle, maxSearchStepsHandle;
+	D3DXHANDLE areaTexHandle, searchTexHandle;
+	D3DXHANDLE colorTexHandle, depthTexHandle;
+	D3DXHANDLE edgesTexHandle, blendTexHandle;
+	D3DXHANDLE lumaEdgeDetectionHandle, colorEdgeDetectionHandle, depthEdgeDetectionHandle,
+	           blendWeightCalculationHandle, neighborhoodBlendingHandle;
 
-    int maxSearchSteps;
-    float threshold;
-    int width, height;
+	int maxSearchSteps;
+	float threshold;
+	int width, height;
 };
 
 #endif

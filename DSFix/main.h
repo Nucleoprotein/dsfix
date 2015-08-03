@@ -1,5 +1,5 @@
 // DSfix Copyright 2012 Peter Thoman (Durante)
-// thanks to Azorbix's D3D Starter Kit as well as 
+// thanks to Azorbix's D3D Starter Kit as well as
 // Matthew Fisher's Direct3D 9 API Interceptor project
 // for providing examples of D3D interception
 
@@ -18,7 +18,7 @@
 
 #pragma once
 
-#define VERSION "2.4"
+#define VERSION "2.42"
 
 #ifndef _DEBUG
 #define RELEASE_VER
@@ -29,7 +29,7 @@
 #ifndef RELEASE_VER
 #define SDLOG(_level, _str, ...) if(Settings::get().getLogLevel() > _level) { PrintLog(_str, __VA_ARGS__); }
 #else
-#define SDLOG(_level, _str, ...) 
+#define SDLOG(_level, _str, ...)
 #endif
 
 const char* GetDirectoryFile(char *filename);

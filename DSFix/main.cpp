@@ -27,13 +27,16 @@ char fileName[MAX_PATH];
 
 BOOL WINAPI DllMain(HMODULE hDll, DWORD dwReason, PVOID pvReserved)
 {
-	switch (dwReason) {
+	switch (dwReason)
+	{
 	case DLL_PROCESS_ATTACH:
 		GetModuleFileName(NULL, fileName, MAX_PATH);
 		DisableThreadLibraryCalls(hDll);
 		GetModuleFileName(hDll, dlldir, MAX_PATH);
-		for (int i = strlen(dlldir); i > 0; i--) {
-			if (dlldir[i] == '\\') {
+		for (int i = strlen(dlldir); i > 0; i--)
+		{
+			if (dlldir[i] == '\\')
+			{
 				dlldir[i + 1] = 0;
 				break;
 			}

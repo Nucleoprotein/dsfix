@@ -7,25 +7,26 @@
 
 #include "Effect.h"
 
-class FXAA : public Effect {
+class FXAA : public Effect
+{
 public:
 	enum Quality { QualityLow, QualityMedium, QualityHigh, QualityUltra };
 
-    FXAA(IDirect3DDevice9 *device, int width, int height, Quality quality);
-    virtual ~FXAA(){};
+	FXAA(IDirect3DDevice9 *device, int width, int height, Quality quality);
+	virtual ~FXAA() {};
 
 	void go(IDirect3DTexture9 *frame, IDirect3DSurface9 *dst);
 
 private:
 	int width, height;
 
-    CComPtr<ID3DXEffect> effect;
-	
-    CComPtr<IDirect3DTexture9> buffer1Tex;
-    CComPtr<IDirect3DSurface9> buffer1Surf;
+	CComPtr<ID3DXEffect> effect;
+
+	CComPtr<IDirect3DTexture9> buffer1Tex;
+	CComPtr<IDirect3DSurface9> buffer1Surf;
 
 	D3DXHANDLE frameTexHandle;
-	
+
 	void lumaPass(IDirect3DTexture9 *frame, IDirect3DSurface9 *dst);
 	void fxaaPass(IDirect3DTexture9 *src, IDirect3DSurface9* dst);
 };

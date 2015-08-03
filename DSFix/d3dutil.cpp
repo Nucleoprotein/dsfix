@@ -24,9 +24,11 @@ TCHAR* D3DMatrixToString(const D3DMATRIX* pMatrix)
 	static TCHAR buffers[BUFFERS][256];
 	if (!pMatrix) return "NULL_MATRIX";
 	char* pos = buffers[cBuffer];
-	for (int i = 0; i < 4; ++i) {
+	for (int i = 0; i < 4; ++i)
+	{
 		pos += sprintf_s(pos, 256, " | ");
-		for (int j = 0; j < 4; ++j) {
+		for (int j = 0; j < 4; ++j)
+		{
 			pos += sprintf_s(pos, 256, "%6.2f ", pMatrix->m[i][j]);
 		}
 		pos += sprintf_s(pos, 256, "");
@@ -41,7 +43,8 @@ TCHAR* D3DMatrixToString(const D3DMATRIX* pMatrix)
 TCHAR* D3DFormatToString(D3DFORMAT format, bool bWithPrefix)
 {
 	TCHAR* pstr = NULL;
-	switch (format) {
+	switch (format)
+	{
 	case D3DFMT_UNKNOWN:
 		pstr = TEXT("D3DFMT_UNKNOWN");
 		break;
@@ -249,7 +252,8 @@ TCHAR* D3DFormatToString(D3DFORMAT format, bool bWithPrefix)
 
 TCHAR* D3DSamplerStateTypeToString(D3DSAMPLERSTATETYPE state)
 {
-	switch (state) {
+	switch (state)
+	{
 	case D3DSAMP_ADDRESSU:
 		return "D3DSAMP_ADDRESSU";
 	case D3DSAMP_ADDRESSV:
@@ -284,7 +288,8 @@ TCHAR* D3DSamplerStateTypeToString(D3DSAMPLERSTATETYPE state)
 
 TCHAR* D3DDeclTypeToString(D3DDECLTYPE type)
 {
-	switch (type) {
+	switch (type)
+	{
 	case D3DDECLTYPE_FLOAT1:
 		return "D3DDECLTYPE_FLOAT1";
 	case D3DDECLTYPE_FLOAT2:
@@ -327,7 +332,8 @@ TCHAR* D3DDeclTypeToString(D3DDECLTYPE type)
 
 TCHAR* D3DDeclUsageToString(D3DDECLUSAGE type)
 {
-	switch (type) {
+	switch (type)
+	{
 	case D3DDECLUSAGE_POSITION:
 		return "D3DDECLUSAGE_POSITION";
 	case D3DDECLUSAGE_BLENDWEIGHT:

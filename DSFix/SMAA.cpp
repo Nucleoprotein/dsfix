@@ -85,7 +85,8 @@ SMAA::SMAA(IDirect3DDevice9 *device, int width, int height, Preset preset, const
 	defines.push_back(pixelSizeMacro);
 
 	// Setup preset macro
-	D3DXMACRO presetMacros[] = {
+	D3DXMACRO presetMacros[] =
+	{
 		{ "SMAA_PRESET_LOW", "1" },
 		{ "SMAA_PRESET_MEDIUM", "1" },
 		{ "SMAA_PRESET_HIGH", "1" },
@@ -110,22 +111,28 @@ SMAA::SMAA(IDirect3DDevice9 *device, int width, int height, Preset preset, const
 	if (hr != D3D_OK) SDLOG(0, "ERRORS:\n %s", errors->GetBufferPointer());
 
 	// If storage for the edges is not specified we will create it.
-	if (storage.edgeTex != NULL && storage.edgeSurface != NULL) {
+	if (storage.edgeTex != NULL && storage.edgeSurface != NULL)
+	{
 		edgeTex = storage.edgeTex;
 		edgeSurface = storage.edgeSurface;
 		releaseEdgeResources = false;
-	} else {
+	}
+	else
+	{
 		V(device->CreateTexture(width, height, 1, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &edgeTex, NULL));
 		V(edgeTex->GetSurfaceLevel(0, &edgeSurface));
 		releaseEdgeResources = true;
 	}
 
 	// Same for blending weights.
-	if (storage.blendTex != NULL && storage.blendSurface != NULL) {
+	if (storage.blendTex != NULL && storage.blendSurface != NULL)
+	{
 		blendTex = storage.blendTex;
 		blendSurface = storage.blendSurface;
 		releaseBlendResources = false;
-	} else {
+	}
+	else
+	{
 		V(device->CreateTexture(width, height, 1, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &blendTex, NULL));
 		V(blendTex->GetSurfaceLevel(0, &blendSurface));
 		releaseBlendResources = true;
@@ -206,7 +213,8 @@ void SMAA::edgesDetectionPass(IDirect3DTexture9 *edges, Input input)
 	V(effect->SetFloat(maxSearchStepsHandle, float(maxSearchSteps)));
 
 	// Select the technique accordingly.
-	switch (input) {
+	switch (input)
+	{
 	case INPUT_LUMA:
 		V(effect->SetTexture(colorTexHandle, edges));
 		V(effect->SetTechnique(lumaEdgeDetectionHandle));

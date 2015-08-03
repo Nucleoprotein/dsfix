@@ -13,7 +13,8 @@ void Settings::load()
 	std::ifstream sfile;
 	sfile.open(GetDirectoryFile("DSfix.ini"), std::ios::in);
 	char buffer[128];
-	while (!sfile.eof()) {
+	while (!sfile.eof())
+	{
 		sfile.getline(buffer, 128);
 		if (buffer[0] == '#') continue;
 		if (sfile.gcount() <= 1) continue;
@@ -28,7 +29,8 @@ void Settings::load()
 	}
 	sfile.close();
 
-	if (getBackupInterval() < 300) {
+	if (getBackupInterval() < 300)
+	{
 		BackupInterval = 300;
 	}
 
@@ -50,7 +52,8 @@ void Settings::report()
 
 void Settings::init()
 {
-	if (!inited) {
+	if (!inited)
+	{
 		if (getDisableCursor()) WindowManager::get().toggleCursorVisibility();
 		if (getCaptureCursor()) WindowManager::get().toggleCursorCapture();
 		if (getBorderlessFullscreen()) WindowManager::get().toggleBorderlessFullscreen();
@@ -62,7 +65,8 @@ void Settings::init()
 
 void Settings::shutdown()
 {
-	if (inited) {
+	if (inited)
+	{
 		inited = false;
 	}
 }

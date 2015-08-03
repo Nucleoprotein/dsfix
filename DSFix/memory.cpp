@@ -41,14 +41,16 @@ DWORD GetMemoryAddressFromPattern(LPSTR szDllName, LPCSTR szSearchPattern, DWORD
 	DWORD lResult = 0;
 
 	// Check for actual address
-	if (szSearchPattern[0] == '#') {
+	if (szSearchPattern[0] == '#')
+	{
 		LPSTR t="";
 		lResult=strtoul(&szSearchPattern[1], &t, 0x10);
 		return lResult+=(lResult?offset:0);
 	}
 
 	// Check for ordinal
-	if (szSearchPattern[0] == '!') {
+	if (szSearchPattern[0] == '!')
+	{
 		HMODULE hModule = GetModuleHandle(szDllName);
 
 		// First let's try to find ordinal by name
@@ -56,7 +58,8 @@ DWORD GetMemoryAddressFromPattern(LPSTR szDllName, LPCSTR szSearchPattern, DWORD
 			lResult = (DWORD)GetProcAddress(hModule, &szSearchPattern[1]);
 
 		// No luck, lets try by ordinal number instead
-		if (!lResult) {
+		if (!lResult)
+		{
 			LPSTR x="";
 			lResult = (DWORD)GetProcAddress(hModule, (LPCSTR)MAKELONG(strtoul(&szSearchPattern[1], &x, 10),0));
 		}
@@ -72,14 +75,16 @@ DWORD GetMemoryAddressFromPattern(LPSTR szDllName, LPCSTR szSearchPattern, DWORD
 	MODULEINFO moduleInfo;
 	HMODULE hDllModule = GetModuleHandle(szDllName);
 	if(hDllModule != NULL)
-		if(GetModuleInformation(GetCurrentProcess(), hDllModule, &moduleInfo, sizeof(moduleInfo))) {
+		if(GetModuleInformation(GetCurrentProcess(), hDllModule, &moduleInfo, sizeof(moduleInfo)))
+		{
 			SearchAddress = (DWORD)moduleInfo.lpBaseOfDll;
 			SearchSize = moduleInfo.SizeOfImage;
 
 			MakeSearchPattern(szSearchPattern,pPattern);
 			if (lResult = (DWORD)PatternSearch((BYTE*)SearchAddress, SearchSize, pPattern, len))
 				lResult+=offset;
-		} else
+		}
+		else
 			lResult = NULL;
 
 	delete [] pPattern;
@@ -121,7 +126,8 @@ BOOL PatternEquals(LPBYTE buf, LPWORD pat, DWORD plen)
 	DWORD ofs = 0;
 	//
 	//	Loop
-	for (i = 0; plen > 0; i++) {
+	for (i = 0; plen > 0; i++)
+	{
 		//
 		//	Compare mask buf and compare result
 		//  <thohell>Swapped mask/data. Old code was buggy.</thohell>
@@ -158,7 +164,8 @@ LPVOID PatternSearch(LPBYTE buf, DWORD blen, LPWORD pat, DWORD plen)
 	end = blen - plen;
 	//
 	//	Do the booring loop
-	for (ofs = 0; ofs != end; ofs++) {
+	for (ofs = 0; ofs != end; ofs++)
+	{
 		//	Return offset to first byte of buf matching width the pattern
 		if (PatternEquals(&buf[ofs], pat, plen))
 			return &buf[ofs];
@@ -183,7 +190,8 @@ VOID MakeSearchPattern(LPCSTR pString, LPWORD pat)
 	char *tmp = new char[len];
 	strcpy_s(tmp, len, pString);
 
-	for (int i=(strlen(tmp)/2)-1; strlen(tmp) > 0; i--) {
+	for (int i=(strlen(tmp)/2)-1; strlen(tmp) > 0; i--)
+	{
 		char *x="";
 		BYTE value=(BYTE)strtoul(&tmp[i*2], &x, 0x10);
 		if (strlen(x))
@@ -216,13 +224,17 @@ void *DetourApply(BYTE *orig, BYTE *hook, int len, BYTE type)
 {
 	BYTE OP, SZ;
 
-	if (type == JMPOP) {
+	if (type == JMPOP)
+	{
 		OP = JMPOP;
 		SZ = JMP32_SZ;
-	} else if (type == CALLOP) {
+	}
+	else if (type == CALLOP)
+	{
 		OP = CALLOP;
 		SZ = CALL32_SZ;
-	} else return 0;
+	}
+	else return 0;
 
 	DWORD dwProt = 0;
 	BYTE *jmp = (BYTE*)malloc(len+SZ);

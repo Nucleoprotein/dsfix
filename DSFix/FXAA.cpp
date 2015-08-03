@@ -25,7 +25,8 @@ FXAA::FXAA(IDirect3DDevice9 *device, int width, int height, Quality quality)
 	D3DXMACRO pixelSizeMacro = { "PIXEL_SIZE", pixelSizeText.c_str() };
 	defines.push_back(pixelSizeMacro);
 
-	D3DXMACRO qualityMacros[] = {
+	D3DXMACRO qualityMacros[] =
+	{
 		{ "FXAA_QUALITY__PRESET", "10" },
 		{ "FXAA_QUALITY__PRESET", "20" },
 		{ "FXAA_QUALITY__PRESET", "28" },

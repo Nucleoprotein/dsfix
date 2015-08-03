@@ -152,7 +152,8 @@ HRESULT APIENTRY hkIDirect3DDevice9::CreateCubeTexture(UINT EdgeLength, UINT Lev
 HRESULT APIENTRY hkIDirect3DDevice9::CreateDepthStencilSurface(UINT Width, UINT Height, D3DFORMAT Format, D3DMULTISAMPLE_TYPE MultiSample, DWORD MultisampleQuality, BOOL Discard, IDirect3DSurface9** ppSurface, HANDLE* pSharedHandle)
 {
 	SDLOG(4, "CreateDepthStencilSurface w/h: %4u/%4u  format: %s", Width, Height, D3DFormatToString(Format));
-	if (Width == 1024 && Height == 720) {
+	if (Width == 1024 && Height == 720)
+	{
 		SDLOG(4, " - OVERRIDE to %4u/%4u!", Settings::get().getRenderWidth(), Settings::get().getRenderHeight());
 		return m_pD3Ddev->CreateDepthStencilSurface(Settings::get().getRenderWidth(), Settings::get().getRenderHeight(), Format, MultiSample, MultisampleQuality, Discard, ppSurface, pSharedHandle);
 	}
@@ -172,7 +173,8 @@ HRESULT APIENTRY hkIDirect3DDevice9::CreateOffscreenPlainSurface(UINT Width, UIN
 HRESULT APIENTRY hkIDirect3DDevice9::CreatePixelShader(CONST DWORD* pFunction, IDirect3DPixelShader9** ppShader)
 {
 	HRESULT res = m_pD3Ddev->CreatePixelShader(pFunction, ppShader);
-	if (Settings::get().getLogLevel() > 12) {
+	if (Settings::get().getLogLevel() > 12)
+	{
 		SDLOG(12, "CreatePixelShader data: %p : shader: %p", pFunction, *ppShader);
 		LPD3DXBUFFER buffer;
 		D3DXDisassembleShader(pFunction, false, NULL, &buffer);
@@ -189,7 +191,8 @@ HRESULT APIENTRY hkIDirect3DDevice9::CreateQuery(D3DQUERYTYPE Type, IDirect3DQue
 HRESULT APIENTRY hkIDirect3DDevice9::CreateRenderTarget(UINT Width, UINT Height, D3DFORMAT Format, D3DMULTISAMPLE_TYPE MultiSample, DWORD MultisampleQuality, BOOL Lockable, IDirect3DSurface9** ppSurface, HANDLE* pSharedHandle)
 {
 	SDLOG(1, "CreateRenderTarget w/h: %4u/%4u  format: %s", Width, Height, D3DFormatToString(Format));
-	if (Width == 1024 && Height == 720) {
+	if (Width == 1024 && Height == 720)
+	{
 		SDLOG(1, " - OVERRIDE to %4u/%4u!", Settings::get().getRenderWidth(), Settings::get().getRenderHeight());
 		HRESULT hr = m_pD3Ddev->CreateRenderTarget(Settings::get().getRenderWidth(), Settings::get().getRenderHeight(), Format, MultiSample, MultisampleQuality, Lockable, ppSurface, pSharedHandle);
 		RSManager::get().registerMainRenderSurface(*ppSurface);
@@ -221,7 +224,8 @@ HRESULT APIENTRY hkIDirect3DDevice9::CreateVertexDeclaration(CONST D3DVERTEXELEM
 HRESULT APIENTRY hkIDirect3DDevice9::CreateVertexShader(CONST DWORD* pFunction, IDirect3DVertexShader9** ppShader)
 {
 	HRESULT res = m_pD3Ddev->CreateVertexShader(pFunction, ppShader);
-	if (Settings::get().getLogLevel() > 12) {
+	if (Settings::get().getLogLevel() > 12)
+	{
 		SDLOG(12, "CreateVertexShader data: %p : shader: %p", pFunction, *ppShader);
 		LPD3DXBUFFER buffer;
 		D3DXDisassembleShader(pFunction, false, NULL, &buffer);
@@ -418,7 +422,8 @@ HRESULT APIENTRY hkIDirect3DDevice9::GetStreamSourceFreq(UINT StreamNumber, UINT
 HRESULT APIENTRY hkIDirect3DDevice9::GetSwapChain(UINT iSwapChain, IDirect3DSwapChain9** pSwapChain)
 {
 	// Add some space, 16bytes should be enough
-	_asm {
+	_asm
+	{
 		nop;
 		nop;
 		nop;
@@ -520,10 +525,13 @@ HRESULT APIENTRY hkIDirect3DDevice9::Reset(D3DPRESENT_PARAMETERS *pPresentationP
 
 	HRESULT hRet = m_pD3Ddev->Reset(&adjusted);
 
-	if (SUCCEEDED(hRet)) {
+	if (SUCCEEDED(hRet))
+	{
 		SDLOG(0, " - succeeded");
 		RSManager::get().initResources();
-	} else {
+	}
+	else
+	{
 		SDLOG(0, "ERROR: Reset Failed!");
 		SDLOG(0, "Error code: %s", DXGetErrorString(hRet));
 	}
@@ -630,17 +638,26 @@ HRESULT APIENTRY hkIDirect3DDevice9::SetRenderState(D3DRENDERSTATETYPE State, DW
 HRESULT APIENTRY hkIDirect3DDevice9::SetSamplerState(DWORD Sampler, D3DSAMPLERSTATETYPE Type, DWORD Value)
 {
 	SDLOG(14, "SetSamplerState sampler %lu:   state type: %s   value: %lu", Sampler, D3DSamplerStateTypeToString(Type), Value);
-	if (Settings::get().getFilteringOverride() == 2) {
+	if (Settings::get().getFilteringOverride() == 2)
+	{
 		SDLOG(10, " - aniso sampling activated!");
-		if (Type == D3DSAMP_MAXANISOTROPY) {
+		if (Type == D3DSAMP_MAXANISOTROPY)
+		{
 			return m_pD3Ddev->SetSamplerState(Sampler, Type, 16);
-		} else if (Type != D3DSAMP_MINFILTER && Type != D3DSAMP_MAGFILTER) {
+		}
+		else if (Type != D3DSAMP_MINFILTER && Type != D3DSAMP_MAGFILTER)
+		{
 			return m_pD3Ddev->SetSamplerState(Sampler, Type, Value);
-		} else {
+		}
+		else
+		{
 			return m_pD3Ddev->SetSamplerState(Sampler, Type, D3DTEXF_ANISOTROPIC);
 		}
-	} else if (Settings::get().getFilteringOverride() == 1) {
-		if ((Type == D3DSAMP_MINFILTER || Type == D3DSAMP_MIPFILTER) && (Value == D3DTEXF_POINT || Value == D3DTEXF_NONE)) {
+	}
+	else if (Settings::get().getFilteringOverride() == 1)
+	{
+		if ((Type == D3DSAMP_MINFILTER || Type == D3DSAMP_MIPFILTER) && (Value == D3DTEXF_POINT || Value == D3DTEXF_NONE))
+		{
 			SDLOG(10, " - linear override activated!");
 			return m_pD3Ddev->SetSamplerState(Sampler, Type, D3DTEXF_LINEAR);
 		}
@@ -661,7 +678,8 @@ HRESULT APIENTRY hkIDirect3DDevice9::SetScissorRect(CONST RECT* pRect)
 	        || (pRect->left == 1024 && pRect->top == 0 && pRect->right == 2048 && pRect->bottom == 1024)
 	        || (pRect->left == 0 && pRect->top == 1024 && pRect->right == 1024 && pRect->bottom == 2048)
 	        || (pRect->left == 1024 && pRect->top == 1024 && pRect->right == 2048 && pRect->bottom == 2048)
-	   ) {
+	   )
+	{
 		return m_pD3Ddev->SetScissorRect(pRect);
 	}
 	SDLOG(5, " - Lyrical Tokarev, kill them all!", RectToString(pRect));

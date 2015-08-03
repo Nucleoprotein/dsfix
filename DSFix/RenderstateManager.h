@@ -11,38 +11,39 @@
 #include "GAUSS.h"
 #include "HUD.h"
 
-class RSManager {
+class RSManager
+{
 private:
 	static RSManager instance;
 
 	bool inited;
-    bool lowFPSmode;
-    bool doAA;
-    bool doSsao;
-    bool doDofGauss;
-    bool doHud;
+	bool lowFPSmode;
+	bool doAA;
+	bool doSsao;
+	bool doDofGauss;
+	bool doHud;
 
-    bool hideHud;
-    bool paused;
-    bool onHudRT, pausedHudRT;
-    bool captureNextFrame, capturing, hudStarted, takeScreenshot;
+	bool hideHud;
+	bool paused;
+	bool onHudRT, pausedHudRT;
+	bool captureNextFrame, capturing, hudStarted, takeScreenshot;
 
 	D3DVIEWPORT9 viewport;
 	IDirect3DDevice9 *d3ddev;
 
 	double lastPresentTime;
 
-    std::unique_ptr<SMAA> smaa;
-    std::unique_ptr<FXAA> fxaa;
-    std::unique_ptr<SSAO> ssao;
-    std::unique_ptr<GAUSS> gauss;
-    std::unique_ptr<HUD> hud;
+	std::unique_ptr<SMAA> smaa;
+	std::unique_ptr<FXAA> fxaa;
+	std::unique_ptr<SSAO> ssao;
+	std::unique_ptr<GAUSS> gauss;
+	std::unique_ptr<HUD> hud;
 
 	CComPtr<IDirect3DTexture9> rgbaBuffer1Tex;
-    CComPtr<IDirect3DSurface9> rgbaBuffer1Surf;
-    CComPtr<IDirect3DSurface9> depthStencilSurf;
-	
-    CComPtr<IDirect3DSurface9> zSurf;
+	CComPtr<IDirect3DSurface9> rgbaBuffer1Surf;
+	CComPtr<IDirect3DSurface9> depthStencilSurf;
+
+	CComPtr<IDirect3DSurface9> zSurf;
 
 	std::set<int> dumpedTextures;
 
@@ -56,13 +57,13 @@ private:
 
 	void dumpSurface(const char* name, IDirect3DSurface9* surface);
 
-	#define TEXTURE(_name, _hash) \
+#define TEXTURE(_name, _hash) \
 	private: \
 	static const UINT32 texture##_name##Hash = _hash; \
 	IDirect3DTexture9* texture##_name; \
 	bool isTexture##_name(IDirect3DBaseTexture9* pTexture) { return texture##_name && ((IDirect3DTexture9*)pTexture) == texture##_name; };
-	#include "Textures.def"
-	#undef TEXTURE
+#include "Textures.def"
+#undef TEXTURE
 	bool isTextureText(IDirect3DBaseTexture9* pTexture);
 	const char* getTextureName(IDirect3DBaseTexture9* pTexture);
 
@@ -70,7 +71,7 @@ private:
 	unsigned skippedPresents;
 
 	// RenderDoneDetectionProgress
-	// basically, when the game switches rendertargets after setting texture 0 to 3 in order, but no others, 
+	// basically, when the game switches rendertargets after setting texture 0 to 3 in order, but no others,
 	// we assume we just finished rendering the hud-less image. This variable keeps track of the number of "correct" texture settings.
 	unsigned rddp;
 
@@ -97,65 +98,93 @@ private:
 	// Render state store/restore
 	void storeRenderState();
 	void restoreRenderState();
-    CComPtr<IDirect3DVertexDeclaration9> prevVDecl;
-    CComPtr<IDirect3DSurface9> prevDepthStencilSurf;
-    CComPtr<IDirect3DSurface9> prevRenderTarget;
-    CComPtr<IDirect3DTexture9> prevRenderTex;
-    CComPtr<IDirect3DStateBlock9> prevStateBlock;
+	CComPtr<IDirect3DVertexDeclaration9> prevVDecl;
+	CComPtr<IDirect3DSurface9> prevDepthStencilSurf;
+	CComPtr<IDirect3DSurface9> prevRenderTarget;
+	CComPtr<IDirect3DTexture9> prevRenderTex;
+	CComPtr<IDirect3DStateBlock9> prevStateBlock;
 
 public:
-	static RSManager& get() {
+	static RSManager& get()
+	{
 		return instance;
 	}
 
-    RSManager() : smaa(nullptr), fxaa(nullptr), ssao(nullptr), gauss(nullptr), rgbaBuffer1Surf(nullptr), rgbaBuffer1Tex(nullptr),
-			inited(false), doAA(true), doSsao(true), doDofGauss(true), doHud(true), captureNextFrame(false), capturing(false), hudStarted(false), takeScreenshot(false), hideHud(false),
-			mainRenderTexIndex(0), mainRenderSurfIndex(0), dumpCaptureIndex(0), numKnownTextures(0), foundKnownTextures(0), skippedPresents(0) {
-		#define TEXTURE(_name, _hash) ++numKnownTextures;
-		#include "Textures.def"
-		#undef TEXTURE
+	RSManager() : smaa(nullptr), fxaa(nullptr), ssao(nullptr), gauss(nullptr), rgbaBuffer1Surf(nullptr), rgbaBuffer1Tex(nullptr),
+		inited(false), doAA(true), doSsao(true), doDofGauss(true), doHud(true), captureNextFrame(false), capturing(false), hudStarted(false), takeScreenshot(false), hideHud(false),
+		mainRenderTexIndex(0), mainRenderSurfIndex(0), dumpCaptureIndex(0), numKnownTextures(0), foundKnownTextures(0), skippedPresents(0)
+	{
+#define TEXTURE(_name, _hash) ++numKnownTextures;
+#include "Textures.def"
+#undef TEXTURE
 	}
-	
-	void setD3DDevice(IDirect3DDevice9 *pD3Ddev) { d3ddev = pD3Ddev; }
+
+	void setD3DDevice(IDirect3DDevice9 *pD3Ddev)
+	{
+		d3ddev = pD3Ddev;
+	}
 
 	void initResources();
 	void releaseResources();
 
-	void setViewport(const D3DVIEWPORT9& vp) {
+	void setViewport(const D3DVIEWPORT9& vp)
+	{
 		viewport = vp;
 	}
 
-	bool isViewport(const RECT& r) {
+	bool isViewport(const RECT& r)
+	{
 		return (r.left == viewport.X) && (r.top == viewport.Y) && (r.bottom == viewport.Height) && (r.right == viewport.Width);
 	}
 
 	D3DPRESENT_PARAMETERS adjustPresentationParameters(const D3DPRESENT_PARAMETERS *pPresentationParameters);
 	void enableSingleFrameCapture();
 	void enableTakeScreenshot();
-	bool takingScreenshot() { return takeScreenshot; }
-	void toggleAA() { doAA = !doAA; }
-	void toggleVssao() { doSsao = !doSsao; }
-	void toggleHideHud() { hideHud = !hideHud; }
-	void toggleChangeHud() { doHud = !doHud; }
-	void toggleDofGauss() { doDofGauss = !doDofGauss; }
+	bool takingScreenshot()
+	{
+		return takeScreenshot;
+	}
+	void toggleAA()
+	{
+		doAA = !doAA;
+	}
+	void toggleVssao()
+	{
+		doSsao = !doSsao;
+	}
+	void toggleHideHud()
+	{
+		hideHud = !hideHud;
+	}
+	void toggleChangeHud()
+	{
+		doHud = !doHud;
+	}
+	void toggleDofGauss()
+	{
+		doDofGauss = !doDofGauss;
+	}
 	void reloadVssao();
 	void reloadHbao();
 	void reloadScao();
 	void reloadGauss();
 	void reloadAA();
 
-	bool allowStateChanges() { return !onHudRT; }
+	bool allowStateChanges()
+	{
+		return !onHudRT;
+	}
 
 	INT16 hudVertices[32];
 	void reloadHudVertices();
-	
+
 	void registerMainRenderTexture(IDirect3DTexture9* pTexture);
 	void registerMainRenderSurface(IDirect3DSurface9* pSurface);
 	unsigned getTextureIndex(IDirect3DTexture9* ppTexture);
 	void registerD3DXCreateTextureFromFileInMemory(LPCVOID pSrcData, UINT SrcDataSize, LPDIRECT3DTEXTURE9 pTexture);
 	void registerD3DXCompileShader(LPCSTR pSrcData, UINT srcDataLen, const D3DXMACRO *pDefines, LPD3DXINCLUDE pInclude, LPCSTR pFunctionName, LPCSTR pProfile, DWORD Flags, LPD3DXBUFFER * ppShader, LPD3DXBUFFER * ppErrorMsgs, LPD3DXCONSTANTTABLE * ppConstantTable);
-	
-    HRESULT redirectCreateTexture(UINT Width, UINT Height, UINT Levels, DWORD Usage, D3DFORMAT Format, D3DPOOL Pool, IDirect3DTexture9** ppTexture, HANDLE* pSharedHandle);
+
+	HRESULT redirectCreateTexture(UINT Width, UINT Height, UINT Levels, DWORD Usage, D3DFORMAT Format, D3DPOOL Pool, IDirect3DTexture9** ppTexture, HANDLE* pSharedHandle);
 	HRESULT redirectSetRenderTarget(DWORD RenderTargetIndex, IDirect3DSurface9* pRenderTarget);
 
 	void finishHudRendering();
@@ -168,8 +197,14 @@ public:
 	HRESULT redirectPresent(CONST RECT * pSourceRect, CONST RECT * pDestRect, HWND hDestWindowOverride, CONST RGNDATA * pDirtyRegion);
 
 	void frameTimeManagement();
-	void togglePaused() { paused = !paused; }
-	bool isPaused() { return paused; }
+	void togglePaused()
+	{
+		paused = !paused;
+	}
+	bool isPaused()
+	{
+		return paused;
+	}
 
 	HRESULT redirectDrawIndexedPrimitiveUP(D3DPRIMITIVETYPE PrimitiveType, UINT MinIndex, UINT NumVertices, UINT PrimitiveCount, CONST void* pIndexData, D3DFORMAT IndexDataFormat, CONST void* pVertexStreamZeroData, UINT VertexStreamZeroStride);
 	HRESULT redirectDrawPrimitiveUP(D3DPRIMITIVETYPE PrimitiveType, UINT PrimitiveCount, CONST void* pVertexStreamZeroData, UINT VertexStreamZeroStride);

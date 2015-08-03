@@ -20,7 +20,8 @@ void KeyActions::load()
 	std::ifstream sfile;
 	sfile.open(GetDirectoryFile("DSfixKeys.ini"), std::ios::in);
 	char buffer[256];
-	while(!sfile.eof()) {
+	while(!sfile.eof())
+	{
 		sfile.getline(buffer, 256);
 		if(buffer[0] == '#') continue;
 		if(sfile.gcount() <= 1) continue;
@@ -44,7 +45,8 @@ void KeyActions::load()
 void KeyActions::report()
 {
 	SDLOG(0, "= Loaded Keybindings:");
-	for(IntStrMap::const_iterator i = keyBindingMap.begin(); i != keyBindingMap.end(); ++i) {
+	for(IntStrMap::const_iterator i = keyBindingMap.begin(); i != keyBindingMap.end(); ++i)
+	{
 		SDLOG(0, " - %p => %s", i->first, i->second.c_str());
 	}
 	SDLOG(0, "=============");
@@ -74,16 +76,18 @@ void KeyActions::performAction(const char* name)
 
 void KeyActions::processIO()
 {
-	if(::GetForegroundWindow() != NULL && ::GetActiveWindow() != NULL) {
-		for(IntStrMap::const_iterator i = keyBindingMap.begin(); i != keyBindingMap.end(); ++i) {
-			if(GetAsyncKeyState(i->first)&1) {
+	if (WindowManager::get().GetGameWindow() != NULL && ::GetActiveWindow() == WindowManager::get().GetGameWindow())
+	{
+		for(IntStrMap::const_iterator i = keyBindingMap.begin(); i != keyBindingMap.end(); ++i)
+		{
+			if(GetAsyncKeyState(i->first)&1)
+			{
 				SDLOG(0, "Action triggered: %s", i->second.c_str());
 				performAction(i->second.c_str());
 			}
 		}
 	}
 }
-
 
 #define ACTION(_name, _action) \
 void KeyActions::_name() { _action; };

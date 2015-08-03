@@ -30,7 +30,8 @@ SSAO::SSAO(IDirect3DDevice9 *device, int width, int height, unsigned strength, T
 	D3DXMACRO scaleMacro = { "SCALE", scaleText.c_str() };
 	defines.push_back(scaleMacro);
 
-	D3DXMACRO strengthMacros[] = {
+	D3DXMACRO strengthMacros[] =
+	{
 		{ "SSAO_STRENGTH_LOW", "1" },
 		{ "SSAO_STRENGTH_MEDIUM", "1" },
 		{ "SSAO_STRENGTH_HIGH", "1" }
@@ -44,7 +45,8 @@ SSAO::SSAO(IDirect3DDevice9 *device, int width, int height, unsigned strength, T
 
 	// Load effect from file
 	const char* shader;
-	switch (type) {
+	switch (type)
+	{
 	case VSSAO:
 		shader = "dsfix\\VSSAO.fx";
 		break;
@@ -84,7 +86,8 @@ void SSAO::go(IDirect3DTexture9 *frame, IDirect3DTexture9 *depth, IDirect3DSurfa
 
 	mainSsaoPass(depth, buffer1Surf);
 
-	for (size_t i = 0; i < 1; ++i) {
+	for (size_t i = 0; i < 1; ++i)
+	{
 		hBlurPass(depth, buffer1Tex, buffer2Surf);
 		vBlurPass(depth, buffer2Tex, buffer1Surf);
 	}

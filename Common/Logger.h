@@ -38,7 +38,7 @@ public:
         return m_file != INVALID_HANDLE_VALUE;
     }
 
-    bool Console(const char* title, const char* console_notice)
+    bool Console(const char* title)
     {
         AllocConsole();
 
@@ -47,12 +47,6 @@ public:
         {
             ShowWindow(GetConsoleWindow(), SW_MAXIMIZE);
             if (title) SetConsoleTitleA(title);
-            if (console_notice)
-            {
-                size_t len = strlen(console_notice);
-                DWORD lenout = 0;
-                WriteConsoleA(m_console, console_notice, (DWORD)len, &lenout, NULL);
-            }
         }
         return m_console != INVALID_HANDLE_VALUE;
     }
@@ -126,9 +120,9 @@ inline void LogFile(const std::string& logname)
     Logger::Get().File(logname);
 }
 
-inline void LogConsole(const char* title = nullptr, const char* console_notice = nullptr)
+inline void LogConsole(const char* title = nullptr)
 {
-    Logger::Get().Console(title, console_notice);
+    Logger::Get().Console(title);
 }
 
 inline void PrintLog(const char* format, ...)

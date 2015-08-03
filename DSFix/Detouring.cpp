@@ -24,29 +24,23 @@ DWORD WINAPI DetouredTimeGetTime()
 	return TrueTimeGetTime() + timeIncrease;
 }
 
-static LARGE_INTEGER perfCountIncrease, countsPerSec;
+static LARGE_INTEGER countsPerSec;
 BOOL(WINAPI * TrueQueryPerformanceCounter)(_Out_ LARGE_INTEGER *lpPerformanceCount) = QueryPerformanceCounter;
 BOOL WINAPI DetouredQueryPerformanceCounter(_Out_ LARGE_INTEGER *lpPerformanceCount)
 {
-	void *traces[128];
-	DWORD hash;
-	int captured = CaptureStackBackTrace(0, 128, traces, &hash);
-	SDLOG(14, "T %6lu: Detouring: QueryPerformanceCounter, stack depth %3d, hash %20ul", GetCurrentThreadId(), captured, hash);
 	BOOL ret = TrueQueryPerformanceCounter(lpPerformanceCount);
-	if (timingIntroMode && captured >= 1) {
-		perfCountIncrease.QuadPart += countsPerSec.QuadPart / 50;
+	if (timingIntroMode)
+	{
+		lpPerformanceCount->QuadPart += countsPerSec.QuadPart / 50;
 	}
-	lpPerformanceCount->QuadPart += perfCountIncrease.QuadPart;
+	else
+	{
+		static size_t count;
+		if (count > 10)
+			MH_DisableHook(QueryPerformanceCounter);
+		++count;
+	}
 	return ret;
-}
-
-typedef HRESULT(WINAPI * D3DXCreateTexture_FNType)(_In_ LPDIRECT3DDEVICE9 pDevice, _In_ UINT Width, _In_ UINT Height, _In_ UINT MipLevels, _In_ DWORD Usage, _In_ D3DFORMAT Format, _In_ D3DPOOL Pool, _Out_ LPDIRECT3DTEXTURE9 *ppTexture);
-D3DXCreateTexture_FNType TrueD3DXCreateTexture = D3DXCreateTexture;
-HRESULT WINAPI DetouredD3DXCreateTexture(_In_ LPDIRECT3DDEVICE9 pDevice, _In_ UINT Width, _In_ UINT Height, _In_ UINT MipLevels, _In_ DWORD Usage, _In_ D3DFORMAT Format, _In_ D3DPOOL Pool, _Out_ LPDIRECT3DTEXTURE9 *ppTexture)
-{
-	SDLOG(4, "DetouredD3DXCreateTexture");
-	HRESULT res = TrueD3DXCreateTexture(pDevice, Width, Height, MipLevels, Usage, Format, Pool, ppTexture);
-	return res;
 }
 
 typedef HRESULT(WINAPI * D3DXCreateTextureFromFileInMemory_FNType)(_In_ LPDIRECT3DDEVICE9 pDevice, _In_ LPCVOID pSrcData, _In_ UINT SrcDataSize, _Out_ LPDIRECT3DTEXTURE9 *ppTexture);
@@ -105,14 +99,17 @@ void startDetour()
 {
 	MH_Initialize();
 
-	if (Settings::get().getSkipIntro()) {
+	if (Settings::get().getSkipIntro())
+	{
 		MH_CreateHook(QueryPerformanceCounter, DetouredQueryPerformanceCounter, reinterpret_cast<void**>(&TrueQueryPerformanceCounter));
 	}
 
-	if (Settings::get().getOverrideLanguage().length() >= 2 && Settings::get().getOverrideLanguage().find("none") != 0) {
+	if (Settings::get().getOverrideLanguage().length() >= 2 && Settings::get().getOverrideLanguage().find("none") != 0)
+	{
 		std::wstring langName = UTF8ToUTF16(Settings::get().getOverrideLanguage());
 		LCID lcid = LocaleNameToLCID(langName.c_str(), 0); // Vista+ only, but I do not care about XP
-		if (lcid) {
+		if (lcid)
+		{
 			s_langid = LANGIDFROMLCID(lcid);
 
 			MH_CreateHook(GetUserDefaultLangID, DetouredGetUserDefaultLangID, reinterpret_cast<void**>(&TrueGetUserDefaultLangID));
@@ -123,9 +120,12 @@ void startDetour()
 	MH_CreateHook(D3DXCreateTextureFromFileInMemory, DetouredD3DXCreateTextureFromFileInMemory, reinterpret_cast<void**>(&TrueD3DXCreateTextureFromFileInMemory));
 	MH_CreateHook(D3DXCreateTextureFromFileInMemoryEx, DetouredD3DXCreateTextureFromFileInMemoryEx, reinterpret_cast<void**>(&TrueD3DXCreateTextureFromFileInMemoryEx));
 
-	if (MH_EnableHook(MH_ALL_HOOKS) == MH_OK) {
+	if (MH_EnableHook(MH_ALL_HOOKS) == MH_OK)
+	{
 		SDLOG(0, "Detouring: Detoured successfully");
-	} else {
+	}
+	else
+	{
 		SDLOG(0, "Detouring: Error detouring");
 	}
 }

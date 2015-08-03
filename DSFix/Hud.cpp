@@ -49,12 +49,15 @@ void HUD::go(IDirect3DTexture9 *input, IDirect3DSurface9 *dst)
 	effect->SetFloat(opacityHandle, Settings::get().getHudBottomLeftOpacity());
 	effect->Begin(&passes, 0);
 	effect->BeginPass(0);
-	if(Settings::get().getEnableMinimalHud()) {
+	if(Settings::get().getEnableMinimalHud())
+	{
 		rect(0.145f, 0.527f, 0.074f, 0.204f,
 		     0.1f*scale, 0.77f + 0.2f*iscale, 0.074f*scale, 0.204f*scale);
 		rect(0.145f, 0.731f, 0.074f, 0.204f,
 		     0.1f*scale + 0.074f*scale + 0.01f, 0.77f + 0.2f*iscale, 0.074f*scale, 0.204f*scale);
-	} else {
+	}
+	else
+	{
 		rect(0.0f, 0.5f, 0.5f, 0.5f,
 		     0.0f, 0.5f + 0.5f*iscale, 0.5f*scale, 0.5f*scale);
 	}
@@ -90,7 +93,8 @@ void HUD::rect(float srcLeft, float srcTop, float srcWidth, float srcHeight,
 	float trgBottom = trgTop - trgHeight*2.0f;
 	float srcRight = srcLeft + srcWidth;
 	float srcBottom = srcTop + srcHeight;
-	float quad[4][5] = {
+	float quad[4][5] =
+	{
 		{ trgLeft,  trgTop, 0.5f, srcLeft,  srcTop    },
 		{ trgRight, trgTop, 0.5f, srcRight, srcTop    },
 		{ trgLeft,     trgBottom, 0.5f, srcLeft,  srcBottom },

@@ -2,24 +2,32 @@
 
 #include <Windows.h>
 
-class WindowManager {
-    static WindowManager instance;
+class WindowManager
+{
+	bool captureCursor, cursorVisible;
 
-    bool captureCursor, cursorVisible;
+	bool borderlessFullscreen;
+	RECT prevWindowRect;
+	long prevStyle, prevExStyle;
+	HWND hWnd;
 
-    bool borderlessFullscreen;
-    RECT prevWindowRect;
-    long prevStyle, prevExStyle;
+	static DWORD WINAPI FindWindowThread(LPVOID lpThreadParameter);
 
 public:
-    static WindowManager& get() {
-        return instance;
-    }
+	static WindowManager& get()
+	{
+		static WindowManager instance;
+		return instance;
+	}
 
-    WindowManager() : captureCursor(false), cursorVisible(true), borderlessFullscreen(false) { }
-    void applyCursorCapture();
-    void toggleCursorCapture();
-    void toggleCursorVisibility();
-    void toggleBorderlessFullscreen();
-    void resize(unsigned clientW, unsigned clientH);
+	WindowManager();
+
+	HWND GetGameWindow() { return hWnd; };
+
+	void applyCursorCapture();
+	void toggleCursorCapture();
+	void toggleCursorVisibility();
+	void toggleBorderlessFullscreen();
+	void resize(unsigned clientW, unsigned clientH);
+
 };

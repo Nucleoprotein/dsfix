@@ -14,7 +14,8 @@ IDirect3D9 *APIENTRY hkDirect3DCreate9(UINT SDKVersion)
 	IDirect3D9 *d3dint = NULL;
 	d3dint = oDirect3DCreate9(SDKVersion);
 
-	if (d3dint) {
+	if (d3dint)
+	{
 		new hkIDirect3D9(&d3dint);
 	}
 	return d3dint;

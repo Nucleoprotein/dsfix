@@ -7,10 +7,11 @@
 
 #include "Effect.h"
 
-class GAUSS : public Effect {
+class GAUSS : public Effect
+{
 public:
-    GAUSS(IDirect3DDevice9 *device, int width, int height);
-    virtual ~GAUSS(){};
+	GAUSS(IDirect3DDevice9 *device, int width, int height);
+	virtual ~GAUSS() {};
 
 	void go(IDirect3DTexture9 *input, IDirect3DSurface9 *dst);
 
@@ -18,9 +19,9 @@ private:
 	int width, height;
 
 	CComPtr<ID3DXEffect> effect;
-	
-    CComPtr<IDirect3DTexture9> buffer1Tex;
-    CComPtr<IDirect3DSurface9> buffer1Surf;
+
+	CComPtr<IDirect3DTexture9> buffer1Tex;
+	CComPtr<IDirect3DSurface9> buffer1Surf;
 
 	D3DXHANDLE frameTexHandle;
 };

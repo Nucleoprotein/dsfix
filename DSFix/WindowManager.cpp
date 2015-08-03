@@ -2,18 +2,42 @@
 
 #include "WindowManager.h"
 
-WindowManager WindowManager::instance;
+DWORD WINAPI WindowManager::FindWindowThread(LPVOID lpThreadParameter)
+{
+	HWND* pWnd = (HWND*)lpThreadParameter;
+	while (1)
+	{
+		HWND hWnd = ::FindWindowA("DARK SOULS", NULL);
+		if (hWnd)
+		{
+			*pWnd = hWnd;
+			break;
+		}
+		Sleep(1);
+	}
+
+	CloseHandle(GetCurrentThread());
+	return 0;
+}
+
+WindowManager::WindowManager()
+	:captureCursor(false), cursorVisible(true), borderlessFullscreen(false)
+{
+	CreateThread(NULL, NULL, FindWindowThread, &hWnd, NULL, NULL);
+}
 
 void WindowManager::applyCursorCapture()
 {
-	if (captureCursor) {
+	if (captureCursor)
+	{
 		RECT clientrect;
-		HWND hwnd = ::GetActiveWindow();
-		::GetClientRect(hwnd, &clientrect);
-		::ClientToScreen(hwnd, (LPPOINT)&clientrect.left);
-		::ClientToScreen(hwnd, (LPPOINT)&clientrect.right);
+		::GetClientRect(hWnd, &clientrect);
+		::ClientToScreen(hWnd, (LPPOINT)&clientrect.left);
+		::ClientToScreen(hWnd, (LPPOINT)&clientrect.right);
 		::ClipCursor(&clientrect);
-	} else {
+	}
+	else
+	{
 		::ClipCursor(NULL);
 	}
 }
@@ -32,45 +56,46 @@ void WindowManager::toggleCursorVisibility()
 void WindowManager::toggleBorderlessFullscreen()
 {
 	borderlessFullscreen = !borderlessFullscreen;
-	HWND hwnd = ::GetActiveWindow();
-	if (borderlessFullscreen) {
+	if (borderlessFullscreen)
+	{
 		// store previous rect
-		::GetClientRect(hwnd, &prevWindowRect);
+		::GetClientRect(hWnd, &prevWindowRect);
 		// set styles
-		LONG lStyle = ::GetWindowLong(hwnd, GWL_STYLE);
+		LONG lStyle = ::GetWindowLong(hWnd, GWL_STYLE);
 		prevStyle = lStyle;
 		lStyle &= ~(WS_CAPTION | WS_THICKFRAME | WS_MINIMIZE | WS_MAXIMIZE | WS_SYSMENU);
-		::SetWindowLong(hwnd, GWL_STYLE, lStyle);
-		LONG lExStyle = ::GetWindowLong(hwnd, GWL_EXSTYLE);
+		::SetWindowLong(hWnd, GWL_STYLE, lStyle);
+		LONG lExStyle = ::GetWindowLong(hWnd, GWL_EXSTYLE);
 		prevExStyle = lExStyle;
 		lExStyle &= ~(WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE);
-		::SetWindowLong(hwnd, GWL_EXSTYLE, lExStyle);
+		::SetWindowLong(hWnd, GWL_EXSTYLE, lExStyle);
 		// adjust size & position
-		HMONITOR monitor = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
+		HMONITOR monitor = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST);
 		MONITORINFO info;
 		info.cbSize = sizeof(MONITORINFO);
 		GetMonitorInfo(monitor, &info);
 		int monitorWidth = info.rcMonitor.right - info.rcMonitor.left;
 		int monitorHeight = info.rcMonitor.bottom - info.rcMonitor.top;
-		::SetWindowPos(hwnd, NULL, info.rcMonitor.left, info.rcMonitor.top, monitorWidth, monitorHeight, SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOOWNERZORDER);
-	} else {
+		::SetWindowPos(hWnd, NULL, info.rcMonitor.left, info.rcMonitor.top, monitorWidth, monitorHeight, SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOOWNERZORDER);
+	}
+	else
+	{
 		// restore previous window
-		::SetWindowLong(hwnd, GWL_STYLE, prevStyle);
-		::SetWindowLong(hwnd, GWL_EXSTYLE, prevExStyle);
+		::SetWindowLong(hWnd, GWL_STYLE, prevStyle);
+		::SetWindowLong(hWnd, GWL_EXSTYLE, prevExStyle);
 		RECT desiredRect = prevWindowRect;
 		::AdjustWindowRect(&desiredRect, prevStyle, false);
 		int wWidth = desiredRect.right - desiredRect.left, wHeight = desiredRect.bottom - desiredRect.top;
-		::SetWindowPos(hwnd, NULL, prevWindowRect.left, prevWindowRect.top, wWidth, wHeight, SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOOWNERZORDER);
+		::SetWindowPos(hWnd, NULL, prevWindowRect.left, prevWindowRect.top, wWidth, wHeight, SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOOWNERZORDER);
 	}
 }
 
 void WindowManager::resize(unsigned clientW, unsigned clientH)
 {
-	HWND hwnd = ::GetActiveWindow();
 	// Store current window rect
-	::GetClientRect(hwnd, &prevWindowRect);
+	::GetClientRect(hWnd, &prevWindowRect);
 	// Get monitor size
-	HMONITOR monitor = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
+	HMONITOR monitor = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST);
 	MONITORINFO info;
 	info.cbSize = sizeof(MONITORINFO);
 	GetMonitorInfo(monitor, &info);
@@ -86,7 +111,7 @@ void WindowManager::resize(unsigned clientW, unsigned clientH)
 	desiredRect.top = heightDiff / 2;
 	desiredRect.right = monitorWidth - (widthDiff / 2);
 	desiredRect.bottom = monitorHeight - (heightDiff / 2);
-	LONG lStyle = ::GetWindowLong(hwnd, GWL_STYLE);
+	LONG lStyle = ::GetWindowLong(hWnd, GWL_STYLE);
 	::AdjustWindowRect(&desiredRect, lStyle, false);
-	::SetWindowPos(hwnd, NULL, desiredRect.left, desiredRect.top, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+	::SetWindowPos(hWnd, NULL, desiredRect.left, desiredRect.top, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
 }

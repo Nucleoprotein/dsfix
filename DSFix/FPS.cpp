@@ -93,7 +93,8 @@ double getElapsedTime(void)
 void _stdcall updateFramerate(unsigned int cmd)
 {
 	// If rendering was performed, update animation step-time
-	if((cmd == 2) || (cmd == 5)) {
+	if((cmd == 2) || (cmd == 5))
+	{
 		// FPS regulation based on previous render
 		double maxFPS = (double)Settings::get().getCurrentFPSLimit();
 		double minFPS = 10.0f;
@@ -109,7 +110,8 @@ void _stdcall updateFramerate(unsigned int cmd)
 // Hook
 __declspec(naked) void getDrawThreadMsgCommand(void)
 {
-	__asm {
+	__asm
+	{
 		MOV EAX, [ECX+0Ch] // Put msgCmd in EAX (Return value)
 		PUSHAD
 		PUSH EAX
@@ -133,7 +135,8 @@ void applyFPSPatch()
 	PIMAGE_NT_HEADERS ntHeader;
 	IMAGE_FILE_HEADER header;
 
-	if(GetModuleInformation(GetCurrentProcess(), GetModuleHandle(NULL), &moduleInfo, sizeof(moduleInfo))) {
+	if(GetModuleInformation(GetCurrentProcess(), GetModuleHandle(NULL), &moduleInfo, sizeof(moduleInfo)))
+	{
 		ImageBase = (DWORD)moduleInfo.lpBaseOfDll;
 		SDLOG(0, "ImageBase at 0x%08X", ImageBase);
 
@@ -144,38 +147,51 @@ void applyFPSPatch()
 		SDLOG(0, "Executable timestamp: 0x%08X, config: 0x%08X", TimeStamp, EXE_TIMESTAMP);
 
 		// Perform pattern matching if timestamp differs
-		if (TimeStamp != EXE_TIMESTAMP) {
+		if (TimeStamp != EXE_TIMESTAMP)
+		{
 			SDLOG(0, "Trying pattern matching...");
 
 			DWORD address;
 			address = GetMemoryAddressFromPattern(NULL, TS_PATTERN, TS_OFFSET);
-			if(address != NULL) {
+			if(address != NULL)
+			{
 				SDLOG(0, "ADDR_TS found at 0x%08X", address);
 				ADDR_TS = address;
-			} else {
+			}
+			else
+			{
 				SDLOG(0, "Could not match ADDR_TS pattern, FPS not unlocked");
 				return;
 			}
 			address = GetMemoryAddressFromPattern(NULL, PRESINT_PATTERN, PRESINT_OFFSET);
-			if(address != NULL) {
+			if(address != NULL)
+			{
 				SDLOG(0, "ADDR_PRESINT found at 0x%08X", address);
 				ADDR_PRESINT = address;
-			} else {
+			}
+			else
+			{
 				SDLOG(0, "Could not match ADDR_PRESINT pattern, FPS not unlocked");
 				return;
 			}
 			address = GetMemoryAddressFromPattern(NULL, GETCMD_PATTERN, GETCMD_OFFSET);
-			if(address != NULL) {
+			if(address != NULL)
+			{
 				SDLOG(0, "ADDR_GETCMD found at 0x%08X", address);
 				ADDR_GETCMD = address;
-			} else {
+			}
+			else
+			{
 				SDLOG(0, "Could not match ADDR_GETCMD pattern, FPS not unlocked");
 				return;
 			}
 			SDLOG(0, "Pattern matching successful");
-		} else
+		}
+		else
 			SDLOG(0, "Using configured addresses");
-	} else {
+	}
+	else
+	{
 		SDLOG(0, "GetModuleInformation failed, FPS not unlocked");
 		return;
 	}
