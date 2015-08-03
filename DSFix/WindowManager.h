@@ -9,9 +9,12 @@ class WindowManager
 	bool borderlessFullscreen;
 	RECT prevWindowRect;
 	long prevStyle, prevExStyle;
-	HWND hWnd;
+
+	static HWND hWnd;
+	static WNDPROC oldWndProc;
 
 	static DWORD WINAPI FindWindowThread(LPVOID lpThreadParameter);
+	static LRESULT CALLBACK DSFixWndProc(HWND, UINT, WPARAM, LPARAM);
 
 public:
 	static WindowManager& get()

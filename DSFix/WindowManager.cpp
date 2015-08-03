@@ -1,18 +1,21 @@
 #include "stdafx.h"
 
 #include "WindowManager.h"
+#include "KeyActions.h"
+#include "SaveManager.h"
+
+HWND WindowManager::hWnd;
+WNDPROC WindowManager::oldWndProc;
 
 DWORD WINAPI WindowManager::FindWindowThread(LPVOID lpThreadParameter)
 {
-	HWND* pWnd = (HWND*)lpThreadParameter;
-	while (1)
+	while (!oldWndProc)
 	{
-		HWND hWnd = ::FindWindowA("DARK SOULS", NULL);
+		hWnd = ::FindWindowA("DARK SOULS", "DARK SOULS");
+
 		if (hWnd)
-		{
-			*pWnd = hWnd;
-			break;
-		}
+			oldWndProc = (WNDPROC)SetWindowLong(hWnd, GWL_WNDPROC, (LONG)DSFixWndProc);
+
 		Sleep(1);
 	}
 
@@ -20,10 +23,34 @@ DWORD WINAPI WindowManager::FindWindowThread(LPVOID lpThreadParameter)
 	return 0;
 }
 
+LRESULT CALLBACK WindowManager::DSFixWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	// always tick SaveManager
+	SaveManager::get().tick();
+
+	switch (uMsg)
+	{
+	case WM_ACTIVATE:
+	{
+		switch (LOWORD(wParam))
+		{
+		case WA_INACTIVE:
+				return TRUE;
+			break;
+		}
+	}
+
+	default:
+		WindowManager::get().applyCursorCapture();
+		KeyActions::get().processIO();
+		return CallWindowProc(oldWndProc, hWnd, uMsg, wParam, lParam);;
+	}
+}
+
 WindowManager::WindowManager()
 	:captureCursor(false), cursorVisible(true), borderlessFullscreen(false)
 {
-	CreateThread(NULL, NULL, FindWindowThread, &hWnd, NULL, NULL);
+	CreateThread(NULL, NULL, FindWindowThread, NULL, NULL, NULL);
 }
 
 void WindowManager::applyCursorCapture()
