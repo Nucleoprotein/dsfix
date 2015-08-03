@@ -53,6 +53,12 @@ WindowManager::WindowManager()
 	CreateThread(NULL, NULL, FindWindowThread, NULL, NULL, NULL);
 }
 
+WindowManager::~WindowManager()
+{
+	if (oldWndProc)
+		SetWindowLong(hWnd, GWL_WNDPROC, (LONG)oldWndProc);
+}
+
 void WindowManager::applyCursorCapture()
 {
 	if (captureCursor)

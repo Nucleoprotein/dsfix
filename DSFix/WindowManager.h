@@ -24,6 +24,7 @@ public:
 	}
 
 	WindowManager();
+	~WindowManager();
 
 	HWND GetGameWindow() { return hWnd; };
 
