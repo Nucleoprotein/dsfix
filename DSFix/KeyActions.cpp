@@ -10,6 +10,7 @@
 
 #include "main.h"
 #include "WindowManager.h"
+#include "SaveManager.h"
 #include "Settings.h"
 #include "RenderstateManager.h"
 
@@ -76,12 +77,12 @@ void KeyActions::performAction(const char* name)
 
 void KeyActions::processIO()
 {
-	for (IntStrMap::const_iterator i = keyBindingMap.begin(); i != keyBindingMap.end(); ++i)
+	for (auto& key : keyBindingMap)
 	{
-		if (GetAsyncKeyState(i->first) & 1)
+		if (GetAsyncKeyState(key.first) & 1)
 		{
-			SDLOG(0, "Action triggered: %s", i->second.c_str());
-			performAction(i->second.c_str());
+			SDLOG(0, "Action triggered: %s", key.second.c_str());
+			performAction(key.second.c_str());
 		}
 	}
 }

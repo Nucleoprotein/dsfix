@@ -7,22 +7,22 @@
 #include <string>
 #include <vector>
 
-using std::vector;
-using std::string;
-
 #include "main.h"
 
 class SaveManager
 {
 	static SaveManager instance;
 
-	string userSaveFolder;
+	std::wstring userSaveFolder;
+	std::wstring userBackupFolder;
+	std::wstring saveGameFile;
+
 	time_t lastBackupTime;
 
-	string getFileNameFromPath(const string& path);
-	vector<string> getSaveFiles(const char* ending = ".sl2");
+	std::wstring getFileNameFromPath(const std::wstring& path);
+	std::vector<std::wstring> getBackupFiles();
 
-	void backup(const time_t curTime);
+	void autoBackup(const time_t curTime);
 	void removeOldBackups();
 
 	time_t getLastBackupTime();
@@ -34,6 +34,9 @@ public:
 	}
 
 	SaveManager() : lastBackupTime(0) {}
+
+	void manualBackup(int slot);
+	void manualRestore(int slot);
 
 	void init();
 	void tick();

@@ -16,50 +16,61 @@ SaveManager SaveManager::instance;
 
 void SaveManager::init()
 {
-	if(Settings::get().getEnableBackups())
+	if (!Settings::get().getEnableBackups())
+		return;
+
+	PWSTR buffer;
+	HRESULT hr = SHGetKnownFolderPath(FOLDERID_Documents, 0, NULL, &buffer);
+	if (FAILED(hr) || !buffer)
+		return;
+
+	std::wstring documents(buffer);
+	CoTaskMemFree(buffer);
+
+	std::wstring search_userdir = StringFromFormat(L"%s%s", documents.c_str(), L"\\NBGI\\DarkSouls\\*");
+
+	// find user save folder
+	WIN32_FIND_DATAW userSaveFolderData;
+	HANDLE searchHandle = FindFirstFileW(search_userdir.c_str(), &userSaveFolderData);
+	bool found = false;
+	if (searchHandle != INVALID_HANDLE_VALUE)
 	{
-		CHAR documents[MAX_PATH];
-		HRESULT hr = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, documents);
-		char buffer[MAX_PATH];
-		sprintf_s(buffer, "%s%s", documents, "\\NBGI\\DarkSouls\\*");
-
-		// find user save folder
-		WIN32_FIND_DATA userSaveFolderData;
-		HANDLE searchHandle = FindFirstFile(buffer, &userSaveFolderData);
-		bool found = false;
-		if(searchHandle != INVALID_HANDLE_VALUE)
+		do
 		{
-			do
+			if (wcslen(userSaveFolderData.cFileName) > 2)
 			{
-				if(strlen(userSaveFolderData.cFileName)>2)
-				{
-					sprintf_s(buffer, "%s%s%s", documents, "\\NBGI\\DarkSouls\\", userSaveFolderData.cFileName);
-					userSaveFolder = string(buffer);
-					SDLOG(0, "SaveManager: user save folder is %s", userSaveFolder.c_str());
-					found = true;
-					break;
-				}
-			}
-			while(FindNextFile(searchHandle, &userSaveFolderData));
-		}
-		if(!found)
-		{
-			SDLOG(0, "SaveManager: could not determine user save folder");
-			return;
-		}
+				userSaveFolder = StringFromFormat(L"%s\\NBGI\\DarkSouls\\%s", documents.c_str(), userSaveFolderData.cFileName);
+				userBackupFolder = StringFromFormat(L"%s\\backup", userSaveFolder.c_str());
+				saveGameFile = StringFromFormat(L"%s\\DRAKS0005.sl2", userSaveFolder.c_str());
 
-		removeOldBackups();
+				CreateDirectoryW(userBackupFolder.c_str(), NULL);
+
+				SDLOG(0, "SaveManager: user save folder is %ls", userSaveFolder.c_str());
+				SDLOG(0, "SaveManager: user backup folder is %ls", userBackupFolder.c_str());
+				found = true;
+				break;
+			}
+
+		} while (FindNextFileW(searchHandle, &userSaveFolderData));
 	}
+
+	if (!found)
+	{
+		SDLOG(0, "SaveManager: could not determine user save folder");
+		return;
+	}
+
+	removeOldBackups();
 }
 
 void SaveManager::tick()
 {
-	if(Settings::get().getEnableBackups())
+	if (Settings::get().getEnableBackups())
 	{
 		time_t curTime = time(NULL);
-		if(curTime - getLastBackupTime() > Settings::get().getBackupInterval())
+		if (curTime - getLastBackupTime() > Settings::get().getBackupInterval())
 		{
-			backup(curTime);
+			autoBackup(curTime);
 			lastBackupTime = curTime;
 		}
 	}
@@ -67,96 +78,114 @@ void SaveManager::tick()
 
 time_t SaveManager::getLastBackupTime()
 {
-	if(lastBackupTime == 0)
+	if (lastBackupTime == 0)
 	{
-		vector<string> backupFiles = getSaveFiles(".bak");
-		if(!backupFiles.empty())
+		std::vector<std::wstring> backupFiles = getBackupFiles();
+		if (!backupFiles.empty())
 		{
-			string fn = getFileNameFromPath(backupFiles.front());
-			sscanf_s(fn.c_str(), "%lu", &lastBackupTime);
+			std::wstring fileName = getFileNameFromPath(backupFiles.front());
+			swscanf_s(fileName.c_str(), L"%llu", &lastBackupTime);
 		}
 	}
-	SDLOG(3, "SaveManager: last backup time %ld", lastBackupTime);
+	SDLOG(3, "SaveManager: last backup time %llu", lastBackupTime);
 	return lastBackupTime;
 }
 
-vector<string> SaveManager::getSaveFiles(const char* ending /*= ".sl2"*/)
+std::vector<std::wstring> SaveManager::getBackupFiles()
 {
-	SDLOG(2, "SaveManager: searching for files ending on %s", ending);
-	vector<string> ret;
+	std::vector<std::wstring> files;
 	// find saved files
-	if(userSaveFolder.length() > 0)
+	if (userBackupFolder.length() > 0)
 	{
-		char buffer[MAX_PATH];
-		sprintf_s(buffer, "%s\\*%s", userSaveFolder.c_str(), ending);
-		WIN32_FIND_DATA saveFileData;
-		HANDLE searchHandle = FindFirstFile(buffer, &saveFileData);
-		if(searchHandle != INVALID_HANDLE_VALUE)
+		std::wstring search_file = StringFromFormat(L"%s\\*.bak", userBackupFolder.c_str());
+		WIN32_FIND_DATAW saveFileData;
+		HANDLE searchHandle = FindFirstFileW(search_file.c_str(), &saveFileData);
+		if (searchHandle != INVALID_HANDLE_VALUE)
 		{
 			do
 			{
-				char buff2[MAX_PATH];
-				sprintf_s(buff2, "%s\\%s", userSaveFolder.c_str(), saveFileData.cFileName);
-				ret.push_back(string(buff2));
-			}
-			while(FindNextFile(searchHandle, &saveFileData));
+				std::wstring filename = StringFromFormat(L"%s\\%s", userBackupFolder.c_str(), saveFileData.cFileName);
+				files.push_back(filename);
+			} while (FindNextFileW(searchHandle, &saveFileData));
 		}
-		std::sort(ret.begin(), ret.end());
-		std::reverse(ret.begin(), ret.end());
-		for(size_t i=0; i<ret.size(); ++i)
+		std::sort(files.rbegin(), files.rend());
+		for (auto& file : files)
 		{
-			SDLOG(4, "SaveManager: found existing file %s", ret[i].c_str());
+			SDLOG(4, "SaveManager: found existing file %ls", file.c_str());
 		}
 	}
-	return ret;
+	return files;
 }
 
-void SaveManager::backup(const time_t curTime)
+void SaveManager::autoBackup(const time_t curTime)
 {
 	SDLOG(1, "SaveManager: Backing up save files");
-	char buffer[MAX_PATH];
-	vector<string> saveFiles = getSaveFiles();
-	for(size_t i=0; i<saveFiles.size(); ++i)
+
+	std::wstring newPath = StringFromFormat(L"%s\\%012llu_auto.bak", userBackupFolder.c_str(), curTime);
+
+	if (CopyFileW(saveGameFile.c_str(), newPath.c_str(), FALSE) == 0)
 	{
-		string fn = getFileNameFromPath(saveFiles[i]);
-		sprintf_s(buffer, "%s\\%0" TIMESTAMP_LENGTH_STR "lu_", userSaveFolder.c_str(), curTime);
-		string newPath = string(buffer) + fn + ".bak";
-		if(CopyFile(saveFiles[i].c_str(), newPath.c_str(), false) == 0)
-		{
-			SDLOG(0, "ERROR: SaveManager failed to back up file! (Copying %s to %s)", saveFiles[i].c_str(), buffer);
-		}
-		else
-		{
-			SDLOG(1, "SaveManager: Backed up %s", fn.c_str());
-		}
+		SDLOG(0, "ERROR: SaveManager failed to back up file! (Copying %ls to %ls)", saveGameFile.c_str(), newPath.c_str());
 	}
+	else
+	{
+		SDLOG(1, "SaveManager: Backed up %ls", saveGameFile.c_str());
+	}
+
 	removeOldBackups();
+}
+
+void SaveManager::manualBackup(int slot)
+{
+	std::wstring backupPath = StringFromFormat(L"%s\\manual%d.bak", userBackupFolder.c_str(), slot);
+
+	if (CopyFileW(saveGameFile.c_str(), backupPath.c_str(), FALSE) == 0)
+	{
+		SDLOG(0, "ERROR: SaveManager failed to back up file! (Copying %ls to %ls)", saveGameFile.c_str(), backupPath.c_str());
+	}
+	else
+	{
+		SDLOG(1, "SaveManager: Backed up %ls", saveGameFile.c_str());
+	}
+}
+
+void SaveManager::manualRestore(int slot)
+{
+	std::wstring backupPath = StringFromFormat(L"%s\\manual%d.bak", userBackupFolder.c_str(), slot);
+	if (CopyFileW(backupPath.c_str(), saveGameFile.c_str(), FALSE) == 0)
+	{
+		SDLOG(0, "ERROR: SaveManager failed to restore file! (Copying %ls to %ls)", backupPath.c_str(), saveGameFile.c_str());
+	}
+	else
+	{
+		SDLOG(1, "SaveManager: Restore up %ls", backupPath.c_str());
+	}
 }
 
 void SaveManager::removeOldBackups()
 {
-	vector<string> backupFiles = getSaveFiles(".bak");
-	if(Settings::get().getMaxBackups() < backupFiles.size())
+	std::vector<std::wstring> backupFiles = getBackupFiles();
+	if (Settings::get().getMaxBackups() < backupFiles.size())
 	{
 		SDLOG(1, "SaveManager: Removing %u old backups", backupFiles.size() - Settings::get().getMaxBackups());
-		for(size_t i=Settings::get().getMaxBackups(); i<backupFiles.size(); ++i)
+		for (size_t i = Settings::get().getMaxBackups(); i < backupFiles.size(); ++i)
 		{
-			DeleteFile(backupFiles[i].c_str());
+			DeleteFileW(backupFiles[i].c_str());
 		}
 	}
 }
 
-string SaveManager::getFileNameFromPath(const string& path)
+std::wstring SaveManager::getFileNameFromPath(const std::wstring& path)
 {
-	size_t pos = path.rfind('\\');
-	if(pos != path.npos)
+	size_t pos = path.rfind(L'\\');
+	if (pos != path.npos)
 	{
 		pos += 1;
 		return path.substr(pos);
 	}
 	else
 	{
-		SDLOG(0, "ERROR: SaveManager could not extract file name from path %s", path.c_str());
+		SDLOG(0, "ERROR: SaveManager could not extract file name from path %ls", path.c_str());
 	}
 	return path;
 }
