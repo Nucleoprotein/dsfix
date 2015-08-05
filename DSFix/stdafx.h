@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <memory>
 #include <fstream>
+#include <mutex>
 
 #define WIN32_LEAN_AND_MEAN
 #define STRICT

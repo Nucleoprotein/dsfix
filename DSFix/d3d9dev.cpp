@@ -6,14 +6,8 @@
 #include <iostream>
 #include <list>
 #include "main.h"
-#include "d3d9.h"
 #include "d3dutil.h"
 #include "RenderstateManager.h"
-#include "WindowManager.h"
-#include "Settings.h"
-#include "KeyActions.h"
-#include "SaveManager.h"
-
 
 hkIDirect3DDevice9::hkIDirect3DDevice9(IDirect3DDevice9 **ppReturnedDeviceInterface, D3DPRESENT_PARAMETERS *pPresentParam, IDirect3D9 *pIDirect3D9)
 {
@@ -52,7 +46,6 @@ HRESULT APIENTRY hkIDirect3DDevice9::SetVertexShader(IDirect3DVertexShader9* pvS
 
 HRESULT APIENTRY hkIDirect3DDevice9::SetViewport(CONST D3DVIEWPORT9 *pViewport)
 {
-	Settings::get().init();
 	SDLOG(6, "SetViewport X / Y - W x H : %4lu / %4lu  -  %4lu x %4lu", pViewport->X, pViewport->Y, pViewport->Width, pViewport->Height);
 	RSManager::get().setViewport(*pViewport);
 	return m_pD3Ddev->SetViewport(pViewport);

@@ -1,16 +1,7 @@
 #include "stdafx.h"
 
 #include "SaveManager.h"
-
-#include <algorithm>
-
 #include "Settings.h"
-
-#define QUOTE(str) #str
-#define EXPAND_AND_QUOTE(str) QUOTE(str)
-
-#define TIMESTAMP_LENGTH 12
-#define TIMESTAMP_LENGTH_STR EXPAND_AND_QUOTE(TIMESTAMP_LENGTH)
 
 SaveManager SaveManager::instance;
 
@@ -32,7 +23,6 @@ void SaveManager::init()
 	// find user save folder
 	WIN32_FIND_DATAW userSaveFolderData;
 	HANDLE searchHandle = FindFirstFileW(search_userdir.c_str(), &userSaveFolderData);
-	bool found = false;
 	if (searchHandle != INVALID_HANDLE_VALUE)
 	{
 		do
@@ -47,32 +37,47 @@ void SaveManager::init()
 
 				SDLOG(0, "SaveManager: user save folder is %ls", userSaveFolder.c_str());
 				SDLOG(0, "SaveManager: user backup folder is %ls", userBackupFolder.c_str());
-				found = true;
 				break;
 			}
 
 		} while (FindNextFileW(searchHandle, &userSaveFolderData));
 	}
 
-	if (!found)
+	if (userBackupFolder.empty())
 	{
 		SDLOG(0, "SaveManager: could not determine user save folder");
 		return;
 	}
 
+	std::wstring newPath = StringFromFormat(L"%s\\start.bak", userBackupFolder.c_str());
+	CopyFileW(saveGameFile.c_str(), newPath.c_str(), FALSE);
+
 	removeOldBackups();
+}
+
+SaveManager::~SaveManager()
+{
+	if (!enabled())
+		return;
+
+	std::wstring newPath = StringFromFormat(L"%s\\exit.bak", userBackupFolder.c_str());
+	CopyFileW(saveGameFile.c_str(), newPath.c_str(), FALSE);
 }
 
 void SaveManager::tick()
 {
-	if (Settings::get().getEnableBackups())
+	// initialize on first tick
+	static std::once_flag flag;
+	std::call_once(flag, &SaveManager::init, this); // thiscall
+
+	if (!enabled())
+		return;
+
+	time_t curTime = time(NULL);
+	if (curTime - getLastBackupTime() > Settings::get().getBackupInterval())
 	{
-		time_t curTime = time(NULL);
-		if (curTime - getLastBackupTime() > Settings::get().getBackupInterval())
-		{
-			autoBackup(curTime);
-			lastBackupTime = curTime;
-		}
+		autoBackup(curTime);
+		lastBackupTime = curTime;
 	}
 }
 
@@ -94,26 +99,23 @@ time_t SaveManager::getLastBackupTime()
 std::vector<std::wstring> SaveManager::getBackupFiles()
 {
 	std::vector<std::wstring> files;
-	// find saved files
-	if (userBackupFolder.length() > 0)
+	std::wstring search_file = StringFromFormat(L"%s\\*.bak", userBackupFolder.c_str());
+	WIN32_FIND_DATAW saveFileData;
+	HANDLE searchHandle = FindFirstFileW(search_file.c_str(), &saveFileData);
+	if (searchHandle != INVALID_HANDLE_VALUE)
 	{
-		std::wstring search_file = StringFromFormat(L"%s\\*.bak", userBackupFolder.c_str());
-		WIN32_FIND_DATAW saveFileData;
-		HANDLE searchHandle = FindFirstFileW(search_file.c_str(), &saveFileData);
-		if (searchHandle != INVALID_HANDLE_VALUE)
+		do
 		{
-			do
-			{
-				std::wstring filename = StringFromFormat(L"%s\\%s", userBackupFolder.c_str(), saveFileData.cFileName);
-				files.push_back(filename);
-			} while (FindNextFileW(searchHandle, &saveFileData));
-		}
-		std::sort(files.rbegin(), files.rend());
-		for (auto& file : files)
-		{
-			SDLOG(4, "SaveManager: found existing file %ls", file.c_str());
-		}
+			std::wstring filename = StringFromFormat(L"%s\\%s", userBackupFolder.c_str(), saveFileData.cFileName);
+			files.push_back(filename);
+		} while (FindNextFileW(searchHandle, &saveFileData));
 	}
+	std::sort(files.rbegin(), files.rend());
+	for (auto& file : files)
+	{
+		SDLOG(4, "SaveManager: found existing file %ls", file.c_str());
+	}
+
 	return files;
 }
 
@@ -123,13 +125,14 @@ void SaveManager::autoBackup(const time_t curTime)
 
 	std::wstring newPath = StringFromFormat(L"%s\\%012llu_auto.bak", userBackupFolder.c_str(), curTime);
 
-	if (CopyFileW(saveGameFile.c_str(), newPath.c_str(), FALSE) == 0)
+	if (CopyFileW(saveGameFile.c_str(), newPath.c_str(), FALSE) == FALSE)
 	{
 		SDLOG(0, "ERROR: SaveManager failed to back up file! (Copying %ls to %ls)", saveGameFile.c_str(), newPath.c_str());
 	}
 	else
 	{
 		SDLOG(1, "SaveManager: Backed up %ls", saveGameFile.c_str());
+		MessageBeep(MB_ICONASTERISK);
 	}
 
 	removeOldBackups();
@@ -137,28 +140,36 @@ void SaveManager::autoBackup(const time_t curTime)
 
 void SaveManager::manualBackup(int slot)
 {
+	if (!enabled())
+		return;
+
 	std::wstring backupPath = StringFromFormat(L"%s\\manual%d.bak", userBackupFolder.c_str(), slot);
 
-	if (CopyFileW(saveGameFile.c_str(), backupPath.c_str(), FALSE) == 0)
+	if (CopyFileW(saveGameFile.c_str(), backupPath.c_str(), FALSE) == FALSE)
 	{
 		SDLOG(0, "ERROR: SaveManager failed to back up file! (Copying %ls to %ls)", saveGameFile.c_str(), backupPath.c_str());
 	}
 	else
 	{
 		SDLOG(1, "SaveManager: Backed up %ls", saveGameFile.c_str());
+		MessageBeep(MB_ICONASTERISK);
 	}
 }
 
 void SaveManager::manualRestore(int slot)
 {
+	if (!enabled())
+		return;
+
 	std::wstring backupPath = StringFromFormat(L"%s\\manual%d.bak", userBackupFolder.c_str(), slot);
-	if (CopyFileW(backupPath.c_str(), saveGameFile.c_str(), FALSE) == 0)
+	if (CopyFileW(backupPath.c_str(), saveGameFile.c_str(), FALSE) == FALSE)
 	{
 		SDLOG(0, "ERROR: SaveManager failed to restore file! (Copying %ls to %ls)", backupPath.c_str(), saveGameFile.c_str());
 	}
 	else
 	{
 		SDLOG(1, "SaveManager: Restore up %ls", backupPath.c_str());
+		MessageBeep(MB_ICONASTERISK);
 	}
 }
 

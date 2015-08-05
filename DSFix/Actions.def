@@ -35,8 +35,6 @@ ACTION(singleFrameFullCapture, RSManager::get().enableSingleFrameCapture())
 ACTION(userTrigger, SDLOG(0, "================================================================= USER TRIGGER ===\n"))
 ACTION(reloadHUDVertices, RSManager::get().reloadHudVertices());
 
-ACTION(togglePaused, RSManager::get().togglePaused());
-
 ACTION(manualBackup1, SaveManager::get().manualBackup(1));
 ACTION(manualRestore1, SaveManager::get().manualRestore(1));
 
@@ -51,4 +49,3 @@ ACTION(manualRestore4, SaveManager::get().manualRestore(4));
 
 ACTION(manualBackup5, SaveManager::get().manualBackup(5));
 ACTION(manualRestore5, SaveManager::get().manualRestore(5));
-

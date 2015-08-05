@@ -13,6 +13,7 @@
 #include "Hash.h"
 #include "Detouring.h"
 #include "WindowManager.h"
+#include "SaveManager.h"
 #include "FPS.h"
 
 #include "WinUtil.h"
@@ -67,6 +68,9 @@ void RSManager::releaseResources()
 
 HRESULT RSManager::redirectPresent(CONST RECT *pSourceRect, CONST RECT *pDestRect, HWND hDestWindowOverride, CONST RGNDATA *pDirtyRegion)
 {
+	// tick SaveManager
+	SaveManager::get().tick();
+
 	capturing = false;
 	if(captureNextFrame)
 	{

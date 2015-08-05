@@ -7,7 +7,6 @@ class Settings
 {
 	static Settings instance;
 
-	bool inited;
 	unsigned curFPSlimit;
 
 	void read(char* source, bool& value);
@@ -35,12 +34,9 @@ public:
 	}
 
 	void load();
-
 	void report();
-	void init();
-	void shutdown();
 
-	Settings() : inited(false)
+	Settings()
 	{
 #define SETTING(_type, _var, _inistring, _defaultval) \
 		_var = _defaultval;

@@ -20,15 +20,18 @@ DWORD WINAPI WindowManager::FindWindowThread(LPVOID lpThreadParameter)
 		Sleep(1);
 	}
 
+	Sleep(1);
+	if (Settings::get().getDisableCursor()) WindowManager::get().toggleCursorVisibility();
+	if (Settings::get().getCaptureCursor()) WindowManager::get().toggleCursorCapture();
+	if (Settings::get().getBorderlessFullscreen()) WindowManager::get().toggleBorderlessFullscreen();
+	WindowManager::get().resize(NULL, NULL);
+
 	CloseHandle(GetCurrentThread());
 	return 0;
 }
 
 LRESULT CALLBACK WindowManager::DSFixWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	// always tick SaveManager
-	SaveManager::get().tick();
-
 	switch (uMsg)
 	{
 	case WM_ACTIVATE:
@@ -36,15 +39,14 @@ LRESULT CALLBACK WindowManager::DSFixWndProc(HWND hWnd, UINT uMsg, WPARAM wParam
 		switch (LOWORD(wParam))
 		{
 		case WA_INACTIVE:
-				return TRUE;
-			break;
+			return TRUE;
 		}
 	}
 
 	default:
 		WindowManager::get().applyCursorCapture();
 		KeyActions::get().processIO();
-		return CallWindowProc(oldWndProc, hWnd, uMsg, wParam, lParam);;
+		return CallWindowProc(oldWndProc, hWnd, uMsg, wParam, lParam);
 	}
 }
 

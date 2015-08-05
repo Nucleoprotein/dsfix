@@ -72,7 +72,6 @@ void updateAnimationStepTime(float stepTime, float minFPS, float maxFPS)
 		FPS = maxFPS;
 
 	float cappedStep = 1/(float)FPS;
-	if(RSManager::get().isPaused()) cappedStep = 0.000000000000000001f;
 	DWORD data = *(DWORD*)&cappedStep;
 
 	writeToAddress(&data, convertAddress(ADDR_TS), sizeof(data));

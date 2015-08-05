@@ -50,27 +50,6 @@ void Settings::report()
 	SDLOG(0, "=============");
 }
 
-void Settings::init()
-{
-	if (!inited)
-	{
-		if (getDisableCursor()) WindowManager::get().toggleCursorVisibility();
-		if (getCaptureCursor()) WindowManager::get().toggleCursorCapture();
-		if (getBorderlessFullscreen()) WindowManager::get().toggleBorderlessFullscreen();
-
-		WindowManager::get().resize(NULL, NULL);
-		inited = true;
-	}
-}
-
-void Settings::shutdown()
-{
-	if (inited)
-	{
-		inited = false;
-	}
-}
-
 unsigned Settings::getCurrentFPSLimit()
 {
 	return curFPSlimit;

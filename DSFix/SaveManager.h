@@ -26,6 +26,7 @@ class SaveManager
 	void removeOldBackups();
 
 	time_t getLastBackupTime();
+	void init();
 
 public:
 	static SaveManager& get()
@@ -33,12 +34,14 @@ public:
 		return instance;
 	}
 
-	SaveManager() : lastBackupTime(0) {}
+	SaveManager::SaveManager() : lastBackupTime(0) {};
+	~SaveManager();
+
+	bool enabled() { return Settings::get().getEnableBackups() && !userBackupFolder.empty(); }
 
 	void manualBackup(int slot);
 	void manualRestore(int slot);
 
-	void init();
 	void tick();
 };
 

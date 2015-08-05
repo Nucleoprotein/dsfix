@@ -48,19 +48,20 @@ BOOL WINAPI DllMain(HMODULE hDll, DWORD dwReason, PVOID pvReserved)
 
 		// load settings
 		Settings::get().load();
-		Settings::get().report();
-
 		KeyActions::get().load();
-		KeyActions::get().report();
 
-		SaveManager::get().init();
+#ifndef RELEASE_VER
+		Settings::get().report();
+		KeyActions::get().report();
+#endif
 
 		earlyDetour();
 
-		if (Settings::get().getUnlockFPS()) applyFPSPatch();
+		if (Settings::get().getUnlockFPS())
+			applyFPSPatch();
+
 		break;
 	case DLL_PROCESS_DETACH:
-		Settings::get().shutdown();
 		endDetour();
 		SDLOG(0, "===== end = fn: %s", fileName);
 		break;

@@ -21,7 +21,6 @@ class WindowManager
 public:
 	static WindowManager& get()
 	{
-
 		return instance;
 	}
 
@@ -35,5 +34,5 @@ public:
 	void toggleCursorVisibility();
 	void toggleBorderlessFullscreen();
 	void resize(unsigned clientW, unsigned clientH);
-
+	void pauseGame();
 };
