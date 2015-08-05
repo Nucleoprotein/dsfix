@@ -14,6 +14,7 @@
 #include "Detouring.h"
 #include "WindowManager.h"
 #include "SaveManager.h"
+#include "KeyActions.h"
 #include "FPS.h"
 
 #include "WinUtil.h"
@@ -45,8 +46,6 @@ void RSManager::initResources()
 	d3ddev->CreateDepthStencilSurface(rw, rh, D3DFMT_D24S8, D3DMULTISAMPLE_NONE, 0, false, &depthStencilSurf, NULL);
 	d3ddev->CreateStateBlock(D3DSBT_ALL, &prevStateBlock);
 	SDLOG(0, "RenderstateManager resource initialization completed");
-	if(!inited) startDetour(); // on first init only
-	inited = true;
 }
 
 void RSManager::releaseResources()
@@ -68,6 +67,12 @@ void RSManager::releaseResources()
 
 HRESULT RSManager::redirectPresent(CONST RECT *pSourceRect, CONST RECT *pDestRect, HWND hDestWindowOverride, CONST RGNDATA *pDirtyRegion)
 {
+	while (paused)
+	{
+		Sleep(1);
+		KeyActions::get().processIO();
+	}
+
 	// tick SaveManager
 	SaveManager::get().tick();
 

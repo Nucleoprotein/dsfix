@@ -16,7 +16,6 @@ class RSManager
 private:
 	static RSManager instance;
 
-	bool inited;
 	bool lowFPSmode;
 	bool doAA;
 	bool doSsao;
@@ -111,13 +110,15 @@ public:
 	}
 
 	RSManager() : smaa(nullptr), fxaa(nullptr), ssao(nullptr), gauss(nullptr), rgbaBuffer1Surf(nullptr), rgbaBuffer1Tex(nullptr),
-		inited(false), doAA(true), doSsao(true), doDofGauss(true), doHud(true), captureNextFrame(false), capturing(false), hudStarted(false), takeScreenshot(false), hideHud(false),
+		paused(false), doAA(true), doSsao(true), doDofGauss(true), doHud(true), captureNextFrame(false), capturing(false), hudStarted(false), takeScreenshot(false), hideHud(false),
 		mainRenderTexIndex(0), mainRenderSurfIndex(0), dumpCaptureIndex(0), numKnownTextures(0), foundKnownTextures(0), skippedPresents(0)
 	{
 #define TEXTURE(_name, _hash) ++numKnownTextures;
 #include "Textures.def"
 #undef TEXTURE
 	}
+
+	void togglePaused()	{ paused = !paused; };
 
 	void setD3DDevice(IDirect3DDevice9 *pD3Ddev)
 	{

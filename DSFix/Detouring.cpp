@@ -85,19 +85,13 @@ LANGID WINAPI DetouredGetUserDefaultLangID(void)
 		return TrueGetUserDefaultLangID();
 }
 
-void earlyDetour()
+void startDetour()
 {
 	QueryPerformanceFrequency(&countsPerSec);
 
 	MH_Initialize();
 
 	MH_CreateHook(Direct3DCreate9, hkDirect3DCreate9, reinterpret_cast<void**>(&oDirect3DCreate9));
-	MH_EnableHook(Direct3DCreate9);
-}
-
-void startDetour()
-{
-	MH_Initialize();
 
 	if (Settings::get().getSkipIntro())
 	{

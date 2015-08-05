@@ -55,7 +55,7 @@ BOOL WINAPI DllMain(HMODULE hDll, DWORD dwReason, PVOID pvReserved)
 		KeyActions::get().report();
 #endif
 
-		earlyDetour();
+		startDetour();
 
 		if (Settings::get().getUnlockFPS())
 			applyFPSPatch();

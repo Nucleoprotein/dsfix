@@ -49,3 +49,5 @@ ACTION(manualRestore4, SaveManager::get().manualRestore(4));
 
 ACTION(manualBackup5, SaveManager::get().manualBackup(5));
 ACTION(manualRestore5, SaveManager::get().manualRestore(5));
+
+ACTION(togglePaused, RSManager::get().togglePaused());
