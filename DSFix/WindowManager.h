@@ -18,6 +18,9 @@ class WindowManager
 	static DWORD WINAPI FindWindowThread(LPVOID lpThreadParameter);
 	static LRESULT CALLBACK DSFixWndProc(HWND, UINT, WPARAM, LPARAM);
 
+	void applyCursorCapture();
+	void applyCursorVisibility();
+
 public:
 	static WindowManager& get()
 	{
@@ -29,10 +32,9 @@ public:
 
 	HWND GetGameWindow() { return hWnd; };
 
-	void applyCursorCapture();
 	void toggleCursorCapture();
 	void toggleCursorVisibility();
 	void toggleBorderlessFullscreen();
+
 	void resize(unsigned clientW, unsigned clientH);
-	void pauseGame();
 };

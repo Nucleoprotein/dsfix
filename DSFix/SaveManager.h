@@ -11,8 +11,6 @@
 
 class SaveManager
 {
-	static SaveManager instance;
-
 	std::wstring userSaveFolder;
 	std::wstring userBackupFolder;
 	std::wstring saveGameFile;
@@ -31,10 +29,11 @@ class SaveManager
 public:
 	static SaveManager& get()
 	{
+		static SaveManager instance;
 		return instance;
 	}
 
-	SaveManager::SaveManager() : lastBackupTime(0) {};
+	SaveManager();
 	~SaveManager();
 
 	bool enabled() { return Settings::get().getEnableBackups() && !userBackupFolder.empty(); }

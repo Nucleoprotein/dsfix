@@ -3,9 +3,8 @@
 #include "SaveManager.h"
 #include "Settings.h"
 
-SaveManager SaveManager::instance;
-
-void SaveManager::init()
+SaveManager::SaveManager()
+	: lastBackupTime(0)
 {
 	if (!Settings::get().getEnableBackups())
 		return;
@@ -66,10 +65,6 @@ SaveManager::~SaveManager()
 
 void SaveManager::tick()
 {
-	// initialize on first tick
-	static std::once_flag flag;
-	std::call_once(flag, &SaveManager::init, this); // thiscall
-
 	if (!enabled())
 		return;
 

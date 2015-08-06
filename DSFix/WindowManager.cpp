@@ -34,20 +34,24 @@ LRESULT CALLBACK WindowManager::DSFixWndProc(HWND hWnd, UINT uMsg, WPARAM wParam
 {
 	switch (uMsg)
 	{
-	case WM_ACTIVATE:
-	{
-		switch (LOWORD(wParam))
+		case WM_ACTIVATE:
 		{
-		case WA_INACTIVE:
-			return TRUE;
+			switch (LOWORD(wParam))
+			{
+				case WA_ACTIVE:
+				case WA_CLICKACTIVE:
+					break;
+
+				case WA_INACTIVE:
+					return TRUE;
+			}
 		}
 	}
 
-	default:
-		WindowManager::get().applyCursorCapture();
-		KeyActions::get().processIO();
-		return CallWindowProc(oldWndProc, hWnd, uMsg, wParam, lParam);
-	}
+	WindowManager::get().applyCursorVisibility();
+	WindowManager::get().applyCursorCapture();
+	KeyActions::get().processIO();
+	return CallWindowProc(oldWndProc, hWnd, uMsg, wParam, lParam);
 }
 
 WindowManager::WindowManager()
@@ -62,31 +66,48 @@ WindowManager::~WindowManager()
 		SetWindowLong(hWnd, GWL_WNDPROC, (LONG)oldWndProc);
 }
 
-void WindowManager::applyCursorCapture()
+void WindowManager::applyCursorVisibility()
 {
-	if (captureCursor)
+	static bool oldstate = !cursorVisible;
+	if (oldstate != cursorVisible)
 	{
-		RECT clientrect;
-		::GetClientRect(hWnd, &clientrect);
-		::ClientToScreen(hWnd, (LPPOINT)&clientrect.left);
-		::ClientToScreen(hWnd, (LPPOINT)&clientrect.right);
-		::ClipCursor(&clientrect);
-	}
-	else
-	{
-		::ClipCursor(NULL);
+		if (cursorVisible) while (::ShowCursor(TRUE) < 0);
+		else while (::ShowCursor(FALSE) > -1);
+
+		oldstate = cursorVisible;
 	}
 }
 
-void WindowManager::toggleCursorCapture()
+void WindowManager::applyCursorCapture()
 {
-	captureCursor = !captureCursor;
+	static bool oldstate = !captureCursor;
+	if (oldstate != captureCursor)
+	{
+		if (captureCursor)
+		{
+			RECT clientrect;
+			::GetClientRect(hWnd, &clientrect);
+			::ClientToScreen(hWnd, (LPPOINT)&clientrect.left);
+			::ClientToScreen(hWnd, (LPPOINT)&clientrect.right);
+			::ClipCursor(&clientrect);
+		}
+		else
+		{
+			::ClipCursor(NULL);
+		}
+
+		oldstate = captureCursor;
+	}
 }
 
 void WindowManager::toggleCursorVisibility()
 {
 	cursorVisible = !cursorVisible;
-	::ShowCursor(cursorVisible);
+}
+
+void WindowManager::toggleCursorCapture()
+{
+	captureCursor = !captureCursor;
 }
 
 void WindowManager::toggleBorderlessFullscreen()
