@@ -1,6 +1,6 @@
 /*	Direct3D9 Interface */
 
-#include "stdafx.h"
+
 
 #include <windows.h>
 #include "main.h"

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+
 
 #include "Detouring.h"
 #include "Settings.h"

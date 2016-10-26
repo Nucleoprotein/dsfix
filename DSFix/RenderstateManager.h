@@ -103,6 +103,16 @@ private:
 	CComPtr<IDirect3DTexture9> prevRenderTex;
 	CComPtr<IDirect3DStateBlock9> prevStateBlock;
 
+	struct MemData
+	{
+		char* buffer;
+		long size;
+	};
+
+	std::map<UINT32, MemData> cachedTexFiles;
+
+	~RSManager();
+
 public:
 	static RSManager& get()
 	{
@@ -127,6 +137,7 @@ public:
 
 	void initResources();
 	void releaseResources();
+	void prefetchTextures();
 
 	void setViewport(const D3DVIEWPORT9& vp)
 	{

@@ -36,7 +36,7 @@
  * policies, either expressed or implied, of the copyright holders.
  */
 
-#include "stdafx.h"
+
 
 
 #include <vector>

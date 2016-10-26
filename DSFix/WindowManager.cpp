@@ -1,4 +1,4 @@
-#include "stdafx.h"
+
 
 #include "WindowManager.h"
 #include "KeyActions.h"

@@ -1,6 +1,6 @@
 // Dark Souls FPS fix by Clement Barnier (Nwks)
 ///////////////////////////////////////////////
-#include "stdafx.h"
+
 
 #include "FPS.h"
 
